@@ -1,0 +1,15 @@
+# Ambientes Virtuais
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Planilhas geradas (dados de leads)
+*.xlsx
+*.csv
+
+# Logs e arquivos temporários
+*.log

@@ -1,0 +1,580 @@
+{
+  "telefones": {
+    "61992465684": {
+      "nome": "Geovanna Rocha Advogada em Brasília e GO",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61999185817": {
+      "nome": "Laryssa Dias Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61981342048": {
+      "nome": "Marques e Melo Advocacia e Consultoria Jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61993311143": {
+      "nome": "Moraes & Sena Advocacia & Assessoria jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6133842088": {
+      "nome": "Clínica Maroso",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61999199908": {
+      "nome": "Dra Smile",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992856131": {
+      "nome": "Sorriso Clean",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61991090404": {
+      "nome": "Clínica Humanize Odontologia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6136295605": {
+      "nome": "Experience Odonto Valparaíso",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6132458159": {
+      "nome": "Fuego Alma e Vino",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61994088264": {
+      "nome": "Tarumã Cozinha e Bar Gama",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6132619017": {
+      "nome": "MELHOR DO BRASIL Cozinha Bar",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61996498344": {
+      "nome": "Praianos Restaurante",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6133840846": {
+      "nome": "Dra. Julia Advogada",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6130833310": {
+      "nome": "Kessler Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992494256": {
+      "nome": "ODONTOMINAS - CLÍNICA ODONTOLÓGICA EM VALPARAISO GO",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992979220": {
+      "nome": "Bem Viver Clínica Multi",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992253152": {
+      "nome": "PhisioFort | Fisioterapia e Pilates | Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61983000991": {
+      "nome": "Dr Augusto Puppio",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61998095274": {
+      "nome": "Mundo Estético",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61981561377": {
+      "nome": "Academia Bravus",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61994104393": {
+      "nome": "Academia Pacheco Fit- jardim oriente",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61993370106": {
+      "nome": "Academia Alternativa",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992199429": {
+      "nome": "Serralharia Artes com ferro",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61993097948": {
+      "nome": "Divino Fogão - Valparaíso",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "6136273111": {
+      "nome": "Ávila's Choperia - Valparaíso 1",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61995927964": {
+      "nome": "Restaurante Self Service com Churrasco do Bené",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61983127051": {
+      "nome": "Móbili Pilates e Fisioterapia",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61993356405": {
+      "nome": "Studio de Pilates Rute Lucchezi",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992456596": {
+      "nome": "Espaço Saúde",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61994105803": {
+      "nome": "AdCorpus Fisioterapia e Pilates",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61995021432": {
+      "nome": "Sandra Carvalho Pós Operatório e Estética",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61998025137": {
+      "nome": "Academia Nova Geração",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61999649866": {
+      "nome": "CF COSTA",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61996574096": {
+      "nome": "Arte com Ferro | Serralheria Brasilia - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61982041205": {
+      "nome": "serralheria Dias Vicente pires.",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61995815050": {
+      "nome": "Serralheria S.M. Estruturas Metálicas Instalação de portas eletrônicas",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61994531221": {
+      "nome": "Fisiovital Valparaiso de Goias",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "62996681921": {
+      "nome": "Panobianco Valparaiso Céu Azul",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61991975065": {
+      "nome": "Serralheria Silva",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61981336157": {
+      "nome": "Sistema - Esquadrias em Alumínio",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61998222118": {
+      "nome": "Serralheria Plus",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61992147259": {
+      "nome": "Serralheria Rozendo",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "61983641558": {
+      "nome": "O serralheiro",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 18:58:13",
+      "id_planilha": "84F084"
+    },
+    "61984591827": {
+      "nome": "FLX SERRALHERIA",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 19:00:25",
+      "id_planilha": "33ECAF"
+    },
+    "61992967144": {
+      "nome": "SERRALHERIA JJP",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 19:17:53",
+      "id_planilha": "22AEEB"
+    }
+  },
+  "nomes_cidade": {
+    "geovanna rocha advogada em brasília e go_brasília df": {
+      "nome": "Geovanna Rocha Advogada em Brasília e GO",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "laryssa dias advocacia_valparaíso de goiás": {
+      "nome": "Laryssa Dias Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "marques e melo advocacia e consultoria jurídica_valparaíso de goiás": {
+      "nome": "Marques e Melo Advocacia e Consultoria Jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "moraes sena advocacia assessoria jurídica_valparaíso de goiás": {
+      "nome": "Moraes & Sena Advocacia & Assessoria jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "clínica maroso_brasília df": {
+      "nome": "Clínica Maroso",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "dra smile_brasília df": {
+      "nome": "Dra Smile",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "sorriso clean_valparaíso de goiás": {
+      "nome": "Sorriso Clean",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "clínica humanize odontologia_valparaíso de goiás": {
+      "nome": "Clínica Humanize Odontologia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "experience odonto valparaíso_valparaíso de goiás": {
+      "nome": "Experience Odonto Valparaíso",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "fuego alma e vino_brasília df": {
+      "nome": "Fuego Alma e Vino",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "tarumã cozinha e bar gama_brasília df": {
+      "nome": "Tarumã Cozinha e Bar Gama",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "melhor do brasil cozinha bar_valparaíso de goiás": {
+      "nome": "MELHOR DO BRASIL Cozinha Bar",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "praianos restaurante_valparaíso de goiás": {
+      "nome": "Praianos Restaurante",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "dra julia advogada_brasília df": {
+      "nome": "Dra. Julia Advogada",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "kessler advocacia_valparaíso de goiás": {
+      "nome": "Kessler Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "odontominas clínica odontológica em valparaiso go_valparaíso de goiás": {
+      "nome": "ODONTOMINAS - CLÍNICA ODONTOLÓGICA EM VALPARAISO GO",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "bem viver clínica multi_valparaíso de goiás": {
+      "nome": "Bem Viver Clínica Multi",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "phisiofort fisioterapia e pilates valparaíso de goiás_valparaíso de goiás": {
+      "nome": "PhisioFort | Fisioterapia e Pilates | Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "dr augusto puppio_brasília df": {
+      "nome": "Dr Augusto Puppio",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "mundo estético_valparaíso de goiás": {
+      "nome": "Mundo Estético",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "academia bravus_valparaíso de goiás": {
+      "nome": "Academia Bravus",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "academia pacheco fit jardim oriente_valparaíso de goiás": {
+      "nome": "Academia Pacheco Fit- jardim oriente",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "academia alternativa_valparaíso de goiás": {
+      "nome": "Academia Alternativa",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "serralharia artes com ferro_brasília df": {
+      "nome": "Serralharia Artes com ferro",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "divino fogão valparaíso_valparaíso de goiás": {
+      "nome": "Divino Fogão - Valparaíso",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "ávilas choperia valparaíso 1_valparaíso de goiás": {
+      "nome": "Ávila's Choperia - Valparaíso 1",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "restaurante self service com churrasco do bené_valparaíso de goiás": {
+      "nome": "Restaurante Self Service com Churrasco do Bené",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "móbili pilates e fisioterapia_brasília df": {
+      "nome": "Móbili Pilates e Fisioterapia",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "studio de pilates rute lucchezi_brasília df": {
+      "nome": "Studio de Pilates Rute Lucchezi",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "espaço saúde_valparaíso de goiás": {
+      "nome": "Espaço Saúde",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "adcorpus fisioterapia e pilates_valparaíso de goiás": {
+      "nome": "AdCorpus Fisioterapia e Pilates",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "sandra carvalho pós operatório e estética_valparaíso de goiás": {
+      "nome": "Sandra Carvalho Pós Operatório e Estética",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "academia nova geração_brasília df": {
+      "nome": "Academia Nova Geração",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "cf costa_valparaíso de goiás": {
+      "nome": "CF COSTA",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "arte com ferro serralheria brasilia df_brasília df": {
+      "nome": "Arte com Ferro | Serralheria Brasilia - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "serralheria dias vicente pires_brasília df": {
+      "nome": "serralheria Dias Vicente pires.",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "serralheria sm estruturas metálicas instalação de portas eletrônicas_valparaíso de goiás": {
+      "nome": "Serralheria S.M. Estruturas Metálicas Instalação de portas eletrônicas",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "fisiovital valparaiso de goias_valparaíso de goiás": {
+      "nome": "Fisiovital Valparaiso de Goias",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "panobianco valparaiso céu azul_valparaíso de goiás": {
+      "nome": "Panobianco Valparaiso Céu Azul",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "serralheria silva_valparaíso de goiás": {
+      "nome": "Serralheria Silva",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "sistema esquadrias em alumínio_valparaíso de goiás": {
+      "nome": "Sistema - Esquadrias em Alumínio",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "serralheria plus_valparaíso de goiás": {
+      "nome": "Serralheria Plus",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "serralheria rozendo_valparaíso de goiás": {
+      "nome": "Serralheria Rozendo",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-19 17:19:18",
+      "id_planilha": "INICIAL"
+    },
+    "o serralheiro_ceilândia df": {
+      "nome": "O serralheiro",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 18:58:13",
+      "id_planilha": "84F084"
+    },
+    "flx serralheria_ceilândia df": {
+      "nome": "FLX SERRALHERIA",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 19:00:25",
+      "id_planilha": "33ECAF"
+    },
+    "serralheria jjp_ceilândia df": {
+      "nome": "SERRALHERIA JJP",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 19:17:53",
+      "id_planilha": "22AEEB"
+    }
+  },
+  "urls_maps": {
+    "https://www.google.com/maps/place/O+serralheiro/@-15.8215229,-48.1881051,13z/data=!4m10!1m2!2m1!1sserralheria+esquadrias+portoes+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcd1c15abe4c1:0x9bed06b6419f176f!8m2!3d-15.8215229!4d-48.1160073!15sCi9zZXJyYWxoZXJpYSBlc3F1YWRyaWFzIHBvcnRvZXMgZW0gQ2VpbMOibmRpYSBERloxIi9zZXJyYWxoZXJpYSBlc3F1YWRyaWFzIHBvcnRvZXMgZW0gY2VpbMOibmRpYSBkZpIBCW1ldGFsd29ya5oBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQycGFVazFVYUZOaE1XaFVUMGRrWVZaNmJHaE5XRUpNWXpJeGVWUnJSUkFC4AEA-gEECAAQQA!16s%2Fg%2F11rsc37w42": {
+      "nome": "O serralheiro",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 18:58:13",
+      "id_planilha": "84F084"
+    },
+    "https://www.google.com/maps/place/FLX+SERRALHERIA/@-15.8413525,-48.2077001,13z/data=!4m10!1m2!2m1!1sserralheria+esquadrias+portoes+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcd739aa2a433:0xb3e24ab0ab6f4d5!8m2!3d-15.8352246!4d-48.1162329!15sCi9zZXJyYWxoZXJpYSBlc3F1YWRyaWFzIHBvcnRvZXMgZW0gQ2VpbMOibmRpYSBERpIBCW1ldGFsd29ya-ABAA!16s%2Fg%2F11pd845wvk": {
+      "nome": "FLX SERRALHERIA",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 19:00:25",
+      "id_planilha": "33ECAF"
+    },
+    "https://www.google.com/maps/place/SERRALHERIA+JJP/@-15.913096,-48.1772075,13z/data=!4m10!1m2!2m1!1sserralheria+esquadrias+portoes+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcd8c75e4a4c1:0x5ff996443a220fc9!8m2!3d-15.913096!4d-48.1051097!15sCi9zZXJyYWxoZXJpYSBlc3F1YWRyaWFzIHBvcnRvZXMgZW0gQ2VpbMOibmRpYSBERpIBCW1ldGFsd29ya-ABAA!16s%2Fg%2F11q1g9m2bw": {
+      "nome": "SERRALHERIA JJP",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-10-19 19:17:53",
+      "id_planilha": "22AEEB"
+    }
+  },
+  "total_coletados": 46,
+  "ultima_atualizacao": "2026-10-19 19:17:53"
+}
