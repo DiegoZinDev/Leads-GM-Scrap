@@ -85,10 +85,61 @@ def verificar_detalhes_google_maps(page: Page) -> tuple[bool, str, str]:
 
     return False, "", instagram_url
 
+def obter_ou_reutilizar_aba_whatsapp(context, telefone: str = "") -> Page:
+    """
+    Mantém uma ÚNICA aba dedicada ao WhatsApp Web no contexto.
+    Se já houver uma aba aberta, reutiliza e navega direto na mesma aba.
+    Nunca abre novas abas nem passa pela tela de convite intermediária.
+    """
+    digitos = extrair_digitos_telefone(telefone) if telefone else ""
+    url_alvo = f"https://web.whatsapp.com/send/?phone={digitos}" if digitos else "https://web.whatsapp.com"
+
+    # 1. Procura se já existe aba do WhatsApp Web aberta
+    for p in context.pages:
+        try:
+            if "web.whatsapp.com" in p.url or "whatsapp.com" in p.url:
+                p.bring_to_front()
+                if digitos and f"phone={digitos}" not in p.url:
+                    p.goto(url_alvo, wait_until="domcontentloaded", timeout=20000)
+                return p
+        except Exception:
+            pass
+
+    # 2. Se não existir, cria uma única página dedicada
+    nova_zap = context.new_page()
+    try:
+        nova_zap.goto(url_alvo, wait_until="domcontentloaded", timeout=30000)
+    except Exception:
+        pass
+    return nova_zap
+
+def interceptar_novas_abas_whatsapp(context):
+    """
+    Intercepta cliques ou popups que tentem abrir novas abas do WhatsApp
+    e redireciona para a aba única principal, fechando a aba excedente.
+    """
+    def on_page_opened(new_page: Page):
+        try:
+            new_page.wait_for_timeout(600)
+            url_atual = new_page.url.lower()
+            if "whatsapp.com" in url_atual or "wa.me" in url_atual:
+                outras = [p for p in context.pages if "web.whatsapp.com" in p.url and p != new_page]
+                if outras:
+                    aba_principal = outras[0]
+                    match_tel = re.search(r'(?:phone=|wa\.me/)(\d+)', url_atual)
+                    if match_tel:
+                        aba_principal.goto(f"https://web.whatsapp.com/send/?phone={match_tel.group(1)}", wait_until="domcontentloaded", timeout=20000)
+                    aba_principal.bring_to_front()
+                    new_page.close()
+        except Exception:
+            pass
+
+    context.on("page", on_page_opened)
+
 def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str = "") -> tuple[bool, str]:
     """
-    FOCO 1: Investiga a bio e links do Instagram da empresa.
-    Verifica se na biografia ou no link de bio há direcionamento para site, cardápio digital ou biolink.
+    FOCO 1: Investiga a bio, links e destaques do Instagram da empresa.
+    Verifica se na biografia, links ou destaques há direcionamento para site, cardápio digital ou biolink.
     """
     alvo_url = instagram_url
     
@@ -117,11 +168,20 @@ def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str 
     if not alvo_url:
         return False, "Nenhum Instagram com site encontrado"
 
-    # Se temos a URL do Instagram, abre com Playwright para ler a bio real e links na bio
+    # Se temos a URL do Instagram, abre com Playwright para ler a bio real, links e destaques
+    temp_page = None
     try:
         temp_page = page.context.new_page()
-        temp_page.goto(alvo_url, timeout=12000)
+        temp_page.goto(alvo_url, timeout=12000, wait_until="domcontentloaded")
         temp_page.wait_for_timeout(2000)
+
+        # Lida com possíveis modais de cookies ou notificações ("Agora não")
+        try:
+            modal_btn = temp_page.locator('button:has-text("Agora não"), button:has-text("Not Now"), button:has-text("Recusar"), button:has-text("Decline")').first
+            if modal_btn.count() > 0 and modal_btn.is_visible():
+                modal_btn.click()
+        except Exception:
+            pass
 
         # 1. Lê todo o texto do header/biografia
         bio_text = temp_page.locator('header').inner_text() if temp_page.locator('header').count() > 0 else ""
@@ -129,7 +189,6 @@ def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str 
 
         for dom in DIGITAL_MENU_DOMAINS:
             if dom in bio_lower:
-                temp_page.close()
                 return True, f"Link de cardápio/site ({dom}) detectado na bio do Instagram ({alvo_url})"
 
         # 2. Inspeciona links clicáveis dentro do header (l.instagram.com links externos)
@@ -139,55 +198,63 @@ def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str 
             href_decoded = urllib.parse.unquote(href).lower()
             for dom in DIGITAL_MENU_DOMAINS:
                 if dom in href_decoded:
-                    temp_page.close()
                     return True, f"Link de cardápio/delivery ({dom}) no botão da bio do Instagram"
             
             # Checa se é um domínio próprio da empresa (.com.br ou .com)
             partes_nome = [p for p in re.sub(r'[^a-zA-Z0-9]', ' ', nome.lower()).split() if len(p) >= 4]
             if partes_nome and any(p in href_decoded for p in partes_nome):
                 if not any(soc in href_decoded for soc in ["instagram.com", "facebook.com", "whatsapp.com", "wa.me"]):
-                    temp_page.close()
                     return True, f"Site oficial próprio na bio do Instagram: {href_decoded}"
 
-        temp_page.close()
+        # 3. Inspeciona títulos dos Destaques (Highlights)
+        try:
+            destaques_textos = temp_page.locator('div[role="tablist"] ~ div, section main ul li, div[role="listitem"]').all_inner_texts()
+            texto_destaques = " ".join(destaques_textos).lower()
+            termos_destaques = ["cardápio", "cardapio", "menu digital", "delivery", "fazer pedido", "peça online", "pedidos"]
+            for termo in termos_destaques:
+                if termo in texto_destaques:
+                    return True, f"Destaque de cardápio/pedidos detectado no Instagram: '{termo}'"
+        except Exception:
+            pass
+
     except Exception:
         pass
+    finally:
+        if temp_page:
+            try:
+                temp_page.close()
+            except Exception:
+                pass
 
-    return False, "Instagram verificado: sem site ou cardápio digital"
+    return False, "Instagram verificado: sem site, cardápio ou destaque de delivery"
 
-def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page: Page) -> tuple[bool, str]:
+def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page: Page = None) -> tuple[bool, str]:
     """
     FOCO 2 e FOCO 3:
-    - Investiga Bots de WhatsApp / mensagens automáticas de pedidos.
-    - Investiga se o número de WhatsApp está cadastrado em bots/cardápios digitais (Anota AI, Goomer, Delivery Direto).
-    - Investiga a descrição e link do perfil de WhatsApp.
+    - Investiga Bots de WhatsApp / mensagens automáticas de pedidos via HTTP rápido (sem abrir abas no navegador).
+    - Investiga se o número de WhatsApp está cadastrado em plataformas de cardápio digital (Anota AI, Goomer, Delivery Direto).
     """
     digitos = extrair_digitos_telefone(telefone)
     if not digitos:
         return False, ""
 
-    # 1. Inspeciona o link direto da API do WhatsApp para checar se há mensagem pré-programada de bot/cardápio
+    # 1. Inspeciona a API pública do WhatsApp via requisição HTTP direta
+    # Super rápido (0.2s), não abre abas no navegador e não gera telas de convite
     url_wa = f"https://api.whatsapp.com/send/?phone={digitos}"
     try:
-        temp_page = page.context.new_page()
-        temp_page.goto(url_wa, timeout=10000)
-        temp_page.wait_for_timeout(1500)
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        req = urllib.request.Request(url_wa, headers=headers)
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            conteudo = resp.read().decode("utf-8", errors="ignore").lower()
 
-        # Checa conteúdo da página de redirecionamento do WhatsApp
-        conteudo = temp_page.content().lower()
-
-        # Palavras-chave típicas de bot de cardápio e atendimento automático
-        termos_bot = [
-            "cardapio", "cardápio", "fazer pedido", "ver cardápio",
-            "menu digital", "catálogo", "catalogo", "pedir online",
-            "pedidodigital", "anota.ai", "goomer"
-        ]
-        for termo in termos_bot:
-            if termo in conteudo:
-                temp_page.close()
-                return True, f"Bot de WhatsApp / Mensagem de Cardápio detectada no WhatsApp: '{termo}'"
-
-        temp_page.close()
+            termos_bot = [
+                "cardapio", "cardápio", "fazer pedido", "ver cardápio",
+                "menu digital", "catálogo", "catalogo", "pedir online",
+                "pedidodigital", "anota.ai", "goomer"
+            ]
+            for termo in termos_bot:
+                if termo in conteudo:
+                    return True, f"Bot de WhatsApp / Mensagem de Cardápio detectada no WhatsApp: '{termo}'"
     except Exception:
         pass
 
@@ -208,6 +275,7 @@ def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page
         pass
 
     return False, "WhatsApp verificado: sem bot de cardápio ou site no perfil"
+
 
 def investigar_web_externa(nome: str, cidade: str) -> tuple[bool, str]:
     """

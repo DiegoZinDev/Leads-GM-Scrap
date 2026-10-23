@@ -2,6 +2,11 @@
 Configurações, Nichos, Regiões e Modelos de Abordagem para o Scraper de Leads
 """
 
+import os
+
+# Diretório para perfil persistente do navegador (armazena cookies, login do Instagram e sessão do WhatsApp Web)
+PASTA_PERFIL_NAVEGADOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "perfil_navegador")
+
 # Regiões e Cidades alvo (expandidas para garantir volume mínimo de 50 leads)
 REGIOES = [
     "Brasília DF",
