@@ -275,6 +275,24 @@
       "cidade": "Ceilândia DF",
       "data_coleta": "2026-10-19 19:17:53",
       "id_planilha": "22AEEB"
+    },
+    "61998879340": {
+      "nome": "Clínica Targino | Dentista Vicente Pires | Clínica Odontológica | Endodontia | Odontopediatria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
+    },
+    "6135361807": {
+      "nome": "Odonto Harmony Clínica Odontologica",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
+    },
+    "6135486087": {
+      "nome": "Odontogênese",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
     }
   },
   "nomes_cidade": {
@@ -553,6 +571,24 @@
       "cidade": "Ceilândia DF",
       "data_coleta": "2026-10-19 19:17:53",
       "id_planilha": "22AEEB"
+    },
+    "clínica targino dentista vicente pires clínica odontológica endodontia odontopediatria_brasília df": {
+      "nome": "Clínica Targino | Dentista Vicente Pires | Clínica Odontológica | Endodontia | Odontopediatria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
+    },
+    "odonto harmony clínica odontologica_brasília df": {
+      "nome": "Odonto Harmony Clínica Odontologica",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
+    },
+    "odontogênese_brasília df": {
+      "nome": "Odontogênese",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
     }
   },
   "urls_maps": {
@@ -573,8 +609,26 @@
       "cidade": "Ceilândia DF",
       "data_coleta": "2026-10-19 19:17:53",
       "id_planilha": "22AEEB"
+    },
+    "https://www.google.com/maps/place/Cl%C3%ADnica+Targino+%7C+Dentista+Vicente+Pires+%7C+Cl%C3%ADnica+Odontol%C3%B3gica+%7C+Endodontia+%7C+Odontopediatria/@-15.7977465,-48.1190918,13z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a337af4617565:0x1a84c64d0753bd7a!8m2!3d-15.7977465!4d-48.046994!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREaSAQdkZW50aXN04AEA!16s%2Fg%2F11krb2y0rb": {
+      "nome": "Clínica Targino | Dentista Vicente Pires | Clínica Odontológica | Endodontia | Odontopediatria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
+    },
+    "https://www.google.com/maps/place/Odonto+Harmony+Cl%C3%ADnica+Odontologica/@-15.7977465,-48.1190918,13z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a336b1083aaa9:0xc76ecac0bfff876a!8m2!3d-15.7946605!4d-48.0446944!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREaSAQ1kZW50YWxfY2xpbmlj4AEA!16s%2Fg%2F11kjlx5sgt": {
+      "nome": "Odonto Harmony Clínica Odontologica",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
+    },
+    "https://www.google.com/maps/place/Odontog%C3%AAnese/@-15.7977465,-48.1190918,13z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a33ce930f4cb7:0xe86878cc82b5ed39!8m2!3d-15.8025185!4d-48.0519065!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREaSAQ1kZW50YWxfY2xpbmlj4AEA!16s%2Fg%2F11gr06gmkd": {
+      "nome": "Odontogênese",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 11:55:25",
+      "id_planilha": "312B03"
     }
   },
-  "total_coletados": 46,
-  "ultima_atualizacao": "2026-10-19 19:17:53"
+  "total_coletados": 49,
+  "ultima_atualizacao": "2026-10-20 11:55:25"
 }
