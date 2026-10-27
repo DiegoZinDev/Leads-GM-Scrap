@@ -69,7 +69,7 @@ def calcular_score_potencial(lead: dict) -> int:
         score += 15
 
     nicho = lead.get("nicho", "").lower()
-    if any(k in nicho for k in ["plastica", "odonto", "restaurante", "advocacia"]):
+    if any(k in nicho for k in ["plastica", "odonto", "restaurante", "advocacia", "hair", "beleza", "nail"]):
         score += 15
     else:
         score += 10

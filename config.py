@@ -120,6 +120,51 @@ NICHOS = {
             "Depender apenas de redes sociais ou aplicativos terceiros faz você perder margem e clientes executivos que reservam pelo Google. "
             "Desenvolvemos páginas exclusivas para restaurantes de alta gastronomia com cardápio otimizado para celular. Posso te enviar uma prévia sem compromisso?"
         )
+    },
+    "Nail Designer": {
+        "termos": [
+            "nail designer",
+            "alongamento de unhas em gel",
+            "estudio de unhas manicure",
+            "designer de unhas e spa dos pes"
+        ],
+        "ticket": "medio",
+        "copy_base": (
+            "Olá, equipe da {nome}! Tudo bem? Vi o trabalho impecável e as ótimas avaliações de vocês no Google Maps! "
+            "Notei que vocês ainda não possuem um site ou catálogo oficial conectado para apresentar a tabela de serviços, fotos dos alongamentos e agendamento online. "
+            "Hoje, muitas clientes que pesquisam no Google preferem consultar o portfólio completo com valores antes de chamar no WhatsApp. "
+            "Desenvolvemos páginas rápidas e sofisticadas para Nail Designers com catálogo interativo e agendamento direto. Teria 5 minutos para eu mostrar como isso pode lotar sua agenda?"
+        )
+    },
+    "Salões de Beleza": {
+        "termos": [
+            "salao de beleza",
+            "centro de beleza e estetica",
+            "salao de beleza feminino",
+            "espaco de beleza e cuidados"
+        ],
+        "ticket": "medio-alto",
+        "copy_base": (
+            "Olá! Tudo bem? Encontrei o {nome} no Google Maps com excelentes avaliações dos clientes. "
+            "Percebi que vocês ainda não têm um site institucional com catálogo de serviços (cabelo, mechas, tratamentos) e agendamento online. "
+            "Clientes que buscam cuidados de alto padrão no Google procuram a segurança e autoridade de um site próprio com botão direto para a recepção. "
+            "Desenvolvemos layouts modernos e de alta conversão para salões de beleza. Poderíamos conversar 5 minutinhos para eu te mostrar uma prévia?"
+        )
+    },
+    "Hair Designer": {
+        "termos": [
+            "hair designer",
+            "cabeleireiro visagista",
+            "especialista em mechas e corte",
+            "hair stylist estudio"
+        ],
+        "ticket": "alto",
+        "copy_base": (
+            "Olá! Tudo bem? Vi as transformações e as avaliações incríveis do trabalho da {nome} no Google Maps! "
+            "Notei que você ainda não conta com um site exclusivo destacando o portfólio de cortes, mechas, visagismo e agendamento direto. "
+            "Para profissionais de alto nível, uma presença digital com página própria eleva muito a percepção de luxo e atrai clientes que valorizam o seu trabalho sem questionar preço. "
+            "Gostaria de agendar uma breve demonstração de um layout sob medida para o seu estúdio?"
+        )
     }
 }
 
