@@ -276,23 +276,317 @@
       "data_coleta": "2026-10-19 19:17:53",
       "id_planilha": "22AEEB"
     },
-    "61998879340": {
-      "nome": "Clínica Targino | Dentista Vicente Pires | Clínica Odontológica | Endodontia | Odontopediatria",
+    "61991250101": {
+      "nome": "All Vida Odontologia 24h - Brasília DF - Dentista",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 18:28:33",
+      "id_planilha": "2AF2ED"
     },
-    "6135361807": {
-      "nome": "Odonto Harmony Clínica Odontologica",
+    "61981659608": {
+      "nome": "Instituto Odontológico e Estético Facial Brasília",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 18:28:33",
+      "id_planilha": "2AF2ED"
     },
-    "6135486087": {
-      "nome": "Odontogênese",
+    "61985280064": {
+      "nome": "JM & Nascimento Advocacia - Dra. Aylla Nascimento e Dra. Jenifer Marina - Escritório de Advocacia Especializado",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61995991322": {
+      "nome": "SA Advocacia | Advogada Família e Sucessões Brasília DF | Dra. Lidiane Sousa Araújo",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "8002121700": {
+      "nome": "Galvão & Silva Advocacia",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981085433": {
+      "nome": "Elyud Freitas Advocacia - Advogado Civil em Brasília",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61999450447": {
+      "nome": "Advogadas Renata França & Viviane Penha Brasília/DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61983638909": {
+      "nome": "Escritório de Advocacia Akaoni e Cardoso",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61984841000": {
+      "nome": "Advogados Rezende & Corrêa",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61995654592": {
+      "nome": "RD Advogados - Advogado do Passageiro Aéreo e do Consumidor",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61994221369": {
+      "nome": "SDA Advogados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61994267511": {
+      "nome": "Nascimento & Peixoto Advogados Associados (Advogado Cível, Criminal, Família, Trabalhista e Previdenciário)",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981261073": {
+      "nome": "Advogado Trabalhista - Brandão Vidal Advogados - Brasília - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61985612039": {
+      "nome": "Pinheiro De Sousa | Advocacia Trabalhista Especializada",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981744778": {
+      "nome": "Advocacia Bertoldo Melo",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981490953": {
+      "nome": "Campos Pinho Advogados Associados | Advogados Especialistas em todas as Áreas do Direito",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61984210447": {
+      "nome": "Sullivan Advocacia e Consultoria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6136293233": {
+      "nome": "Souza Advogados | Advocacia em Valparaíso de Goiás | Advocacia em Brasília",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61983036733": {
+      "nome": "Jéssica Alaís | Advogada Trabalhista",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61995231195": {
+      "nome": "Mariani Advogados | Advogado em Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61992390453": {
+      "nome": "Jesus e Godinho advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61982150747": {
+      "nome": "Dr. João Batista Gregório - Advogado da família | Inventário | Pensão alimentícia | Divórcio",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61984694583": {
+      "nome": "Alves e Rodrigues | Sociedade de Advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61984532071": {
+      "nome": "Lyndon Johnson Figueiredo Advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61982293889": {
+      "nome": "Max André Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61996193379": {
+      "nome": "Ferreira De Moraes - Advogados Associados",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61982122343": {
+      "nome": "Silva Santos - Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61991220561": {
+      "nome": "⚖️Campanate & Matos Advocacia | Advogado Criminal Brasília DF",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6135258232": {
+      "nome": "Fernando Naves Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6135750176": {
+      "nome": "Fernando Rezende - Advogados Associados",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6130463100": {
+      "nome": "Advogado Condominial e Imobiliário | Escritório Viana Pedroso Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981702257": {
+      "nome": "JR ADVOGADOS ASSOCIADOS I ⚖️Direito Civil I ⚖️Direito Criminal I 🚨Plantão 24 horas",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6132568361": {
+      "nome": "Edmilson Ferreira | Advogados Associados | Unidade Taguatinga - DF",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6132573090": {
+      "nome": "Ribeiro & Silva Advogados — Taguatinga, Brasília/DF",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6130263505": {
+      "nome": "De Paula & Silva Advogados Associados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61998415867": {
+      "nome": "Fonseca e Fernandes Advogados -",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6135478144": {
+      "nome": "Martins Moura Advogados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61982473478": {
+      "nome": "Lucas Cardoso | Advogado Previdenciário Taguatinga",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "6133736977": {
+      "nome": "Escritório de Advocacia - Rabelo, Miranda & Silva Advogados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61998250515": {
+      "nome": "Warlei Lúcio Advogados & Associados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61992664446": {
+      "nome": "Advogado Trabalhista e Previdenciário - Nascimento & Peixoto Advogados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61993457683": {
+      "nome": "ADVOCACIA DAVID RIBEIRO",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61992525414": {
+      "nome": "Ribeiro Pinto | Advogado Brasília | Previdenciário | Trabalhista",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61992457575": {
+      "nome": "Marques & Melo Advogados em Brasília - Trabalhista Empresarial",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61992444022": {
+      "nome": "Advocacia Ilka Thaís - Escritório de Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61994283463": {
+      "nome": "Edgar Pereira Advogado",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981075367": {
+      "nome": "Késia Costa Advogada",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61999121374": {
+      "nome": "Medeiros Advocacia & Assessoria Jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61981919594": {
+      "nome": "Kamilla Chaves Advocacia Estratégica",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61991545775": {
+      "nome": "\"ADVOCACIA RUIZ PONTE\" Trabalhista; Previdenciario; Familia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61982210515": {
+      "nome": "MN – ADVOGADOS ASSOCIADOS",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "61999063372": {
+      "nome": "Veiga Múrus Advocacia - Dra Josy Veiga",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
     }
   },
   "nomes_cidade": {
@@ -572,23 +866,317 @@
       "data_coleta": "2026-10-19 19:17:53",
       "id_planilha": "22AEEB"
     },
-    "clínica targino dentista vicente pires clínica odontológica endodontia odontopediatria_brasília df": {
-      "nome": "Clínica Targino | Dentista Vicente Pires | Clínica Odontológica | Endodontia | Odontopediatria",
+    "all vida odontologia 24h brasília df dentista_brasília df": {
+      "nome": "All Vida Odontologia 24h - Brasília DF - Dentista",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 18:28:33",
+      "id_planilha": "2AF2ED"
     },
-    "odonto harmony clínica odontologica_brasília df": {
-      "nome": "Odonto Harmony Clínica Odontologica",
+    "instituto odontológico e estético facial brasília_brasília df": {
+      "nome": "Instituto Odontológico e Estético Facial Brasília",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 18:28:33",
+      "id_planilha": "2AF2ED"
     },
-    "odontogênese_brasília df": {
-      "nome": "Odontogênese",
+    "jm nascimento advocacia dra aylla nascimento e dra jenifer marina escritório de advocacia especializado_brasília df": {
+      "nome": "JM & Nascimento Advocacia - Dra. Aylla Nascimento e Dra. Jenifer Marina - Escritório de Advocacia Especializado",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "sa advocacia advogada família e sucessões brasília df dra lidiane sousa araújo_brasília df": {
+      "nome": "SA Advocacia | Advogada Família e Sucessões Brasília DF | Dra. Lidiane Sousa Araújo",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "galvão silva advocacia_brasília df": {
+      "nome": "Galvão & Silva Advocacia",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "elyud freitas advocacia advogado civil em brasília_brasília df": {
+      "nome": "Elyud Freitas Advocacia - Advogado Civil em Brasília",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advogadas renata frança viviane penha brasíliadf_brasília df": {
+      "nome": "Advogadas Renata França & Viviane Penha Brasília/DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "escritório de advocacia akaoni e cardoso_brasília df": {
+      "nome": "Escritório de Advocacia Akaoni e Cardoso",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advogados rezende corrêa_brasília df": {
+      "nome": "Advogados Rezende & Corrêa",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "rd advogados advogado do passageiro aéreo e do consumidor_brasília df": {
+      "nome": "RD Advogados - Advogado do Passageiro Aéreo e do Consumidor",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "sda advogados_brasília df": {
+      "nome": "SDA Advogados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "nascimento peixoto advogados associados advogado cível criminal família trabalhista e previdenciário_brasília df": {
+      "nome": "Nascimento & Peixoto Advogados Associados (Advogado Cível, Criminal, Família, Trabalhista e Previdenciário)",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advogado trabalhista brandão vidal advogados brasília df_brasília df": {
+      "nome": "Advogado Trabalhista - Brandão Vidal Advogados - Brasília - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "pinheiro de sousa advocacia trabalhista especializada_brasília df": {
+      "nome": "Pinheiro De Sousa | Advocacia Trabalhista Especializada",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advocacia bertoldo melo_brasília df": {
+      "nome": "Advocacia Bertoldo Melo",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "campos pinho advogados associados advogados especialistas em todas as áreas do direito_brasília df": {
+      "nome": "Campos Pinho Advogados Associados | Advogados Especialistas em todas as Áreas do Direito",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "sullivan advocacia e consultoria_brasília df": {
+      "nome": "Sullivan Advocacia e Consultoria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "souza advogados advocacia em valparaíso de goiás advocacia em brasília_valparaíso de goiás": {
+      "nome": "Souza Advogados | Advocacia em Valparaíso de Goiás | Advocacia em Brasília",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "jéssica alaís advogada trabalhista_valparaíso de goiás": {
+      "nome": "Jéssica Alaís | Advogada Trabalhista",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "mariani advogados advogado em valparaíso de goiás_valparaíso de goiás": {
+      "nome": "Mariani Advogados | Advogado em Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "jesus e godinho advogados_valparaíso de goiás": {
+      "nome": "Jesus e Godinho advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "dr joão batista gregório advogado da família inventário pensão alimentícia divórcio_valparaíso de goiás": {
+      "nome": "Dr. João Batista Gregório - Advogado da família | Inventário | Pensão alimentícia | Divórcio",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "alves e rodrigues sociedade de advogados_valparaíso de goiás": {
+      "nome": "Alves e Rodrigues | Sociedade de Advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "lyndon johnson figueiredo advogados_valparaíso de goiás": {
+      "nome": "Lyndon Johnson Figueiredo Advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "max andré advocacia_águas claras df": {
+      "nome": "Max André Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "ferreira de moraes advogados associados_águas claras df": {
+      "nome": "Ferreira De Moraes - Advogados Associados",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "silva santos advocacia_águas claras df": {
+      "nome": "Silva Santos - Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "campanate matos advocacia advogado criminal brasília df_águas claras df": {
+      "nome": "⚖️Campanate & Matos Advocacia | Advogado Criminal Brasília DF",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "fernando naves advocacia_águas claras df": {
+      "nome": "Fernando Naves Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "fernando rezende advogados associados_águas claras df": {
+      "nome": "Fernando Rezende - Advogados Associados",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advogado condominial e imobiliário escritório viana pedroso advocacia_águas claras df": {
+      "nome": "Advogado Condominial e Imobiliário | Escritório Viana Pedroso Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "jr advogados associados i direito civil i direito criminal i plantão 24 horas_taguatinga df": {
+      "nome": "JR ADVOGADOS ASSOCIADOS I ⚖️Direito Civil I ⚖️Direito Criminal I 🚨Plantão 24 horas",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "edmilson ferreira advogados associados unidade taguatinga df_taguatinga df": {
+      "nome": "Edmilson Ferreira | Advogados Associados | Unidade Taguatinga - DF",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "ribeiro silva advogados taguatinga brasíliadf_taguatinga df": {
+      "nome": "Ribeiro & Silva Advogados — Taguatinga, Brasília/DF",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "de paula silva advogados associados_taguatinga df": {
+      "nome": "De Paula & Silva Advogados Associados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "fonseca e fernandes advogados _taguatinga df": {
+      "nome": "Fonseca e Fernandes Advogados -",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "martins moura advogados_taguatinga df": {
+      "nome": "Martins Moura Advogados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "lucas cardoso advogado previdenciário taguatinga_taguatinga df": {
+      "nome": "Lucas Cardoso | Advogado Previdenciário Taguatinga",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "escritório de advocacia rabelo miranda silva advogados_taguatinga df": {
+      "nome": "Escritório de Advocacia - Rabelo, Miranda & Silva Advogados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "warlei lúcio advogados associados_brasília df": {
+      "nome": "Warlei Lúcio Advogados & Associados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advogado trabalhista e previdenciário nascimento peixoto advogados_brasília df": {
+      "nome": "Advogado Trabalhista e Previdenciário - Nascimento & Peixoto Advogados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advocacia david ribeiro_brasília df": {
+      "nome": "ADVOCACIA DAVID RIBEIRO",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "ribeiro pinto advogado brasília previdenciário trabalhista_brasília df": {
+      "nome": "Ribeiro Pinto | Advogado Brasília | Previdenciário | Trabalhista",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "marques melo advogados em brasília trabalhista empresarial_brasília df": {
+      "nome": "Marques & Melo Advogados em Brasília - Trabalhista Empresarial",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advocacia ilka thaís escritório de advocacia_valparaíso de goiás": {
+      "nome": "Advocacia Ilka Thaís - Escritório de Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "edgar pereira advogado_valparaíso de goiás": {
+      "nome": "Edgar Pereira Advogado",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "késia costa advogada_valparaíso de goiás": {
+      "nome": "Késia Costa Advogada",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "medeiros advocacia assessoria jurídica_valparaíso de goiás": {
+      "nome": "Medeiros Advocacia & Assessoria Jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "kamilla chaves advocacia estratégica_águas claras df": {
+      "nome": "Kamilla Chaves Advocacia Estratégica",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "advocacia ruiz ponte trabalhista previdenciario familia_águas claras df": {
+      "nome": "\"ADVOCACIA RUIZ PONTE\" Trabalhista; Previdenciario; Familia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "mn advogados associados_águas claras df": {
+      "nome": "MN – ADVOGADOS ASSOCIADOS",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "veiga múrus advocacia dra josy veiga_taguatinga df": {
+      "nome": "Veiga Múrus Advocacia - Dra Josy Veiga",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
     }
   },
   "urls_maps": {
@@ -610,25 +1198,319 @@
       "data_coleta": "2026-10-19 19:17:53",
       "id_planilha": "22AEEB"
     },
-    "https://www.google.com/maps/place/Cl%C3%ADnica+Targino+%7C+Dentista+Vicente+Pires+%7C+Cl%C3%ADnica+Odontol%C3%B3gica+%7C+Endodontia+%7C+Odontopediatria/@-15.7977465,-48.1190918,13z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a337af4617565:0x1a84c64d0753bd7a!8m2!3d-15.7977465!4d-48.046994!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREaSAQdkZW50aXN04AEA!16s%2Fg%2F11krb2y0rb": {
-      "nome": "Clínica Targino | Dentista Vicente Pires | Clínica Odontológica | Endodontia | Odontopediatria",
+    "https://www.google.com/maps/place/All+Vida+Odontologia+24h+-+Bras%C3%ADlia+DF+-+Dentista/@-15.7960662,-48.1813212,11z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a2fd48fc6dc1d:0x6c602f3726699dfb!8m2!3d-15.7960662!4d-47.8929301!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREZaJiIkY2xpbmljYSBvZG9udG9sb2dpY2EgZW0gYnJhc8OtbGlhIGRmkgEHZGVudGlzdJoBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQycEdWRmxWWTNoYVIyOHlUVmh3UTAxclVucE9NbVJPV2pKNFdtVnVZeEFC4AEA-gEFCNQBECE!16s%2Fg%2F11lcr58p9c": {
+      "nome": "All Vida Odontologia 24h - Brasília DF - Dentista",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 18:28:33",
+      "id_planilha": "2AF2ED"
     },
-    "https://www.google.com/maps/place/Odonto+Harmony+Cl%C3%ADnica+Odontologica/@-15.7977465,-48.1190918,13z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a336b1083aaa9:0xc76ecac0bfff876a!8m2!3d-15.7946605!4d-48.0446944!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREaSAQ1kZW50YWxfY2xpbmlj4AEA!16s%2Fg%2F11kjlx5sgt": {
-      "nome": "Odonto Harmony Clínica Odontologica",
+    "https://www.google.com/maps/place/Instituto+Odontol%C3%B3gico+e+Est%C3%A9tico+Facial+Bras%C3%ADlia/@-16.0135392,-48.3412399,11z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b963cbfa61b:0x1a076bbf2cdbef1!8m2!3d-15.7978489!4d-47.8931405!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREZaJiIkY2xpbmljYSBvZG9udG9sb2dpY2EgZW0gYnJhc8OtbGlhIGRmkgENZGVudGFsX2NsaW5pY5oBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQyNUtlVk5JWTNSTVYydzJXREJPVEUxc1RqSlJhMnN6V1hwQ1MyVkdSUkFC4AEA-gEECCIQRg!16s%2Fg%2F11fvsvtrtx": {
+      "nome": "Instituto Odontológico e Estético Facial Brasília",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 18:28:33",
+      "id_planilha": "2AF2ED"
     },
-    "https://www.google.com/maps/place/Odontog%C3%AAnese/@-15.7977465,-48.1190918,13z/data=!4m10!1m2!2m1!1sclinica+odontologica+em+Bras%C3%ADlia+DF!3m6!1s0x935a33ce930f4cb7:0xe86878cc82b5ed39!8m2!3d-15.8025185!4d-48.0519065!15sCiRjbGluaWNhIG9kb250b2xvZ2ljYSBlbSBCcmFzw61saWEgREaSAQ1kZW50YWxfY2xpbmlj4AEA!16s%2Fg%2F11gr06gmkd": {
-      "nome": "Odontogênese",
+    "https://www.google.com/maps/place/JM+%26+Nascimento+Advocacia+-+Dra.+Aylla+Nascimento+e+Dra.+Jenifer+Marina+-+Escrit%C3%B3rio+de+Advocacia+Especializado/@-15.8855363,-47.9475404,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a2d593164c599:0x5d9c4739850e1871!8m2!3d-16.0093314!4d-48.0622952!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgEObGVnYWxfc2VydmljZXOaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVTndha3czZUVwUkVBReABAPoBBAgAEEE!16s%2Fg%2F11n5hw_vj0": {
+      "nome": "JM & Nascimento Advocacia - Dra. Aylla Nascimento e Dra. Jenifer Marina - Escritório de Advocacia Especializado",
       "cidade": "Brasília DF",
-      "data_coleta": "2026-10-20 11:55:25",
-      "id_planilha": "312B03"
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/SA+Advocacia+%7C+Advogada+Fam%C3%ADlia+e+Sucess%C3%B5es+Bras%C3%ADlia+DF+%7C+Dra.+Lidiane+Sousa+Ara%C3%BAjo/@-15.7865863,-48.0396957,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b527583775d:0xcd2fb249be22d2b3!8m2!3d-15.7865863!4d-47.8872604!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgETZmFtaWx5X2xhd19hdHRvcm5leZoBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQyMDVkRmR0TlZoVWJVWlRZVE5HY21GRVNsRmxWVTR4VjFod1VGVnVZeEFC4AEA-gEFCLwBED0!16s%2Fg%2F11zctsxk0v": {
+      "nome": "SA Advocacia | Advogada Família e Sucessões Brasília DF | Dra. Lidiane Sousa Araújo",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Galv%C3%A3o+%26+Silva+Advocacia/@-15.7865863,-48.0396957,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3a4811905555:0x99e911b6ee0333d9!8m2!3d-15.7965421!4d-47.8930136!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgEIbGF3X2Zpcm2aASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUm9lbU55WVVGbkVBReABAPoBBQiaAhBG!16s%2Fg%2F11b6hl58hw": {
+      "nome": "Galvão & Silva Advocacia",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Elyud+Freitas+Advocacia+-+Advogado+Civil+em+Bras%C3%ADlia/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3bd75d659945:0xf5067ee5d659551!8m2!3d-15.824179!4d-47.9070379!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgESY2l2aWxfbGF3X2F0dG9ybmV5mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJwYU0wNHhiRkpSVkZaR1dqSktSbFJHU25CaVJscEtZVlJzVVdSSFl4QULgAQD6AQUIzwIQOg!16s%2Fg%2F11r3ny91nw": {
+      "nome": "Elyud Freitas Advocacia - Advogado Civil em Brasília",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advogadas+Renata+Fran%C3%A7a+%26+Viviane+Penha+Bras%C3%ADlia%2FDF/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3adf0ae3cf1d:0x147d12fd83c8fd5!8m2!3d-15.8009443!4d-47.8838288!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgETZmFtaWx5X2xhd19hdHRvcm5leZoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VRdGVuQnRkRGQzUlJBQuABAPoBBAgAEEU!16s%2Fg%2F11bwym5wvw": {
+      "nome": "Advogadas Renata França & Viviane Penha Brasília/DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Escrit%C3%B3rio+de+Advocacia+Akaoni+e+Cardoso/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b8ce25cd7e9:0x8443f15a3844eb9e!8m2!3d-15.797877!4d-47.8948851!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgEObGVnYWxfc2VydmljZXOaASRDaGREU1VoTk1HOW5TMFZKUTBGblNVTmFiRXBwYm5aM1JSQULgAQD6AQQIABBA!16s%2Fg%2F11mtfqxf3n": {
+      "nome": "Escritório de Advocacia Akaoni e Cardoso",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advogados+Rezende+%26+Corr%C3%AAa/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3a39d2c09789:0xa5b6cc31eef3682e!8m2!3d-15.7611235!4d-47.8926809!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREaSAQZsYXd5ZXLgAQA!16s%2Fg%2F11c6t8rrqy": {
+      "nome": "Advogados Rezende & Corrêa",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/RD+Advogados+-+Advogado+do+Passageiro+A%C3%A9reo+e+do+Consumidor/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3ba794430b1f:0xb998cb6c4e697ea5!8m2!3d-15.7886801!4d-47.8722896!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgESY2l2aWxfbGF3X2F0dG9ybmV5mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ4d1QxUnJWbkZaVlhSMVZWVkZNV1ZWTVdGVFZHaHVZV3RaZW1KdVl4QULgAQD6AQQIABA8!16s%2Fg%2F11y2svz791": {
+      "nome": "RD Advogados - Advogado do Passageiro Aéreo e do Consumidor",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/SDA+Advogados/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b15b88c7fc7:0xcca2de49ccd4918c!8m2!3d-15.7838873!4d-47.8984493!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgEObGVnYWxfc2VydmljZXOaASRDaGREU1VoTk1HOW5TMFZKUTBGblNVTktlVjlsUjNWM1JSQULgAQD6AQQIABBJ!16s%2Fg%2F11v0qxb7rq": {
+      "nome": "SDA Advogados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Nascimento+%26+Peixoto+Advogados+Associados+(Advogado+C%C3%ADvel,+Criminal,+Fam%C3%ADlia,+Trabalhista+e+Previdenci%C3%A1rio)/@-15.824179,-48.0594732,12z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b8e50f4085d:0x4f28b89181b72c3e!8m2!3d-15.7926394!4d-47.8943366!15sCidlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBCcmFzw61saWEgREZaKSInZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gYnJhc8OtbGlhIGRmkgEObGVnYWxfc2VydmljZXOaASBDaFJEU1VoTk1HOW5TMFZKUTBGblNVUm9iMW81TlJBQuABAPoBBAg1EEI!16s%2Fg%2F11jpk_k9pn": {
+      "nome": "Nascimento & Peixoto Advogados Associados (Advogado Cível, Criminal, Família, Trabalhista e Previdenciário)",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advogado+Trabalhista+-+Brand%C3%A3o+Vidal+Advogados+-+Bras%C3%ADlia+-+DF/@-16.054996,-48.3344376,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935981b706c6cd81:0x99282dc4009a7b0d!8m2!3d-15.99447!4d-48.0553522!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgEGbGF3eWVymgEjQ2haRFNVaE5NRzluUzBWSlEwRm5TVVJ5TFU1UVpFSkJFQUXgAQD6AQQIABAs!16s%2Fg%2F11w1vg2bsc": {
+      "nome": "Advogado Trabalhista - Brandão Vidal Advogados - Brasília - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Pinheiro+De+Sousa+%7C+Advocacia+Trabalhista+Especializada/@-16.054996,-48.3344376,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b7dd74f84d5:0xccda2c6ce421e282!8m2!3d-15.8004484!4d-47.8826927!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgETZW1wbG95bWVudF9hdHRvcm5leZoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VONGNFMTFiM04zUlJBQuABAPoBBAgAECw!16s%2Fg%2F11fwdbgyyw": {
+      "nome": "Pinheiro De Sousa | Advocacia Trabalhista Especializada",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advocacia+Bertoldo+Melo/@-15.7611235,-48.1975515,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b2f6af87a1d:0xf875e2520945d781!8m2!3d-15.840704!4d-48.0272868!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgETZW1wbG95bWVudF9hdHRvcm5leZoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VSbWFXTkVlRk4zRUFF4AEA-gEECAAQRw!16s%2Fg%2F11hzwcgw5j": {
+      "nome": "Advocacia Bertoldo Melo",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Campos+Pinho+Advogados+Associados+%7C+Advogados+Especialistas+em+todas+as+%C3%81reas+do+Direito/@-15.7611235,-48.1975515,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935a3334c07d528b:0x2cba84ddf5918d24!8m2!3d-15.8178806!4d-48.0626698!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgEIbGF3X2Zpcm2aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjVvU21OclJUVmlNSEJRVlRCT1YwNUhTbVppVm1oNlZHdEdiVnBzUlJBQuABAPoBBQiUARA_!16s%2Fg%2F11pfvdktyp": {
+      "nome": "Campos Pinho Advogados Associados | Advogados Especialistas em todas as Áreas do Direito",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Sullivan+Advocacia+e+Consultoria/@-15.7611235,-48.1975515,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935bcceb7136f3a1:0xb11fa5c8021157e1!8m2!3d-15.7969661!4d-47.8828605!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgEYbGFib3JfcmVsYXRpb25zX2F0dG9ybmV5mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJwb1dWVkZPVkpXTURWUFVUQk5kMVZIVmpSWFZrNVRUVVZrVGsxVlJSQULgAQD6AQQIfRBA!16s%2Fg%2F11c0w0z1vl": {
+      "nome": "Sullivan Advocacia e Consultoria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Souza+Advogados+%7C+Advocacia+em+Valpara%C3%ADso+de+Goi%C3%A1s+%7C+Advocacia+em+Bras%C3%ADlia/@-16.045198,-48.0142149,13z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x93598506764b1319:0x8ddb4ba5a51d57de!8m2!3d-16.0718947!4d-47.982817!15sCjBlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaMiIwZXNjcml0b3JpbyBkZSBhZHZvY2FjaWEgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEGbGF3eWVymgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDI1ak5XUkhWa2RTVnpneFlXNWpNRk13ZERaYVIzUklZMFJDYTFSVlJSQULgAQD6AQQIABBA!16s%2Fg%2F11yl9txk4c": {
+      "nome": "Souza Advogados | Advocacia em Valparaíso de Goiás | Advocacia em Brasília",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/J%C3%A9ssica+Ala%C3%ADs+%7C+Advogada+Trabalhista/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935987642ae4d399:0xed809bc5a3f5aee2!8m2!3d-16.0749044!4d-47.9859802!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEYbGFib3JfcmVsYXRpb25zX2F0dG9ybmV5mgEjQ2haRFNVaE5NRzluUzBWSlEwRm5TVU42YkdOWGNFTkJFQUXgAQD6AQQIABAy!16s%2Fg%2F11ll2x5lt7": {
+      "nome": "Jéssica Alaís | Advogada Trabalhista",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Mariani+Advogados+%7C+Advogado+em+Valpara%C3%ADso+de+Goi%C3%A1s/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x93598414bb2eafe1:0xea0b076bad23b386!8m2!3d-16.0721481!4d-47.9828596!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEGbGF3eWVymgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJwbk0xSnBNREZqUmtadFlWVk9OVll4YXpWU1ZGcFBWbXN4TUdWSFl4QULgAQD6AQQIDBA-!16s%2Fg%2F11bymyttwv": {
+      "nome": "Mariani Advogados | Advogado em Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Jesus+e+Godinho+advogados/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935986bd1719a407:0xd603c5a8dfaeb032!8m2!3d-16.0716643!4d-47.9773551!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEIbGF3X2Zpcm2aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjFKZEZGVmNFeE1WbFYzVmpJNVNWWklaRzFVYm1oTFZYcG9SMWxZWXhBQuABAPoBBAgAEEc!16s%2Fg%2F11gg_96hdp": {
+      "nome": "Jesus e Godinho advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Dr.+Jo%C3%A3o+Batista+Greg%C3%B3rio+-+Advogado+da+fam%C3%ADlia+%7C+Invent%C3%A1rio+%7C+Pens%C3%A3o+aliment%C3%ADcia+%7C+Div%C3%B3rcio/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935985f955591f37:0xf35c980aabee5129!8m2!3d-16.0719283!4d-47.9819405!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgETZmFtaWx5X2xhd19hdHRvcm5leZoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VSSWN6UmlTa1puRUFF4AEA-gEECAAQOQ!16s%2Fg%2F11fjbl1ywm": {
+      "nome": "Dr. João Batista Gregório - Advogado da família | Inventário | Pensão alimentícia | Divórcio",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Alves+e+Rodrigues+%7C+Sociedade+de+Advogados/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935981a834ceadb3:0x730718d101a67fc6!8m2!3d-16.0822648!4d-47.983339!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEGbGF3eWVymgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVU0zYmkxWFFXeFJSUkFC4AEA-gEECAAQSA!16s%2Fg%2F11y5zc3sgm": {
+      "nome": "Alves e Rodrigues | Sociedade de Advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Lyndon+Johnson+Figueiredo+Advogados/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935985ece295b68d:0xd4bebe9031b09699!8m2!3d-16.0718587!4d-47.9744293!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEObGVnYWxfc2VydmljZXOaASRDaGREU1VoTk1HOW5TMFZKUTBGblNVTmFhV1JJTFhkblJSQULgAQD6AQQIABA4!16s%2Fg%2F11qn83wwvm": {
+      "nome": "Lyndon Johnson Figueiredo Advogados",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Max+Andr%C3%A9+Advocacia/@-15.8379466,-48.0277705,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a335cd5f59b2b:0x1a32f587ca4f563d!8m2!3d-15.8405589!4d-48.0272761!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQ5sZWdhbF9zZXJ2aWNlc5oBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQyeENWbUZWZUV0VE1UbHFZa2RqTkZSRlZrZFhiRTU0VEZoa1dGTXdSUkFC4AEA-gEECDwQQQ!16s%2Fg%2F11fv891_ys": {
+      "nome": "Max André Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Ferreira+De+Moraes+-+Advogados+Associados/@-15.8404016,-48.0639413,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a338e71ea41b9:0x57db9239495af548!8m2!3d-15.8404016!4d-48.0448869!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQ5sZWdhbF9zZXJ2aWNlc5oBJENoZERTVWhOTUc5blMwVkpRMEZuVFVSdk5uWm1OekIzUlJBQuABAPoBBAgAEEg!16s%2Fg%2F11s1v6ptf8": {
+      "nome": "Ferreira De Moraes - Advogados Associados",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Silva+Santos+-+Advocacia/@-15.8404409,-48.0400787,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a321586fba381:0x8c8de99adb09c05f!8m2!3d-15.8308045!4d-48.0179132!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQZsYXd5ZXKaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjVrY0ZKdGNFNVBWR3hMWWtSTk1FNHlkREJOTUdSeFRWTXhWVTVzUlJBQuABAPoBBAhbED4!16s%2Fg%2F11c45ngsb0": {
+      "nome": "Silva Santos - Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/%E2%9A%96%EF%B8%8FCampanate+%26+Matos+Advocacia+%7C+Advogado+Criminal+Bras%C3%ADlia+DF/@-15.8404409,-48.0400787,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a330c5b95cd4d:0xd4f8c029d4510540!8m2!3d-15.8316377!4d-48.0413495!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSARVjcmltaW5hbF9sYXdfYXR0b3JuZXmaASRDaGREU1VoTk1HOW5TMFZKUTBGblNVTm9NblJYYmpGM1JSQULgAQD6AQQIHxBD!16s%2Fg%2F11sfdw197m": {
+      "nome": "⚖️Campanate & Matos Advocacia | Advogado Criminal Brasília DF",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Fernando+Naves+Advocacia/@-15.8404409,-48.0400787,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a33ecd4f1c4eb:0x8f2e0053646b292!8m2!3d-15.8396911!4d-48.0444528!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQ5sZWdhbF9zZXJ2aWNlc-ABAA!16s%2Fg%2F11gy3hg39w": {
+      "nome": "Fernando Naves Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Fernando+Rezende+-+Advogados+Associados/@-15.8396911,-48.0635072,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a33c35e5866f5:0x502487d941be32ba!8m2!3d-15.8455143!4d-48.043582!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQZsYXd5ZXKaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnhKZVZFemJERlNWekIwV1ZWcmVrOUVRVEJQVkdoclVWUkNNR05YWXhBQuABAPoBBAgAEDw!16s%2Fg%2F11k66zxgj3": {
+      "nome": "Fernando Rezende - Advogados Associados",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advogado+Condominial+e+Imobili%C3%A1rio+%7C+Escrit%C3%B3rio+Viana+Pedroso+Advocacia/@-15.835611,-48.035806,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a3383e9b85377:0xdd853b2a17116300!8m2!3d-15.8375613!4d-48.0108599!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQ5sZWdhbF9zZXJ2aWNlc5oBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQya3hjbEV5YkRWWFJUQjVXREZvTW1Oc1ZrZFRNVlpTVFZoS2RtSldSUkFC4AEA-gEECAAQMw!16s%2Fg%2F11fkypsqvq": {
+      "nome": "Advogado Condominial e Imobiliário | Escritório Viana Pedroso Advocacia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/JR+ADVOGADOS+ASSOCIADOS+I+%E2%9A%96%EF%B8%8FDireito+Civil+I+%E2%9A%96%EF%B8%8FDireito+Criminal+I+%F0%9F%9A%A8Plant%C3%A3o+24+horas/@-15.8254766,-48.0549264,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a33b09fa1550f:0xde959047847dbbaa!8m2!3d-15.8100344!4d-48.0650138!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSAQZsYXd5ZXKaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjV3UkUxSGRESmhTR1JMVmxad05tTlZXbmhTTW1kNVdsUkNiazV0WXhBQuABAPoBBAgJEEk!16s%2Fg%2F11t16f88w8": {
+      "nome": "JR ADVOGADOS ASSOCIADOS I ⚖️Direito Civil I ⚖️Direito Criminal I 🚨Plantão 24 horas",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Edmilson+Ferreira+%7C+Advogados+Associados+%7C+Unidade+Taguatinga+-+DF/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a32892303d54d:0xcdea33b5031f1a7f!8m2!3d-15.8178957!4d-48.0626617!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSAQhsYXdfZmlybZoBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQydHNURkpIZUhSV1IyaE1WRVJhYTJSdVJuVlZiR1JvWTBkV1MyUklZeEFC4AEA-gEECAAQRg!16s%2Fg%2F11hd6znxgr": {
+      "nome": "Edmilson Ferreira | Advogados Associados | Unidade Taguatinga - DF",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Ribeiro+%26+Silva+Advogados+%E2%80%94+Taguatinga,+Bras%C3%ADlia%2FDF/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a338d0dc5d2a3:0x3b7ed96a4cf10137!8m2!3d-15.8045502!4d-48.068906!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSAQ5sZWdhbF9zZXJ2aWNlc5oBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQydGFkV1J0UmxGaFYxcEpUVWhPV1Znd2N6RlRiRTVXWVRBNVRtTkhZeEFC4AEA-gEECAAQNw!16s%2Fg%2F11qqg9q2_b": {
+      "nome": "Ribeiro & Silva Advogados — Taguatinga, Brasília/DF",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/De+Paula+%26+Silva+Advogados+Associados/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a32ddbe56c303:0xe32d054aafb0f46a!8m2!3d-15.8352705!4d-48.0579807!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSARhzb2NpYWxfc2VjdXJpdHlfYXR0b3JuZXmaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnhPTmxWWWFGaE9SMUpJWVRCc2VWWnJTbXhoYkVaSFltMUtOVmR0WXhBQuABAPoBBAgAEEA!16s%2Fg%2F11fy4gxn8d": {
+      "nome": "De Paula & Silva Advogados Associados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Fonseca+e+Fernandes+Advogados+-/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a3300ac00ed45:0x36323200fdce8132!8m2!3d-15.8310121!4d-48.0591066!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSARhzb2NpYWxfc2VjdXJpdHlfYXR0b3JuZXmaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUjBNbVZYY2xsM0VBReABAPoBBAhoEEQ!16s%2Fg%2F11gl17rb03": {
+      "nome": "Fonseca e Fernandes Advogados -",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Martins+Moura+Advogados/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a33221329a647:0x388f47b79584a1ca!8m2!3d-15.8161497!4d-48.0610774!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSAQhsYXdfZmlybZoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VSU2VuQTNZMDEzRUFF4AEA-gEECAAQQg!16s%2Fg%2F11dy_q94nc": {
+      "nome": "Martins Moura Advogados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Lucas+Cardoso+%7C+Advogado+Previdenci%C3%A1rio+Taguatinga/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a33df53c73529:0x315ea7c7b2e24b5f!8m2!3d-15.8359587!4d-48.0566723!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSARhsYWJvcl9yZWxhdGlvbnNfYXR0b3JuZXmaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVTm9iM0p0UkZwQkVBReABAPoBBAgAED8!16s%2Fg%2F11nw9q22kg": {
+      "nome": "Lucas Cardoso | Advogado Previdenciário Taguatinga",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Escrit%C3%B3rio+de+Advocacia+-+Rabelo,+Miranda+%26+Silva+Advogados/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a33e953a78a23:0x5b1f3424a3a3898b!8m2!3d-15.8314596!4d-48.0534749!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSAQ5sZWdhbF9zZXJ2aWNlc5oBJENoZERTVWhOTUc5blMwVkpRMEZuVFVOSk9XRm1hakpCUlJBQuABAPoBBQjYAhBD!16s%2Fg%2F11k41230xc": {
+      "nome": "Escritório de Advocacia - Rabelo, Miranda & Silva Advogados",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Warlei+L%C3%BAcio+Advogados+%26+Associados/@-16.054996,-48.3344376,11z/data=!3m1!5s0x935981121791de9b:0x8845850e805401f1!4m9!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m5!1s0x9359817e1ee44a83:0x407fd5f5a5fa4b68!8m2!3d-16.0549955!4d-48.0295673!16s%2Fg%2F11fvvlt8_v": {
+      "nome": "Warlei Lúcio Advogados & Associados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advogado+Trabalhista+e+Previdenci%C3%A1rio+-+Nascimento+%26+Peixoto+Advogados/@-16.054996,-48.3344376,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935981295410dc97:0xdae56f31ab7a5734!8m2!3d-16.0182026!4d-48.065777!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREaSARJjaXZpbF9sYXdfYXR0b3JuZXngAQA!16s%2Fg%2F11h70q6lb8": {
+      "nome": "Advogado Trabalhista e Previdenciário - Nascimento & Peixoto Advogados",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/ADVOCACIA+DAVID+RIBEIRO/@-15.7611235,-48.1975515,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935bd35d8528ad37:0x59fffe605cb5cadf!8m2!3d-16.018688!4d-48.063741!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgEYbGFib3JfcmVsYXRpb25zX2F0dG9ybmV5mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJwWmVtUklWa2RQVjNCcFpXeFpOVmRWTVd4aE0zQkxWRlJhZUUxV1JSQULgAQD6AQQIORA9!16s%2Fg%2F11z0yljw74": {
+      "nome": "ADVOCACIA DAVID RIBEIRO",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Ribeiro+Pinto+%7C+Advogado+Bras%C3%ADlia+%7C+Previdenci%C3%A1rio+%7C+Trabalhista/@-15.7611235,-48.1975515,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935a2db80953fc7d:0xe94654d0b3d0b9aa!8m2!3d-15.8624123!4d-48.0371458!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgEObGVnYWxfc2VydmljZXOaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjE0YjB4VmFFbFNSbXhvVkZkMFVsWlhNVFZpYkd4elVsaHdUMDFJWXhBQuABAPoBBQikARA_!16s%2Fg%2F11xz1ny0c8": {
+      "nome": "Ribeiro Pinto | Advogado Brasília | Previdenciário | Trabalhista",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Marques+%26+Melo+Advogados+em+Bras%C3%ADlia+-+Trabalhista+Empresarial/@-15.7611235,-48.1975515,11z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Bras%C3%ADlia+DF!3m6!1s0x935a3b4e46d0e21f:0xbe30230587c0d10!8m2!3d-15.8540867!4d-47.8618013!15sCjZhZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBCcmFzw61saWEgREZaOCI2YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gYnJhc8OtbGlhIGRmkgEObGVnYWxfc2VydmljZXOaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUjRMVGxmVUZwQkVBReABAPoBBAgAECg!16s%2Fg%2F11qrbblshz": {
+      "nome": "Marques & Melo Advogados em Brasília - Trabalhista Empresarial",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Advocacia+Ilka+Tha%C3%ADs+-+Escrit%C3%B3rio+de+Advocacia/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935985ac34a30823:0xbddf7fa2a2f414b!8m2!3d-16.0790343!4d-47.9784957!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEObGVnYWxfc2VydmljZXOaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUllNVkJ4U2tObkVBReABAPoBBAgAEBc!16s%2Fg%2F11lm_4pm_8": {
+      "nome": "Advocacia Ilka Thaís - Escritório de Advocacia",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Edgar+Pereira+Advogado/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x9359856217e81e23:0x2482b723199db76f!8m2!3d-16.05343!4d-47.9913283!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEObGVnYWxfc2VydmljZXOaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUk9ieTB5WkU1M0VBReABAPoBBAgdEDQ!16s%2Fg%2F11tdfll713": {
+      "nome": "Edgar Pereira Advogado",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/K%C3%A9sia+Costa+Advogada/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x935985b1a8c24671:0xc0ac02938a0df74c!8m2!3d-16.0716774!4d-47.9840503!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEGbGF3eWVymgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDIxV2EyTXlVbVpSZWtKWVdWVndTVTF0Y0VOaFJrNTFVbTVKTTJJeVl4QULgAQD6AQQIABA-!16s%2Fg%2F11j4txj7_j": {
+      "nome": "Késia Costa Advogada",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Medeiros+Advocacia+%26+Assessoria+Jur%C3%ADdica/@-16.0532438,-48.0230511,13z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x93598139fa6296b5:0xfdfafa7ca84d01b8!8m2!3d-16.071734!4d-47.9775754!15sCj9hZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSBWYWxwYXJhw61zbyBkZSBHb2nDoXNaQSI_YWR2b2dhZG8gY2l2aWwgdHJhYmFsaGlzdGEgZW1wcmVzYXJpYWwgZW0gdmFscGFyYcOtc28gZGUgZ29pw6FzkgEGbGF3eWVymgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJzMWJGTkZPVkpUTUUwMVlUQm9lR0p0VmtoWmExWmFZV3BTYzFnell4QULgAQD6AQQIORBI!16s%2Fg%2F11fb3d680q": {
+      "nome": "Medeiros Advocacia & Assessoria Jurídica",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Kamilla+Chaves+Advocacia+Estrat%C3%A9gica/@-15.8404016,-48.0639413,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a33c0a7cd399f:0x46c536e6820e65b0!8m2!3d-15.8317276!4d-48.0409403!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSARhsYWJvcl9yZWxhdGlvbnNfYXR0b3JuZXmaASRDaGREU1VoTk1HOW5TMFZKUTBGblNVUjRhQzE2Y3pWUlJSQULgAQD6AQQIABA_!16s%2Fg%2F11jybytjy8": {
+      "nome": "Kamilla Chaves Advocacia Estratégica",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/%22ADVOCACIA+RUIZ+PONTE%22+Trabalhista;+Previdenciario;+Familia/@-15.8404409,-48.0400787,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a33b62ed5e9ab:0xb89a99e51a44b670!8m2!3d-15.8404409!4d-48.0210243!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSARhsYWJvcl9yZWxhdGlvbnNfYXR0b3JuZXmaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnRhYzFGV2JIQmFSM1F3V1dwamQyTkVhSEZSYWxwU1ZGaHNjazR5WXhBQuABAPoBBQjTAhBG!16s%2Fg%2F11zfrhn34t": {
+      "nome": "\"ADVOCACIA RUIZ PONTE\" Trabalhista; Previdenciario; Familia",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/MN+%E2%80%93+ADVOGADOS+ASSOCIADOS/@-15.8396911,-48.0635072,15z/data=!4m10!1m2!2m1!1sadvogado+civil+trabalhista+empresarial+em+%C3%81guas+Claras+DF!3m6!1s0x935a33023d64e139:0x1599aeedb63859fa!8m2!3d-15.835611!4d-48.0167516!15sCjphZHZvZ2FkbyBjaXZpbCB0cmFiYWxoaXN0YSBlbXByZXNhcmlhbCBlbSDDgWd1YXMgQ2xhcmFzIERGWjwiOmFkdm9nYWRvIGNpdmlsIHRyYWJhbGhpc3RhIGVtcHJlc2FyaWFsIGVtIMOhZ3VhcyBjbGFyYXMgZGaSAQ5sZWdhbF9zZXJ2aWNlc5oBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQyeHdUbG95TVhWVlJqbFVUVWhDVFZSdWNGQmFiWEJGVlVWdk1sZHNSUkFC4AEA-gEECAAQPQ!16s%2Fg%2F11wtqyl3z7": {
+      "nome": "MN – ADVOGADOS ASSOCIADOS",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
+    },
+    "https://www.google.com/maps/place/Veiga+M%C3%BArus+Advocacia+-+Dra+Josy+Veiga/@-15.8100344,-48.1031226,14z/data=!4m10!1m2!2m1!1sescritorio+de+advocacia+em+Taguatinga+DF!3m6!1s0x935a338b39219a5d:0xd933d5a082e01cd5!8m2!3d-15.8321328!4d-48.0524793!15sCihlc2NyaXRvcmlvIGRlIGFkdm9jYWNpYSBlbSBUYWd1YXRpbmdhIERGWioiKGVzY3JpdG9yaW8gZGUgYWR2b2NhY2lhIGVtIHRhZ3VhdGluZ2EgZGaSAQZsYXd5ZXKaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUmlkemxZVFV0bkVBReABAPoBBAgAEEY!16s%2Fg%2F11r7rl_sk8": {
+      "nome": "Veiga Múrus Advocacia - Dra Josy Veiga",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-10-20 19:08:19",
+      "id_planilha": "4E6690"
     }
   },
-  "total_coletados": 49,
-  "ultima_atualizacao": "2026-10-20 11:55:25"
+  "total_coletados": 98,
+  "ultima_atualizacao": "2026-10-20 19:08:19"
 }

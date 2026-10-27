@@ -13,3 +13,7 @@ __pycache__/
 
 # Logs e arquivos temporários
 *.log
+
+# Perfil e sessões do navegador (cookies, logins de Instagram e WhatsApp)
+perfil_navegador/
+sessao_navegador/

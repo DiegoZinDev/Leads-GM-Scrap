@@ -287,28 +287,39 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
     </html>
     """
 
+    pdf_gerado = False
     if page:
-        page.set_content(html_content)
-        page.pdf(
-            path=caminho_pdf,
-            width="520mm",
-            height="297mm",
-            print_background=True,
-            margin={"top": "8mm", "bottom": "8mm", "left": "6mm", "right": "6mm"}
-        )
-    else:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            p_page = browser.new_page()
-            p_page.set_content(html_content)
-            p_page.pdf(
+        try:
+            page.set_content(html_content)
+            page.pdf(
                 path=caminho_pdf,
                 width="520mm",
                 height="297mm",
                 print_background=True,
                 margin={"top": "8mm", "bottom": "8mm", "left": "6mm", "right": "6mm"}
             )
-            browser.close()
+            pdf_gerado = True
+        except Exception:
+            pdf_gerado = False
+
+    if not pdf_gerado:
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                p_page = browser.new_page()
+                p_page.set_content(html_content)
+                p_page.pdf(
+                    path=caminho_pdf,
+                    width="520mm",
+                    height="297mm",
+                    print_background=True,
+                    margin={"top": "8mm", "bottom": "8mm", "left": "6mm", "right": "6mm"}
+                )
+                browser.close()
+        except Exception as e:
+            print(f"[!] Erro ao renderizar PDF: {e}")
+            return
+
     print(f"[SUCESSO] Relatório PDF Ultra-Wide gerado com sucesso: {caminho_pdf}")
 
 def salvar_planilha_excel(leads: list, id_planilha: str = None, page: Page = None) -> tuple[str, str, str]:
