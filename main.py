@@ -57,8 +57,9 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
             headless=headless,
             locale="pt-BR",
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
-            no_viewport=True
+            args=["--disable-blink-features=AutomationControlled", "--start-maximized", "--window-size=1600,900"],
+            viewport={"width": 1600, "height": 900} if headless else None,
+            ignore_https_errors=True
         )
         # Garante redirecionamento inteligente de abas do WhatsApp para aba única
         interceptar_novas_abas_whatsapp(context)
@@ -165,7 +166,8 @@ def fazer_login_manual():
             locale="pt-BR",
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
             args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
-            no_viewport=True
+            no_viewport=True,
+            ignore_https_errors=True
         )
 
         page_insta = context.pages[0] if context.pages else context.new_page()

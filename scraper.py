@@ -242,8 +242,12 @@ def buscar_leads_google_maps(
                 print(f"  ⏭️ Ignorado: Estabelecimento já coletado anteriormente em outra planilha.")
                 continue
 
-            # Clica no card para abrir os detalhes
-            card.click()
+            # Garante visibilidade e clica no card para abrir os detalhes
+            try:
+                card.scroll_into_view_if_needed(timeout=3000)
+            except Exception:
+                pass
+            card.click(timeout=6000)
             time.sleep(random.uniform(1.8, 2.8))
 
             # Aguarda o nome carregar
@@ -261,9 +265,9 @@ def buscar_leads_google_maps(
                 continue
 
             # FILTROS SOLICITADOS:
-            # 2. Sem site
+            # 2. Sem site (Identificado no perfil do Google Maps)
             if FILTROS.get("exigir_sem_site") and lead["tem_site"]:
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Já possui site: {lead['url_site']})")
+                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Possui site/link no Maps: {lead['url_site']})")
                 continue
 
             # 3. Nota mínima

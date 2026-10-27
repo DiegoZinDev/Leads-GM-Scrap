@@ -1,7 +1,8 @@
 """
 Módulo de Verificação Profunda na Web, Redes Sociais e WhatsApp.
-Garante que o candidato NÃO possui site próprio, cardápio digital oculto, biolink,
-bot de atendimento com cardápio ou site na bio do Instagram/WhatsApp.
+Garante que o candidato NÃO possui site próprio, cardápio digital, biolink,
+ou link registrado no perfil do Google Maps ou na bio do Instagram.
+Filtro rigoroso: identifica qualquer link, especialmente com finais .com, .br, .org, etc.
 """
 
 import urllib.parse
@@ -9,7 +10,16 @@ import urllib.request
 import re
 from playwright.sync_api import Page
 
-# Domínios e plataformas comuns de cardápio digital, delivery e biolinks
+# Extensões e sufixos de domínios que caracterizam sites próprios e páginas na web
+DOMINIOS_EXTENSOES = (
+    ".com.br", ".com", ".br", ".org.br", ".org", ".net.br", ".net",
+    ".site", ".online", ".tech", ".digital", ".app", ".io", ".dev",
+    ".store", ".shop", ".med.br", ".adv.br", ".odo.br", ".arq.br",
+    ".eng.br", ".vet.br", ".bio", ".link", ".page", ".live", ".menu",
+    ".delivery", ".pro", ".top", ".me"
+)
+
+# Domínios e plataformas comuns de cardápio digital, delivery, agendamento e biolinks
 DIGITAL_MENU_DOMAINS = [
     "goomer.app", "anota.ai", "ola.click", "deliverydireto.com.br",
     "deliverydireto", "instadelivery.com.br", "instadelivery",
@@ -18,7 +28,17 @@ DIGITAL_MENU_DOMAINS = [
     "saipos", "linktr.ee", "beacons.ai", "instabio.cc", "bio.link",
     "wpp.bio", "cardapio.delivery", "pedir.digital", "app.cardapioweb.com",
     "doctoralia.com.br", "tecnofit.com.br", "totalpass.com.br", "gympass.com",
-    "ifood.com.br/delivery"
+    "ifood.com.br", "canva.site", "wixsite.com", "wordpress.com", "sites.google.com",
+    "taplink.cc", "campsite.bio", "heylink.me", "bit.ly", "tinyurl.com"
+]
+
+PLATAFORMAS_BIOLINKS_CARDAPIOS = DIGITAL_MENU_DOMAINS
+
+# URLs e rotas internas do Google que devem ser desconsideradas
+DOMINIOS_INTERNOS_IGNORAR = [
+    "google.com/maps", "maps.google", "support.google.com", "accounts.google.com",
+    "policies.google.com", "google.com.br/intl", "google.com/intl",
+    "google.com/contributionpolicy", "gstatic.com"
 ]
 
 def extrair_digitos_telefone(telefone: str) -> str:
@@ -32,55 +52,167 @@ def extrair_digitos_telefone(telefone: str) -> str:
         digitos = "55" + digitos
     return digitos
 
+def decodificar_url_redirect(url: str) -> str:
+    """Extrai a URL de destino real caso seja um redirecionamento do Google ou Instagram."""
+    if not url:
+        return ""
+    # Redirecionamento Google: /url?q=... ou google.com/url?q=... ou url?sa=...&url=...
+    if "url?q=" in url or "url?sa=" in url or "/url?" in url:
+        try:
+            parsed = urllib.parse.urlparse(url)
+            qs = urllib.parse.parse_qs(parsed.query)
+            if "q" in qs:
+                return urllib.parse.unquote(qs["q"][0])
+            if "url" in qs:
+                return urllib.parse.unquote(qs["url"][0])
+        except Exception:
+            pass
+    # Redirecionamento Instagram: l.instagram.com/?u=...
+    if "l.instagram.com" in url and "u=" in url:
+        try:
+            parsed = urllib.parse.urlparse(url)
+            qs = urllib.parse.parse_qs(parsed.query)
+            if "u" in qs:
+                return urllib.parse.unquote(qs["u"][0])
+        except Exception:
+            pass
+    return url
+
+def verificar_se_eh_link_valido(url: str) -> tuple[bool, str]:
+    """
+    Verifica se uma URL representa um site próprio, biolink ou cardápio digital,
+    especialmente os que terminam em .com, .br, .org, etc.
+    Retorna (eh_link_ou_site, motivo_formatado).
+    """
+    if not url:
+        return False, ""
+    
+    url_real = decodificar_url_redirect(url).strip()
+    url_lower = url_real.lower()
+
+    # Ignora domínios internos do Google e esquemas não-web
+    if any(ign in url_lower for ign in DOMINIOS_INTERNOS_IGNORAR):
+        return False, ""
+    if url_lower.startswith(("tel:", "mailto:", "javascript:", "#")):
+        return False, ""
+
+    # Ignora redes sociais padrão no Maps se forem apenas os perfis
+    if any(soc in url_lower for soc in ["facebook.com", "linkedin.com", "twitter.com", "x.com", "youtube.com"]):
+        return False, ""
+    if "instagram.com" in url_lower:
+        # Se for o próprio perfil do Instagram no Maps, não conta como site do Maps (será inspecionado na bio)
+        return False, ""
+
+    # 1. Checa plataformas conhecidas de cardápio digital / biolink / agendamento
+    for plat in PLATAFORMAS_BIOLINKS_CARDAPIOS:
+        if plat in url_lower:
+            return True, f"Plataforma/Biolink detectado ({plat}): {url_real}"
+
+    # 2. Extrai o hostname / domínio principal
+    try:
+        parsed = urllib.parse.urlparse(url_real if "://" in url_real else f"http://{url_real}")
+        host = (parsed.hostname or "").lower()
+        if host.startswith("www."):
+            host = host[4:]
+    except Exception:
+        host = url_lower
+
+    if not host or host in ["google.com", "google.com.br"]:
+        return False, ""
+
+    # 3. Checa se o domínio termina com alguma das extensões solicitadas (.com, .br, .org, etc.)
+    for ext in DOMINIOS_EXTENSOES:
+        if host.endswith(ext) or f"{ext}/" in url_lower or f"{ext}?" in url_lower:
+            return True, f"Site oficial com domínio ({host}): {url_real}"
+
+    # 4. Checa qualquer URL http/https com formato de domínio válido
+    if re.search(r'https?://[a-zA-Z0-9][-a-zA-Z0-9]*\.[a-zA-Z]{2,}', url_real):
+        return True, f"Link de website detectado: {url_real}"
+
+    return False, ""
+
 def verificar_detalhes_google_maps(page: Page) -> tuple[bool, str, str]:
     """
-    Varre o painel do Google Maps em busca de Website, Cardápio, Pedidos e perfil do Instagram.
+    Varre o painel do Google Maps do estabelecimento em busca de qualquer tipo de link:
+    Website oficial, Cardápio, Pedidos, Agendamentos e perfil do Instagram.
+    Filtra rigorosamente links terminados em .com, .br, .org, etc.
     Retorna (tem_site_ou_cardapio, motivo, url_instagram_encontrada).
     """
     instagram_url = ""
     try:
-        container = page.locator('div[role="main"]').first
-        if container.count() == 0:
-            return False, "", ""
+        # Localiza o painel ativo de detalhes do estabelecimento (que contém o h1 com o nome da empresa)
+        painel = page.locator('div[role="main"]').filter(has=page.locator('h1.DUwDvf')).first
+        if painel.count() == 0:
+            painel = page.locator('div[role="main"]').last
+        if painel.count() == 0:
+            painel = page
 
-        # 1. Verifica botão oficial de Website (com href válido)
-        site_el = container.locator('a[data-item-id="authority"]').first
-        if site_el.count() > 0:
-            href = site_el.get_attribute("href")
-            if href and "google.com" not in href:
-                return True, f"Website oficial registrado no Maps ({href})", ""
+        # 1. Verifica botões e links oficiais de Website / Authority
+        site_links = painel.locator(
+            'a[data-item-id="authority"], '
+            'a[data-tooltip*="website" i], '
+            'a[data-tooltip*="site" i], '
+            'a[aria-label*="website" i], '
+            'a[aria-label*="acessar o site" i], '
+            'a[aria-label*="abrir website" i]'
+        ).all()
+        for s in site_links:
+            href = s.get_attribute("href") or ""
+            eh_link, motivo = verificar_se_eh_link_valido(href)
+            if eh_link:
+                return True, motivo, instagram_url
 
-        # 2. Verifica link real de Cardápio / Menu (tag <a> com href externo)
-        menu_el = container.locator('a[data-item-id="menu"], a[aria-label*="cardápio" i]').first
-        if menu_el.count() > 0:
-            href = menu_el.get_attribute("href")
-            if href and "google.com" not in href:
-                return True, f"Cardápio/Menu detectado no Maps ({href})", ""
+        # 1.1 Verifica botões do Maps (ex: "Copiar website", "Abrir website")
+        botoes_site = painel.locator('button[aria-label*="website" i], button[aria-label*="site" i], button[data-tooltip*="website" i]').all()
+        for b in botoes_site:
+            aria = b.get_attribute("aria-label") or ""
+            # Se tiver botão de website no painel do Maps, indica que há site cadastrado
+            if any(term in aria.lower() for term in ["website", "copiar website", "abrir website", "acessar o site"]):
+                return True, f"Botão oficial de Website detectado no perfil do Google Maps ({aria})", instagram_url
 
-        # 3. Verifica link de Fazer Pedido / Order Online
-        order_el = container.locator('a[data-item-id*="order"], a[aria-label*="fazer pedido" i]').first
-        if order_el.count() > 0:
-            href = order_el.get_attribute("href")
-            if href and "google.com" not in href:
-                return True, f"Pedido Online detectado no Maps ({href})", ""
+        # 2. Verifica links de Cardápio / Menu / Pedidos / Agendamento (ex: Doctoralia, Goomer, Anota AI)
+        menu_order_links = painel.locator(
+            'a[data-item-id="menu"], '
+            'a[data-item-id*="order"], '
+            'a[data-item-id*="action:"], '
+            'a[aria-label*="cardápio" i], '
+            'a[aria-label*="menu" i], '
+            'a[aria-label*="pedido" i], '
+            'a[aria-label*="agendamento" i]'
+        ).all()
+        for m in menu_order_links:
+            href = m.get_attribute("href") or ""
+            eh_link, motivo = verificar_se_eh_link_valido(href)
+            if eh_link:
+                return True, motivo, instagram_url
 
-        # 4. Verifica links de redes sociais (procura Instagram)
-        links_sociais = container.locator('a[href*="instagram.com"]').all()
-        for l in links_sociais[:2]:
+        # 3. Verifica TODOS os links <a> no painel do Maps
+        todos_links = painel.locator('a[href]').all()
+        for l in todos_links:
             href = l.get_attribute("href") or ""
-            if href:
-                instagram_url = href
-                if any(dom in href.lower() for dom in DIGITAL_MENU_DOMAINS):
-                    return True, f"Cardápio/Biolink detectado no link social do Maps ({href})", instagram_url
+            # Captura perfil do Instagram se presente na seção de redes sociais
+            if "instagram.com/" in href and not any(x in href for x in ["/p/", "/reel/", "/explore/"]):
+                url_limpa_insta = decodificar_url_redirect(href)
+                if not instagram_url:
+                    instagram_url = url_limpa_insta
 
-        # 5. Verifica se há texto com links de cardápio na descrição
-        descricao = container.locator('div.PYvSYb, div[aria-label*="Sobre" i]').all_inner_texts()
-        texto_desc = " ".join(descricao).lower()
-        for dom in DIGITAL_MENU_DOMAINS:
-            if dom in texto_desc:
-                return True, f"Menção a cardápio/site ({dom}) na descrição do Maps", instagram_url
+            eh_link, motivo = verificar_se_eh_link_valido(href)
+            if eh_link:
+                return True, motivo, instagram_url
 
-    except Exception:
+        # 4. Verifica textos do painel (descrição, sobre, informações adicionais) buscando menção a domínios
+        texto_painel = painel.inner_text()
+        match_dom = re.search(
+            r'\b([a-zA-Z0-9][-a-zA-Z0-9]*\.(?:com\.br|com|br|org\.br|org|net\.br|net|site|app|io|tech|online|store|shop|me|digital|top|link|bio|med\.br|adv\.br))\b',
+            texto_painel,
+            re.IGNORECASE
+        )
+        if match_dom:
+            dom_achado = match_dom.group(1).lower()
+            if not any(ign in dom_achado for ign in ["google.com", "google.com.br", "instagram.com", "facebook.com", "gstatic.com"]):
+                return True, f"Domínio detectado no texto do perfil do Google Maps ({dom_achado})", instagram_url
+
+    except Exception as e:
         pass
 
     return False, "", instagram_url
@@ -94,7 +226,6 @@ def obter_ou_reutilizar_aba_whatsapp(context, telefone: str = "") -> Page:
     digitos = extrair_digitos_telefone(telefone) if telefone else ""
     url_alvo = f"https://web.whatsapp.com/send/?phone={digitos}" if digitos else "https://web.whatsapp.com"
 
-    # 1. Procura se já existe aba do WhatsApp Web aberta
     for p in context.pages:
         try:
             if "web.whatsapp.com" in p.url or "whatsapp.com" in p.url:
@@ -105,7 +236,6 @@ def obter_ou_reutilizar_aba_whatsapp(context, telefone: str = "") -> Page:
         except Exception:
             pass
 
-    # 2. Se não existir, cria uma única página dedicada
     nova_zap = context.new_page()
     try:
         nova_zap.goto(url_alvo, wait_until="domcontentloaded", timeout=30000)
@@ -139,26 +269,24 @@ def interceptar_novas_abas_whatsapp(context):
 def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str = "") -> tuple[bool, str]:
     """
     FOCO 1: Investiga a bio, links e destaques do Instagram da empresa.
-    Verifica se na biografia, links ou destaques há direcionamento para site, cardápio digital ou biolink.
+    Verifica se na biografia, links ou destaques há direcionamento para site, cardápio digital ou qualquer link,
+    principalmente aqueles terminados com .com, .br, .org, biolinks e plataformas.
     """
     alvo_url = instagram_url
     
-    # Se não temos a URL do Maps, pesquisa DuckDuckGo pelo Instagram oficial
+    # Se não temos a URL do Maps, pesquisa de forma rápida
     if not alvo_url:
         try:
             query = f'site:instagram.com "{nome}" {cidade}'
             url_ddg = f"https://html.duckduckgo.com/html/?q={urllib.parse.quote(query)}"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
             req = urllib.request.Request(url_ddg, headers=headers)
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=5) as resp:
                 html_resp = resp.read().decode("utf-8", errors="ignore")
-                
-                # Procura urls do instagram nos resultados
                 match_links = re.findall(r'href="[^"]*(https://(?:www\.)?instagram\.com/[^"&/]+)', html_resp)
                 if match_links:
                     alvo_url = match_links[0] + "/"
 
-                # Inspeciona snippets do DuckDuckGo para ver menções a cardápio na bio
                 for dom in DIGITAL_MENU_DOMAINS:
                     if dom in html_resp.lower():
                         return True, f"Bio do Instagram indexada com link de cardápio/site ({dom})"
@@ -166,14 +294,19 @@ def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str 
             pass
 
     if not alvo_url:
-        return False, "Nenhum Instagram com site encontrado"
+        return False, "Nenhum Instagram encontrado"
 
-    # Se temos a URL do Instagram, abre com Playwright para ler a bio real, links e destaques
+    # Abre com Playwright no contexto com perfil persistente para inspecionar a bio real
     temp_page = None
     try:
         temp_page = page.context.new_page()
-        temp_page.goto(alvo_url, timeout=12000, wait_until="domcontentloaded")
+        temp_page.goto(alvo_url, timeout=14000, wait_until="domcontentloaded")
         temp_page.wait_for_timeout(2000)
+
+        # Trata possíveis bloqueios de rede/firewall
+        titulo_pg = (temp_page.title() or "").lower()
+        if any(b in titulo_pg for b in ["fortiguard", "blocked", "bloqueado", "access denied"]):
+            return False, "Instagram inacessível na rede local"
 
         # Lida com possíveis modais de cookies ou notificações ("Agora não")
         try:
@@ -183,34 +316,55 @@ def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str 
         except Exception:
             pass
 
-        # 1. Lê todo o texto do header/biografia
-        bio_text = temp_page.locator('header').inner_text() if temp_page.locator('header').count() > 0 else ""
+        # 1. Lê todo o texto da bio/header/seção principal
+        bio_container = temp_page.locator('header, main section, main').first
+        bio_text = bio_container.inner_text() if bio_container.count() > 0 else temp_page.inner_text('body')
         bio_lower = bio_text.lower()
 
-        for dom in DIGITAL_MENU_DOMAINS:
-            if dom in bio_lower:
-                return True, f"Link de cardápio/site ({dom}) detectado na bio do Instagram ({alvo_url})"
-
-        # 2. Inspeciona links clicáveis dentro do header (l.instagram.com links externos)
-        links = temp_page.locator('header a').all()
+        # 2. Inspeciona todos os links clicáveis na bio (links externos via l.instagram.com ou botões de link)
+        links = temp_page.locator('header a, main a, section a, a[role="link"]').all()
         for l in links:
             href = l.get_attribute("href") or ""
-            href_decoded = urllib.parse.unquote(href).lower()
-            for dom in DIGITAL_MENU_DOMAINS:
-                if dom in href_decoded:
-                    return True, f"Link de cardápio/delivery ({dom}) no botão da bio do Instagram"
-            
-            # Checa se é um domínio próprio da empresa (.com.br ou .com)
-            partes_nome = [p for p in re.sub(r'[^a-zA-Z0-9]', ' ', nome.lower()).split() if len(p) >= 4]
-            if partes_nome and any(p in href_decoded for p in partes_nome):
-                if not any(soc in href_decoded for soc in ["instagram.com", "facebook.com", "whatsapp.com", "wa.me"]):
-                    return True, f"Site oficial próprio na bio do Instagram: {href_decoded}"
+            href_real = decodificar_url_redirect(href).strip()
+            href_lower = href_real.lower()
 
-        # 3. Inspeciona títulos dos Destaques (Highlights)
+            # Ignora links internos do próprio Instagram
+            if any(ign in href_lower for ign in ["/about", "/legal", "/explore", "/reels", "/tagged", "about.meta", "meta.com"]):
+                continue
+
+            # Se for link via l.instagram.com ou link externo
+            if "l.instagram.com" in href or (href_lower.startswith("http") and "instagram.com" not in href_lower):
+                # Verifica se é site, biolink ou cardápio
+                eh_link, motivo = verificar_se_eh_link_valido(href_real)
+                if eh_link:
+                    return True, f"Link detectado na bio do Instagram: {href_real}"
+
+                # Checa extensões solicitadas (.com, .br, .org, etc.)
+                for ext in DOMINIOS_EXTENSOES:
+                    if ext in href_lower:
+                        return True, f"Link com extensão ({ext}) na bio do Instagram: {href_real}"
+
+        # 3. Verifica menção a links ou domínios escritos diretamente no texto da bio
+        for dom in DIGITAL_MENU_DOMAINS:
+            if dom in bio_lower:
+                return True, f"Link/Plataforma ({dom}) mencionado no texto da bio do Instagram"
+
+        # Regex para domínios no texto da bio (.com, .com.br, .br, .org, etc.)
+        dominios_texto = re.findall(
+            r'\b([a-zA-Z0-9][-a-zA-Z0-9]*\.(?:com\.br|com|br|org\.br|org|net\.br|net|site|app|io|tech|online|store|shop|me|digital|top|link|bio|med\.br|adv\.br))\b',
+            bio_text,
+            re.IGNORECASE
+        )
+        for d in set(dominios_texto):
+            d_lower = d.lower()
+            if not any(ign in d_lower for ign in ["instagram.com", "facebook.com", "meta.com", "threads.net"]):
+                return True, f"Domínio detectado no texto da bio do Instagram: {d}"
+
+        # 4. Inspeciona títulos dos Destaques (Highlights)
         try:
             destaques_textos = temp_page.locator('div[role="tablist"] ~ div, section main ul li, div[role="listitem"]').all_inner_texts()
             texto_destaques = " ".join(destaques_textos).lower()
-            termos_destaques = ["cardápio", "cardapio", "menu digital", "delivery", "fazer pedido", "peça online", "pedidos"]
+            termos_destaques = ["cardápio", "cardapio", "menu digital", "delivery", "fazer pedido", "peça online", "pedidos", "site", "link"]
             for termo in termos_destaques:
                 if termo in texto_destaques:
                     return True, f"Destaque de cardápio/pedidos detectado no Instagram: '{termo}'"
@@ -226,12 +380,12 @@ def investigar_instagram(nome: str, cidade: str, page: Page, instagram_url: str 
             except Exception:
                 pass
 
-    return False, "Instagram verificado: sem site, cardápio ou destaque de delivery"
+    return False, "Instagram verificado: sem link, site ou cardápio na bio"
 
 def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page: Page = None) -> tuple[bool, str]:
     """
     FOCO 2 e FOCO 3:
-    - Investiga Bots de WhatsApp / mensagens automáticas de pedidos via HTTP rápido (sem abrir abas no navegador).
+    - Investiga Bots de WhatsApp / mensagens automáticas de pedidos via HTTP rápido.
     - Investiga se o número de WhatsApp está cadastrado em plataformas de cardápio digital (Anota AI, Goomer, Delivery Direto).
     """
     digitos = extrair_digitos_telefone(telefone)
@@ -239,12 +393,11 @@ def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page
         return False, ""
 
     # 1. Inspeciona a API pública do WhatsApp via requisição HTTP direta
-    # Super rápido (0.2s), não abre abas no navegador e não gera telas de convite
     url_wa = f"https://api.whatsapp.com/send/?phone={digitos}"
     try:
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         req = urllib.request.Request(url_wa, headers=headers)
-        with urllib.request.urlopen(req, timeout=5) as resp:
+        with urllib.request.urlopen(req, timeout=4) as resp:
             conteudo = resp.read().decode("utf-8", errors="ignore").lower()
 
             termos_bot = [
@@ -258,15 +411,14 @@ def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page
     except Exception:
         pass
 
-    # 2. Busca reversa na Web pelo número de WhatsApp:
-    # Identifica se esse número é o canal oficial de recebimento de um bot Goomer, Anota AI, etc.
+    # 2. Busca reversa na Web pelo número de WhatsApp
     try:
         numero_sem_55 = digitos[2:] if digitos.startswith("55") else digitos
         query_zap = f'"{digitos}" OR "{numero_sem_55}"'
         url_ddg = f"https://html.duckduckgo.com/html/?q={urllib.parse.quote(query_zap)}"
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         req = urllib.request.Request(url_ddg, headers=headers)
-        with urllib.request.urlopen(req, timeout=6) as resp:
+        with urllib.request.urlopen(req, timeout=5) as resp:
             html_resp = resp.read().decode("utf-8", errors="ignore").lower()
             for dom in DIGITAL_MENU_DOMAINS:
                 if dom in html_resp:
@@ -275,7 +427,6 @@ def investigar_whatsapp_bot_e_perfil(telefone: str, nome: str, cidade: str, page
         pass
 
     return False, "WhatsApp verificado: sem bot de cardápio ou site no perfil"
-
 
 def investigar_web_externa(nome: str, cidade: str) -> tuple[bool, str]:
     """
@@ -287,7 +438,7 @@ def investigar_web_externa(nome: str, cidade: str) -> tuple[bool, str]:
 
     try:
         req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=8) as resp:
+        with urllib.request.urlopen(req, timeout=6) as resp:
             html = resp.read().decode("utf-8", errors="ignore")
 
         links = re.findall(r'class="result__url"[^>]*href="([^"]+)"', html)
