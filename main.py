@@ -1,6 +1,6 @@
 """
-Painel Principal do Bot de Captação de Leads (Google Maps).
-Filtra estabelecimentos sem site, com verificação profunda na web (anti-cardápio digital/anti-site),
+Painel Principal do Bot de Captação de Leads (Google Maps) - Modo Turbo (Alta Velocidade).
+Filtra estabelecimentos sem site, com verificação profunda e paralela na web (anti-cardápio digital/anti-site),
 permite digitar nichos livres sem limite (resetados a cada nova busca) e gera planilha Excel + Relatório Executivo em PDF.
 """
 
@@ -38,8 +38,8 @@ from verifier import interceptar_novas_abas_whatsapp
 def mostrar_banner():
     print("""
 ================================================================================
- 🚀 BOT PROSPECTOR: LEADS QUALIFICADOS (GOOGLE MAPS + INVESTIGAÇÃO WEB)
-    Nichos 100% Dinâmicos e Sem Limite | Regiões Configuráveis
+ 🚀 BOT PROSPECTOR TURBO: LEADS QUALIFICADOS (GOOGLE MAPS + WEB PARALELA)
+    Nichos 100% Dinâmicos e Sem Limite | Regiões Configuráveis | Alta Velocidade
     Filtro Rigoroso: 100% Sem Site | Sem Cardápio Digital | Alta Reputação
     Exportação Automática: Planilha Excel (.xlsx) e Relatório Executivo (.pdf)
     Anti-Duplicação: Leads já prospectados NUNCA são repetidos!
@@ -153,20 +153,20 @@ def solicitar_regioes_customizadas(regioes_atuais: list) -> list:
 
 def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, meta_leads: int = 50, headless: bool = False):
     """
-    Executa o ciclo de prospecção nos nichos informados pelo usuário e,
+    Executa o ciclo de prospecção nos nichos informados pelo usuário em alta velocidade e,
     ao finalizar, reseta automaticamente a variável de nichos para a próxima busca.
     """
     todos_os_leads = []
     inicio_tempo = time.time()
     historico = carregar_historico()
 
-    print(f"\n[CONFIGURAÇÃO DA PROSPECÇÃO ATUAL]")
+    print(f"\n[CONFIGURAÇÃO DA PROSPECÇÃO TURBO]")
     print(f"- Nichos da Busca ({len(nichos_selecionados)}): {', '.join(nichos_selecionados.keys())}")
     print(f"- Regiões mapeadas ({len(regioes_selecionadas)}): {', '.join(regioes_selecionadas[:4])}{'...' if len(regioes_selecionadas) > 4 else ''}")
     print(f"- Meta Mínima de Leads: {meta_leads} leads 100% verificados sem site/cardápio")
     print(f"- Filtros: Nota >= {FILTROS.get('nota_minima', 4.0)}⭐ | Mín. {FILTROS.get('min_avaliacoes', 5)} avaliações | Exigir Tel: {'Sim' if FILTROS.get('exigir_telefone', True) else 'Não'}")
+    print(f"- Motor de Busca: Pré-filtragem em Feed + Extração JS Única + Multi-Threading Web/Zap/Insta")
     print(f"- Histórico Ativo: {historico.get('total_coletados', 0)} leads já salvos (não serão repetidos)")
-    print(f"- Saídas: Planilha Excel (.xlsx) + Relatório Executivo (.pdf)")
     print(f"- Modo Visual: {'Ativado (janela visível)' if not headless else 'Invisível (Headless)'}")
     print(f"--------------------------------------------------------------------------------\n")
 
@@ -178,7 +178,15 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                 headless=headless,
                 locale="pt-BR",
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                args=["--disable-blink-features=AutomationControlled", "--start-maximized", "--window-size=1600,900"],
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--disable-extensions",
+                    "--disable-component-extensions-with-background-pages",
+                    "--disable-default-apps",
+                    "--no-default-browser-check",
+                    "--start-maximized",
+                    "--window-size=1600,900"
+                ],
                 viewport={"width": 1600, "height": 900} if headless else None,
                 ignore_https_errors=True
             )
@@ -211,7 +219,8 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                                 break
 
                             falta = meta_leads - len(todos_os_leads)
-                            limite_busca = min(10, max(2, falta))
+                            # Permite extrair até 35 leads de uma mesma listagem rica sem precisar recarregar o Maps dezenas de vezes
+                            limite_busca = min(35, max(5, falta))
 
                             novos_leads = buscar_leads_google_maps(
                                 page=page,
@@ -226,7 +235,8 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                             if novos_leads:
                                 houve_novos = True
                                 todos_os_leads.extend(novos_leads)
-                                print(f"[*] Progresso do lote: {len(todos_os_leads)}/{meta_leads} leads qualificados.")
+                                decorrido_min = round((time.time() - inicio_tempo) / 60, 2)
+                                print(f"[*] Progresso do lote: {len(todos_os_leads)}/{meta_leads} leads qualificados ({decorrido_min} min decorridos).")
 
                 # Se rodou todas as combinações sem encontrar nada novo, encerra para evitar loop infinito
                 if not houve_novos:

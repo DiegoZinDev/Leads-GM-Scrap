@@ -1,11 +1,11 @@
 """
-Motor de Scraping do Google Maps usando Playwright.
-Navega, extrai informações detalhadas, aplica filtros (sem site, boa reputação, fotos) e gera a abordagem personalizada.
+Motor de Scraping do Google Maps usando Playwright (Otimizado para Alta Velocidade e Eficiência).
+Pré-filtra empresas diretamente na listagem (sem clicar em quem já tem site ou nota baixa),
+extrai detalhes em chamada JS única (<15ms) e executa verificações externas em paralelo.
 """
 
 import sys
 import time
-import random
 import re
 
 # Evita erros de UnicodeEncodeError no Windows (cp1252)
@@ -21,103 +21,137 @@ from config import NICHOS, REGIOES, FILTROS, gerar_config_nicho
 from exporter import calcular_score_potencial
 from historico import carregar_historico, lead_ja_existe, extrair_apenas_digitos, normalizar_texto
 from verifier import (
+    analisar_dados_painel_maps,
+    investigar_lead_completo_paralelo,
     verificar_detalhes_google_maps,
     investigar_web_externa,
     investigar_instagram,
     investigar_whatsapp_bot_e_perfil
 )
 
-def extrair_dono_ou_gerente(page: Page) -> str:
-    """Tenta identificar o nome do proprietário através de respostas de avaliações ou informações adicionais."""
+
+def extrair_dono_de_texto(texto_painel: str) -> str:
+    """Identifica o nome do proprietário a partir do texto extraído do painel."""
+    if not texto_painel:
+        return "A confirmar na abordagem (Secretária/Recepção)"
     try:
-        # Procura por respostas do proprietário nas avaliações recentes
-        respostas = page.locator('text=/Resposta do propriet[aá]rio/i').all()
-        for resp in respostas[:3]:
-            parent = resp.locator('..').inner_text()
-            # Padrões comuns: "Atenciosamente, Dr. Fulano", "Abraço, Fulano (Gerente)", etc.
-            match = re.search(r"(?:atenciosamente|abraço|grato|obrigado),?\s+(?:dr\.?|dra\.?)?\s*([A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+)?)", parent, re.IGNORECASE)
-            if match:
-                return match.group(1).strip()
+        match = re.search(
+            r"(?:atenciosamente|abraço|grato|obrigado),?\s+(?:dr\.?|dra\.?)?\s*([A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+)?)",
+            texto_painel,
+            re.IGNORECASE
+        )
+        if match:
+            return match.group(1).strip()
     except Exception:
         pass
     return "A confirmar na abordagem (Secretária/Recepção)"
 
+
 def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_template: str) -> dict:
-    """Extrai os dados da empresa aberta no painel lateral do Google Maps."""
+    """
+    Extrai TODOS os dados da empresa aberta no painel lateral do Google Maps
+    em uma ÚNICA chamada JavaScript (ultra-rápida, sem múltiplos round-trips).
+    """
     try:
-        # Nome da empresa
-        nome = ""
-        try:
-            nome_el = page.locator('h1.DUwDvf').first
-            nome = nome_el.inner_text().strip()
-        except Exception:
+        dados = page.evaluate("""() => {
+            const mains = Array.from(document.querySelectorAll('div[role="main"]'));
+            const painel = mains.find(m => m.querySelector('h1.DUwDvf')) || mains[mains.length - 1] || document.body;
+
+            const nomeEl = painel.querySelector('h1.DUwDvf') || document.querySelector('h1.DUwDvf');
+            const nome = nomeEl ? (nomeEl.innerText || '').trim() : '';
+            if (!nome) return null;
+
+            let nota = 0.0;
+            let qtdAvaliacoes = 0;
+            const containerNota = painel.querySelector('div.F7nice') || document.querySelector('div.F7nice');
+            if (containerNota) {
+                const spanNota = containerNota.querySelector('span[aria-hidden="true"]');
+                if (spanNota && spanNota.innerText) {
+                    const parsed = parseFloat(spanNota.innerText.replace(',', '.'));
+                    if (!isNaN(parsed)) nota = parsed;
+                }
+                const txtQtd = containerNota.innerText || '';
+                const matchQtd = txtQtd.match(/\\((\\d+[\\.\\d]*)\\)/);
+                if (matchQtd) {
+                    qtdAvaliacoes = parseInt(matchQtd[1].replace(/\\./g, ''), 10) || 0;
+                }
+            }
+
+            let telefone = '';
+            const telBtn = painel.querySelector('button[data-item-id*="phone:tel:"]') || document.querySelector('button[data-item-id*="phone:tel:"]');
+            if (telBtn) {
+                const attr = telBtn.getAttribute('data-item-id') || '';
+                telefone = attr.replace('phone:tel:', '').trim();
+            } else {
+                const telAlt = painel.querySelector('button[aria-label*="Telefone:"]') || document.querySelector('button[aria-label*="Telefone:"]');
+                if (telAlt) {
+                    const aria = telAlt.getAttribute('aria-label') || '';
+                    telefone = aria.replace('Telefone:', '').trim();
+                }
+            }
+
+            let endereco = '';
+            const endBtn = painel.querySelector('button[data-item-id="address"]') || document.querySelector('button[data-item-id="address"]');
+            if (endBtn) {
+                endereco = (endBtn.innerText || '').trim();
+            }
+
+            const fotoBtn = painel.querySelector('button[aria-label*="Foto"]') || document.querySelector('button[aria-label*="Foto"]');
+            const temFotos = !!fotoBtn;
+
+            const prioSelectors = [
+                'a[data-item-id="authority"]',
+                'a[data-tooltip*="website" i]',
+                'a[data-tooltip*="site" i]',
+                'a[aria-label*="website" i]',
+                'a[aria-label*="acessar o site" i]',
+                'a[aria-label*="abrir website" i]',
+                'a[data-item-id="menu"]',
+                'a[data-item-id*="order"]',
+                'a[data-item-id*="action:"]',
+                'a[aria-label*="cardápio" i]',
+                'a[aria-label*="menu" i]',
+                'a[aria-label*="pedido" i]',
+                'a[aria-label*="agendamento" i]'
+            ].join(', ');
+
+            const linksPrioritarios = Array.from(painel.querySelectorAll(prioSelectors))
+                .map(a => a.getAttribute('href') || '')
+                .filter(Boolean);
+
+            const botoesSite = Array.from(
+                painel.querySelectorAll('button[aria-label*="website" i], button[aria-label*="site" i], button[data-tooltip*="website" i]')
+            ).map(b => b.getAttribute('aria-label') || '').filter(Boolean);
+
+            const todosLinks = Array.from(painel.querySelectorAll('a[href]'))
+                .map(a => a.getAttribute('href') || '')
+                .filter(Boolean);
+
+            const textoPainel = painel.innerText || '';
+
+            return {
+                nome,
+                nota,
+                qtd_avaliacoes: qtdAvaliacoes,
+                telefone,
+                endereco,
+                tem_fotos: temFotos,
+                url_maps: window.location.href,
+                links_prioritarios: linksPrioritarios,
+                botoes_site: botoesSite,
+                todos_links: todosLinks,
+                texto_painel: textoPainel
+            };
+        }""")
+
+        if not dados or not dados.get("nome"):
             return None
 
-        if not nome:
-            return None
-
-        # Nota e Avaliações
-        nota = 0.0
-        qtd_avaliacoes = 0
-        try:
-            container_nota = page.locator('div.F7nice').first
-            if container_nota.count() > 0:
-                texto_nota = container_nota.locator('span[aria-hidden="true"]').first.inner_text()
-                nota = float(texto_nota.replace(",", "."))
-                
-                # Total de avaliações: geralmente vem como "(142)"
-                txt_qtd = container_nota.inner_text()
-                match_qtd = re.search(r'\((\d+[\.\d]*)\)', txt_qtd)
-                if match_qtd:
-                    qtd_avaliacoes = int(match_qtd.group(1).replace(".", ""))
-        except Exception:
-            pass
-
-        # Verificar se tem Site oficial, Cardápio Digital ou Pedido Online no Maps
-        tem_site, motivo_maps, instagram_url = verificar_detalhes_google_maps(page)
+        nome = dados["nome"]
+        tem_site, motivo_maps, instagram_url = analisar_dados_painel_maps(dados)
         url_site = motivo_maps if tem_site else ""
+        dono = extrair_dono_de_texto(dados.get("texto_painel", ""))
 
-        # Telefone
-        telefone = ""
-        try:
-            tel_el = page.locator('button[data-item-id*="phone:tel:"]').first
-            if tel_el.count() > 0:
-                tel_text = tel_el.get_attribute("data-item-id")
-                telefone = tel_text.replace("phone:tel:", "").strip()
-            else:
-                # Tenta pelo aria-label
-                tel_alt = page.locator('button[aria-label*="Telefone:"]').first
-                if tel_alt.count() > 0:
-                    aria = tel_alt.get_attribute("aria-label")
-                    telefone = aria.replace("Telefone:", "").strip()
-        except Exception:
-            pass
-
-        # Endereço
-        endereco = ""
-        try:
-            end_el = page.locator('button[data-item-id="address"]').first
-            if end_el.count() > 0:
-                endereco = end_el.inner_text().strip()
-        except Exception:
-            pass
-
-        # Fotos bem estruturadas (presença de galeria de fotos)
-        tem_fotos = False
-        try:
-            foto_el = page.locator('button[aria-label*="Foto"]').first
-            if foto_el.count() > 0:
-                tem_fotos = True
-        except Exception:
-            pass
-
-        # URL atual do Maps
-        url_maps = page.url
-
-        # Tentar extrair dono ou gerente
-        dono = extrair_dono_ou_gerente(page)
-
-        # Montar cópia personalizada com o nome da loja e nicho
         if not copy_template:
             copy_template = gerar_config_nicho(nicho_nome).get("copy_base", "")
         copy_pronta = copy_template.replace("{nome}", nome).replace("{nicho}", nicho_nome)
@@ -126,186 +160,301 @@ def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_templat
             "nome": nome,
             "nicho": nicho_nome,
             "cidade": cidade,
-            "nota": nota,
-            "qtd_avaliacoes": qtd_avaliacoes,
+            "nota": dados.get("nota", 0.0),
+            "qtd_avaliacoes": dados.get("qtd_avaliacoes", 0),
             "tem_site": tem_site,
             "url_site": url_site,
-            "telefone": telefone,
-            "endereco": endereco,
-            "tem_fotos": tem_fotos,
-            "url_maps": url_maps,
+            "telefone": dados.get("telefone", ""),
+            "endereco": dados.get("endereco", ""),
+            "tem_fotos": dados.get("tem_fotos", False),
+            "url_maps": dados.get("url_maps", page.url),
             "url_instagram": instagram_url,
             "dono_gerente": dono,
             "copy_abordagem": copy_pronta
         }
 
-        # Calcular Score de Potencial
         lead["score_potencial"] = calcular_score_potencial(lead)
-
         return lead
     except Exception as e:
-        print(f"Erro ao extrair detalhes: {e}")
         return None
+
+
+def extrair_metadados_cards_feed(page: Page) -> list:
+    """
+    Lê instantaneamente todos os cards carregados no feed do Google Maps via JS,
+    identificando ANTES DE CLICAR:
+    - Nome e URL do estabelecimento
+    - Se já possui botão de Site/Website visível no próprio card da lista
+    - Nota e quantidade de avaliações visíveis no card da lista
+    """
+    try:
+        return page.evaluate("""() => {
+            const anchors = Array.from(document.querySelectorAll('div[role="feed"] a[href*="/maps/place/"]'));
+            return anchors.map((a, idx) => {
+                const href = a.getAttribute('href') || '';
+                const nome = (a.getAttribute('aria-label') || '').trim();
+                const card = a.closest('div.Nv2PK') || a.parentElement?.parentElement || a.parentElement;
+
+                let temSiteNoCard = false;
+                let notaCard = -1;
+                let qtdAvalCard = -1;
+
+                if (card) {
+                    // Verifica se já existe botão de Website/Site direto na listagem
+                    const siteBtn = card.querySelector(
+                        'a[data-value="Website"], a[data-value="Site"], a[aria-label*="website" i], a[aria-label*="site" i], a[href^="http"]:not([href*="google.com"]):not([href*="instagram.com"]):not([href*="facebook.com"])'
+                    );
+                    if (siteBtn) {
+                        temSiteNoCard = true;
+                    }
+
+                    const notaEl = card.querySelector('span.MW4etd');
+                    if (notaEl && notaEl.innerText) {
+                        const parsedN = parseFloat(notaEl.innerText.replace(',', '.'));
+                        if (!isNaN(parsedN)) notaCard = parsedN;
+                    }
+
+                    const avalEl = card.querySelector('span.UY7F9');
+                    if (avalEl && avalEl.innerText) {
+                        const m = avalEl.innerText.match(/(\\d+[\\.\\d]*)/);
+                        if (m) qtdAvalCard = parseInt(m[1].replace(/\\./g, ''), 10);
+                    }
+                }
+
+                return {
+                    idx,
+                    href,
+                    nome,
+                    tem_site_card: temSiteNoCard,
+                    nota_card: notaCard,
+                    qtd_aval_card: qtdAvalCard
+                };
+            });
+        }""")
+    except Exception:
+        return []
+
+
+def aguardar_atualizacao_painel(page: Page, nome_anterior: str, nome_esperado: str, timeout_ms: int = 2400):
+    """
+    Aguarda de forma reativa a troca do painel lateral após o clique no card,
+    evitando esperas fixas longas (time.sleep(2.5)).
+    """
+    inicio = time.time()
+    nome_esp_norm = normalizar_texto(nome_esperado)
+    while (time.time() - inicio) * 1000 < timeout_ms:
+        try:
+            nome_atual = page.evaluate("""() => {
+                const mains = Array.from(document.querySelectorAll('div[role="main"]'));
+                const p = mains.find(m => m.querySelector('h1.DUwDvf')) || document;
+                const h1 = p.querySelector('h1.DUwDvf');
+                return h1 ? (h1.innerText || '').trim() : '';
+            }""")
+            if nome_atual:
+                if nome_esp_norm and nome_esp_norm in normalizar_texto(nome_atual):
+                    time.sleep(0.12)
+                    return
+                if nome_anterior and nome_atual != nome_anterior:
+                    time.sleep(0.15)
+                    return
+        except Exception:
+            pass
+        time.sleep(0.08)
+
 
 def buscar_leads_google_maps(
     page: Page,
     nicho_nome: str,
     termo_busca: str,
     cidade: str,
-    limite_leads: int = 15,
+    limite_leads: int = 25,
     historico: dict = None,
     copy_base: str = ""
 ) -> list:
-    """Pesquisa no Google Maps, rola os resultados e extrai os leads qualificados (sem repetir leads anteriores)."""
+    """
+    Pesquisa no Google Maps com rolagem acelerada, pré-filtragem inteligente no feed
+    (pula em 0ms quem já tem site ou nota baixa na lista) e verificação paralela.
+    """
     if historico is None:
         historico = carregar_historico()
 
     copy_template = copy_base or gerar_config_nicho(nicho_nome).get("copy_base", "")
+    exigir_sem_site = FILTROS.get("exigir_sem_site", True)
+    nota_minima = FILTROS.get("nota_minima", 4.0)
+    min_avaliacoes = FILTROS.get("min_avaliacoes", 5)
+    exigir_telefone = FILTROS.get("exigir_telefone", True)
 
     query = f"{termo_busca} em {cidade}"
     url_busca = f"https://www.google.com/maps/search/{query.replace(' ', '+')}"
-    
+
     print(f"\n==================================================")
-    print(f"🔍 Buscando: '{query}' (Nicho: {nicho_nome})")
+    print(f"⚡ Buscando Rápido: '{query}' (Nicho: {nicho_nome} | Meta lote: {limite_leads})")
     print(f"==================================================")
 
     try:
-        page.goto(url_busca, timeout=45000)
+        page.goto(url_busca, timeout=30000, wait_until="domcontentloaded")
     except Exception as e:
         print(f"Erro ao carregar busca: {e}")
         return []
 
-    time.sleep(3)
+    # Espera inteligente pelo feed ou painel único (sem sleep fixo de 3s)
+    try:
+        page.locator('div[role="feed"], h1.DUwDvf, button:has-text("Aceitar tudo")').first.wait_for(timeout=8000)
+    except Exception:
+        pass
 
     # Lidar com possíveis diálogos de consentimento
     try:
         botao_aceitar = page.locator('button:has-text("Aceitar tudo"), button:has-text("Concordo")').first
         if botao_aceitar.count() > 0 and botao_aceitar.is_visible():
             botao_aceitar.click()
-            time.sleep(2)
+            time.sleep(0.8)
     except Exception:
         pass
 
-    # Localizar o container de resultados (role="feed")
     feed = page.locator('div[role="feed"]').first
-    try:
-        feed.wait_for(timeout=10000)
-    except PlaywrightTimeoutError:
-        # Pode ter aberto direto a página do único estabelecimento encontrado
+    if feed.count() == 0:
         if page.locator('h1.DUwDvf').count() > 0:
             lead = raspar_detalhes_local(page, nicho_nome, cidade, copy_template)
             if lead:
-                duplicado, motivo = lead_ja_existe(lead, historico)
-                if not duplicado:
-                    return [lead]
-        print("Nenhum resultado encontrado para a busca.")
+                duplicado, _ = lead_ja_existe(lead, historico)
+                if not duplicado and (not exigir_sem_site or not lead["tem_site"]):
+                    tem_ext, _ = investigar_lead_completo_paralelo(lead, page)
+                    if not tem_ext:
+                        return [lead]
+        print("Nenhum resultado na listagem para esta busca.")
         return []
+
+    # Rolagem Turbo com contagem em tempo real de candidatos pré-qualificados (sem site na listagem)
+    print("⏳ Carregando e pré-filtrando empresas no feed em alta velocidade...")
+    max_scrolls = 18
+    ultimo_total = 0
+    scrolls_sem_novos = 0
+    alvo_candidatos_limpos = max(limite_leads * 2, 16)
+
+    for _ in range(max_scrolls):
+        feed.evaluate("el => el.scrollBy(0, 2800)")
+        time.sleep(0.55)
+
+        info_scroll = page.evaluate("""(params) => {
+            const cards = Array.from(document.querySelectorAll('div.Nv2PK'));
+            let candidatosSemSite = 0;
+            for (const c of cards) {
+                const siteBtn = c.querySelector('a[data-value="Website"], a[data-value="Site"], a[aria-label*="website" i], a[aria-label*="site" i]');
+                if (!siteBtn) candidatosSemSite++;
+            }
+            const fim = document.body.innerText.includes('Você chegou ao final da lista');
+            return { total: cards.length, semSite: candidatosSemSite, fim };
+        }""", {})
+
+        total_atual = info_scroll.get("total", 0)
+        sem_site_atual = info_scroll.get("semSite", 0)
+
+        if info_scroll.get("fim") or sem_site_atual >= alvo_candidatos_limpos:
+            break
+
+        if total_atual == ultimo_total:
+            scrolls_sem_novos += 1
+            if scrolls_sem_novos >= 2:
+                break
+        else:
+            scrolls_sem_novos = 0
+            ultimo_total = total_atual
+
+    # Extrai metadados de todos os cards do feed de uma só vez para pré-filtrar antes do clique!
+    metadados_cards = extrair_metadados_cards_feed(page)
+    cards_locators = page.locator('div[role="feed"] a[href*="/maps/place/"]').all()
+    print(f"📌 {len(metadados_cards)} empresas listadas. Aplicando pré-filtro instantâneo no feed...")
 
     leads_coletados = []
     links_visitados = set()
+    pulados_pre_filtro = 0
+    nome_painel_atual = ""
 
-    # Rolar o painel para carregar empresas
-    print("⏳ Carregando listagem de empresas no Google Maps...")
-    max_scrolls = 15
-
-    for scroll_idx in range(max_scrolls):
-        # Seleciona todos os links de estabelecimentos na lista
-        cards = page.locator('div[role="feed"] a[href*="/maps/place/"]').all()
-        
-        # Rola o feed para baixo
-        feed.evaluate("el => el.scrollBy(0, 1000)")
-        time.sleep(random.uniform(1.5, 2.5))
-
-        # Verificar se chegou ao fim da lista ("Você chegou ao fim da lista")
-        if page.locator('text=/Você chegou ao final da lista/i').count() > 0:
-            break
-
-        if len(cards) >= limite_leads * 2:
-            break
-
-    # Re-seleciona os cards carregados
-    cards = page.locator('div[role="feed"] a[href*="/maps/place/"]').all()
-    print(f"📌 {len(cards)} estabelecimentos encontrados na lista. Analisando critérios e histórico...")
-
-    for idx, card in enumerate(cards):
+    for meta in metadados_cards:
         if len(leads_coletados) >= limite_leads:
             print(f"🎯 Meta de {limite_leads} leads atingida para esta busca.")
             break
 
+        idx = meta.get("idx", 0)
+        href = meta.get("href", "")
+        nome_card = meta.get("nome", "")
+
+        if not href or href in links_visitados:
+            continue
+        links_visitados.add(href)
+
+        # PRÉ-FILTRO 1 (0ms, sem clicar): Já tem botão de site visível no card do feed!
+        if exigir_sem_site and meta.get("tem_site_card"):
+            pulados_pre_filtro += 1
+            continue
+
+        # PRÉ-FILTRO 2 (0ms, sem clicar): Nota visível no card abaixo da mínima
+        nota_c = meta.get("nota_card", -1)
+        if nota_c > 0 and nota_c < nota_minima:
+            pulados_pre_filtro += 1
+            continue
+
+        # PRÉ-FILTRO 3 (0ms, sem clicar): Avaliações visíveis no card abaixo do mínimo
+        aval_c = meta.get("qtd_aval_card", -1)
+        if aval_c >= 0 and aval_c < min_avaliacoes:
+            pulados_pre_filtro += 1
+            continue
+
+        # PRÉ-FILTRO 4 (0ms, sem clicar): Já existe no histórico por URL ou Nome+Cidade
+        duplicado_pre, _ = lead_ja_existe({"url_maps": href, "nome": nome_card, "cidade": cidade}, historico)
+        if duplicado_pre:
+            pulados_pre_filtro += 1
+            continue
+
+        if idx >= len(cards_locators):
+            continue
+
+        card_el = cards_locators[idx]
+
         try:
-            href = card.get_attribute("href")
-            if not href or href in links_visitados:
-                continue
-            links_visitados.add(href)
-
-            # 0. Checagem rápida antes de clicar: se a URL já foi coletada no passado, pula!
-            duplicado_url, motivo_url = lead_ja_existe({"url_maps": href}, historico)
-            if duplicado_url:
-                print(f"  ⏭️ Ignorado: Estabelecimento já coletado anteriormente em outra planilha.")
-                continue
-
-            # Garante visibilidade e clica no card para abrir os detalhes
+            # Clica no candidato pré-aprovado e aguarda reativamente o painel atualizar (~0.3s a 0.6s)
             try:
-                card.scroll_into_view_if_needed(timeout=3000)
+                card_el.scroll_into_view_if_needed(timeout=1500)
             except Exception:
                 pass
-            card.click(timeout=6000)
-            time.sleep(random.uniform(1.8, 2.8))
+            card_el.click(timeout=3500)
+            aguardar_atualizacao_painel(page, nome_painel_atual, nome_card, timeout_ms=2200)
 
-            # Aguarda o nome carregar
-            page.locator('h1.DUwDvf').first.wait_for(timeout=5000)
-
-            # Extrai os dados
+            # Extração em chamada JS única (< 15ms)
             lead = raspar_detalhes_local(page, nicho_nome, cidade, copy_template)
             if not lead:
                 continue
 
-            # 1. Checagem de Desduplicação (Telefone ou Nome+Cidade já no histórico)
+            nome_painel_atual = lead["nome"]
+
+            # 1. Desduplicação completa com telefone extraído
             duplicado, motivo = lead_ja_existe(lead, historico)
             if duplicado:
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' ({motivo})")
                 continue
 
-            # FILTROS SOLICITADOS:
-            # 2. Sem site (Identificado no perfil do Google Maps)
-            if FILTROS.get("exigir_sem_site") and lead["tem_site"]:
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Possui site/link no Maps: {lead['url_site']})")
+            # 2. Sem site no painel detalhado do Maps
+            if exigir_sem_site and lead["tem_site"]:
+                print(f"  ⏭️ Ignorado no painel: '{lead['nome']}' (Link/Site no Maps)")
                 continue
 
             # 3. Nota mínima
-            if lead["nota"] < FILTROS.get("nota_minima", 4.0) and lead["nota"] > 0:
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Nota baixa: {lead['nota']})")
+            if lead["nota"] < nota_minima and lead["nota"] > 0:
                 continue
 
-            # 4. Mínimo de avaliações (loja estruturada com movimento)
-            if lead["qtd_avaliacoes"] < FILTROS.get("min_avaliacoes", 5):
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Poucas avaliações: {lead['qtd_avaliacoes']})")
+            # 4. Mínimo de avaliações
+            if lead["qtd_avaliacoes"] < min_avaliacoes:
                 continue
 
-            # 5. Deve ter telefone para podermos abordar
-            if FILTROS.get("exigir_telefone") and not lead["telefone"]:
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Sem telefone cadastrado)")
+            # 5. Deve ter telefone
+            if exigir_telefone and not lead["telefone"]:
                 continue
 
-            # 6. INVESTIGAÇÃO 1: Instagram (Bio do Perfil e Links na Bio)
-            print(f"  📸 Inspecionando Bio e links do Instagram de '{lead['nome']}'...")
-            tem_insta, motivo_insta = investigar_instagram(lead["nome"], cidade, page, instagram_url=lead.get("url_instagram", ""))
-            if tem_insta:
-                print(f"  ⏭️ Desqualificado na bio do Instagram: {motivo_insta}")
-                continue
-
-            # 7. INVESTIGAÇÃO 2 e 3: WhatsApp Bot e Perfil Comercial / Catálogo
-            print(f"  💬 Inspecionando WhatsApp (Bots de atendimento, mensagens e perfil) de '{lead['nome']}'...")
-            tem_zap, motivo_zap = investigar_whatsapp_bot_e_perfil(lead["telefone"], lead["nome"], cidade, page)
-            if tem_zap:
-                print(f"  ⏭️ Desqualificado no WhatsApp: {motivo_zap}")
-                continue
-
-            # 8. INVESTIGAÇÃO COMPLEMENTAR: Domínio próprio registrado na Web
-            print(f"  🔎 Investigando a fundo na Web por site próprio de '{lead['nome']}'...")
-            tem_web, motivo_web = investigar_web_externa(lead["nome"], cidade)
-            if tem_web:
-                print(f"  ⏭️ Desqualificado na investigação da Web: {motivo_web}")
+            # 6. INVESTIGAÇÃO PARALELA ULTRA-RÁPIDA (Web + WhatsApp + Instagram simultâneos)
+            print(f"  ⚡ Verificando em paralelo (Web + WhatsApp + Instagram): '{lead['nome']}'...")
+            tem_presenca_digital, motivo_verif = investigar_lead_completo_paralelo(lead, page)
+            if tem_presenca_digital:
+                print(f"  ⏭️ Desqualificado ({motivo_verif})")
                 continue
 
             leads_coletados.append(lead)
@@ -319,14 +468,12 @@ def buscar_leads_google_maps(
             if lead["url_maps"]:
                 historico.setdefault("urls_maps", {})[lead["url_maps"].split("?")[0]] = {"nome": lead["nome"]}
 
-            print(f"  🎯 [LEAD 100% VERIFICADO #{len(leads_coletados)}]")
-            print(f"     Nome: {lead['nome']}")
-            print(f"     Telefone: {lead['telefone']}")
-            print(f"     Nota: {lead['nota']}⭐ ({lead['qtd_avaliacoes']} avaliações)")
-            print(f"     Status: Confirmado 100% sem site e sem cardápio digital!")
-            print(f"     Potencial de Venda: {lead['score_potencial']}%\n")
+            print(f"  ✅ [LEAD #{len(leads_coletados)} APROVADO] {lead['nome']} | Tel: {lead['telefone']} | {lead['nota']}⭐ ({lead['qtd_avaliacoes']} aval.) | Score: {lead['score_potencial']}%")
 
-        except Exception as err:
+        except Exception:
             continue
+
+    if pulados_pre_filtro > 0:
+        print(f"  🚀 [TURBO] {pulados_pre_filtro} empresas com site/nota baixa/repetidas foram filtradas direto na lista sem perder tempo clicando!")
 
     return leads_coletados
