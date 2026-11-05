@@ -44,7 +44,7 @@ def calcular_score_potencial(lead: dict) -> int:
     - Avaliações > 50: +15 pontos (alto fluxo de clientes e faturamento)
     - Avaliações entre 10 e 49: +10 pontos
     - Telefone válido/WhatsApp: +15 pontos (fácil contato)
-    - Nicho alto ticket: +15 pontos
+    - Nicho definido pelo usuário: +15 pontos
     """
     score = 0
     if not lead.get("tem_site", False):
@@ -68,8 +68,8 @@ def calcular_score_potencial(lead: dict) -> int:
     if tel:
         score += 15
 
-    nicho = lead.get("nicho", "").lower()
-    if any(k in nicho for k in ["plastica", "odonto", "restaurante", "advocacia", "hair", "beleza", "nail"]):
+    nicho = lead.get("nicho", "").strip()
+    if nicho:
         score += 15
     else:
         score += 10

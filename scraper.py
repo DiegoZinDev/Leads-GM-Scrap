@@ -17,7 +17,7 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 from playwright.sync_api import sync_playwright, Page, TimeoutError as PlaywrightTimeoutError
-from config import NICHOS, REGIOES, FILTROS
+from config import NICHOS, REGIOES, FILTROS, gerar_config_nicho
 from exporter import calcular_score_potencial
 from historico import carregar_historico, lead_ja_existe, extrair_apenas_digitos, normalizar_texto
 from verifier import (
@@ -117,8 +117,10 @@ def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_templat
         # Tentar extrair dono ou gerente
         dono = extrair_dono_ou_gerente(page)
 
-        # Montar cópia personalizada com o nome da loja
-        copy_pronta = copy_template.replace("{nome}", nome)
+        # Montar cópia personalizada com o nome da loja e nicho
+        if not copy_template:
+            copy_template = gerar_config_nicho(nicho_nome).get("copy_base", "")
+        copy_pronta = copy_template.replace("{nome}", nome).replace("{nicho}", nicho_nome)
 
         lead = {
             "nome": nome,
@@ -151,17 +153,20 @@ def buscar_leads_google_maps(
     termo_busca: str,
     cidade: str,
     limite_leads: int = 15,
-    historico: dict = None
+    historico: dict = None,
+    copy_base: str = ""
 ) -> list:
     """Pesquisa no Google Maps, rola os resultados e extrai os leads qualificados (sem repetir leads anteriores)."""
     if historico is None:
         historico = carregar_historico()
 
+    copy_template = copy_base or gerar_config_nicho(nicho_nome).get("copy_base", "")
+
     query = f"{termo_busca} em {cidade}"
     url_busca = f"https://www.google.com/maps/search/{query.replace(' ', '+')}"
     
     print(f"\n==================================================")
-    print(f"🔍 Buscando: '{query}'")
+    print(f"🔍 Buscando: '{query}' (Nicho: {nicho_nome})")
     print(f"==================================================")
 
     try:
@@ -188,8 +193,7 @@ def buscar_leads_google_maps(
     except PlaywrightTimeoutError:
         # Pode ter aberto direto a página do único estabelecimento encontrado
         if page.locator('h1.DUwDvf').count() > 0:
-            copy = NICHOS.get(nicho_nome, {}).get("copy_base", "")
-            lead = raspar_detalhes_local(page, nicho_nome, cidade, copy)
+            lead = raspar_detalhes_local(page, nicho_nome, cidade, copy_template)
             if lead:
                 duplicado, motivo = lead_ja_existe(lead, historico)
                 if not duplicado:
@@ -222,8 +226,6 @@ def buscar_leads_google_maps(
     # Re-seleciona os cards carregados
     cards = page.locator('div[role="feed"] a[href*="/maps/place/"]').all()
     print(f"📌 {len(cards)} estabelecimentos encontrados na lista. Analisando critérios e histórico...")
-
-    copy_template = NICHOS.get(nicho_nome, {}).get("copy_base", "")
 
     for idx, card in enumerate(cards):
         if len(leads_coletados) >= limite_leads:
