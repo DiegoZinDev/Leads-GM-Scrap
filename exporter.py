@@ -1,6 +1,6 @@
 """
-Módulo para exportação de leads enriquecidos para Excel (.xlsx) e Relatório Executivo (.pdf)
-com layout profissional, hyperlinks, KPIs e formatação executiva.
+Módulo para exportação de leads qualificados em Relatório Executivo (.pdf),
+com ordenação por potencial de conversão e registro automático no histórico.
 """
 
 import sys
@@ -17,11 +17,9 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-import openpyxl
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.utils import get_column_letter
 from playwright.sync_api import sync_playwright, Page
 from historico import garantir_pasta_planilhas, salvar_no_historico
+
 
 def limpar_numero_whatsapp(telefone: str) -> str:
     """Extrai apenas dígitos e valida se tem formato com DDD."""
@@ -34,9 +32,10 @@ def limpar_numero_whatsapp(telefone: str) -> str:
         digitos = "55" + digitos
     return digitos
 
+
 def calcular_score_potencial(lead: dict) -> int:
     """
-    Calcula uma porcentagem de potencial de venda (0 a 100%)
+    Calcula uma porcentagem de potencial de venda (0 a 100%).
     Critérios:
     - Sem site: +40 pontos (alta dor / necessidade imediata)
     - Nota >= 4.5: +15 pontos (empresa que preza pela reputação)
@@ -76,10 +75,11 @@ def calcular_score_potencial(lead: dict) -> int:
 
     return min(100, max(10, score))
 
-def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page = None):
+
+def gerar_pdf_leads(leads: list, id_lote: str, caminho_pdf: str, page: Page = None) -> bool:
     """
-    Gera um PDF executivo no estilo Ultra-Wide Horizontal (semelhante ao Excel),
-    contendo todas as 16 colunas completas da planilha.
+    Renderiza o relatório PDF contendo todos os dados dos leads qualificados.
+    Retorna True se o PDF foi gerado com sucesso.
     """
     linhas_tabela = ""
     for idx, lead in enumerate(leads, 1):
@@ -87,7 +87,7 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
         badge_bg = "#dcfce7" if score >= 85 else "#fef9c3"
         badge_txt = "#15803d" if score >= 85 else "#854d0e"
         prioridade = "ALTA" if score >= 85 else "MÉDIA"
-        lead_id = lead.get("id_lead", f"LEAD-{id_planilha}-{idx:03d}")
+        lead_id = lead.get("id_lead", f"LEAD-{id_lote}-{idx:03d}")
         nome = html.escape(str(lead.get("nome", "N/A")))
         nicho = html.escape(str(lead.get("nicho", "N/A")))
         cidade = html.escape(str(lead.get("cidade", "N/A")))
@@ -134,10 +134,10 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
-        <title>Relatório de Leads Qualificados - ID {id_planilha}</title>
+        <title>Relatório de Leads Qualificados - ID {id_lote}</title>
         <style>
             @page {{
-                size: 520mm 297mm; /* Canvas Ultra-Wide no estilo Planilha Excel */
+                size: 520mm 297mm;
                 margin: 10mm 8mm;
             }}
             body {{
@@ -233,10 +233,10 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
     <body>
         <div class="header">
             <div>
-                <div class="title">RELATÓRIO DE LEADS QUALIFICADOS (ESTILO PLANILHA EXCEL)</div>
+                <div class="title">RELATÓRIO EXECUTIVO DE LEADS QUALIFICADOS</div>
                 <div class="subtitle">Investigação Profunda de Instagram, WhatsApp e Web | 100% Sem Site | Alta Prioridade</div>
             </div>
-            <div class="badge-id">LOTE: {id_planilha}</div>
+            <div class="badge-id">LOTE: {id_lote}</div>
         </div>
 
         <div class="kpis">
@@ -289,9 +289,12 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
 
     pdf_gerado = False
     if page:
+        aba_pdf = None
         try:
-            page.set_content(html_content)
-            page.pdf(
+            # Usa uma aba dedicada para não perder a página ativa do Google Maps nem falhar em modo non-headless
+            aba_pdf = page.context.new_page()
+            aba_pdf.set_content(html_content, wait_until="domcontentloaded")
+            aba_pdf.pdf(
                 path=caminho_pdf,
                 width="520mm",
                 height="297mm",
@@ -301,13 +304,19 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
             pdf_gerado = True
         except Exception:
             pdf_gerado = False
+        finally:
+            if aba_pdf:
+                try:
+                    aba_pdf.close()
+                except Exception:
+                    pass
 
     if not pdf_gerado:
         try:
             with sync_playwright() as p:
                 browser = p.chromium.launch(headless=True)
                 p_page = browser.new_page()
-                p_page.set_content(html_content)
+                p_page.set_content(html_content, wait_until="domcontentloaded")
                 p_page.pdf(
                     path=caminho_pdf,
                     width="520mm",
@@ -316,179 +325,45 @@ def gerar_pdf_leads(leads: list, id_planilha: str, caminho_pdf: str, page: Page 
                     margin={"top": "8mm", "bottom": "8mm", "left": "6mm", "right": "6mm"}
                 )
                 browser.close()
+                pdf_gerado = True
         except Exception as e:
             print(f"[!] Erro ao renderizar PDF: {e}")
-            return
+            return False
 
-    print(f"[SUCESSO] Relatório PDF Ultra-Wide gerado com sucesso: {caminho_pdf}")
+    print(f"\n[SUCESSO] Relatório PDF gerado com sucesso: {caminho_pdf}")
+    return True
 
-def salvar_planilha_excel(leads: list, id_planilha: str = None, page: Page = None) -> tuple[str, str, str]:
+
+def salvar_relatorio_pdf(leads: list, id_lote: str = None, page: Page = None, pasta_destino: str = None) -> tuple[str, str]:
     """
-    Gera a planilha formatada (.xlsx) e o relatório executivo (.pdf).
-    Salva no diretório 'Planilhas' com ID único e data/hora no nome.
-    Retorna (caminho_excel, caminho_pdf, id_planilha).
+    Ordena os leads por potencial, gera exclusivamente o relatório em PDF (.pdf)
+    e registra o lote no histórico de desduplicação.
+    Retorna (caminho_pdf, id_lote).
     """
-    pasta_destino = garantir_pasta_planilhas()
+    if not leads:
+        return "", ""
 
-    if not id_planilha:
-        id_planilha = uuid.uuid4().hex[:6].upper()
+    pasta_saida = pasta_destino or garantir_pasta_planilhas()
+    os.makedirs(pasta_saida, exist_ok=True)
+
+    if not id_lote:
+        id_lote = uuid.uuid4().hex[:6].upper()
 
     agora = datetime.now()
     timestamp_str = agora.strftime("%Y-%m-%d_%H-%M-%S")
-    nome_arquivo = f"Leads_{timestamp_str}_ID-{id_planilha}.xlsx"
-    caminho_completo = os.path.join(pasta_destino, nome_arquivo)
-
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = f"Leads ID {id_planilha}"
-
-    colunas = [
-        ("ID do Lead", 16),
-        ("Score Potencial", 15),
-        ("Prioridade", 12),
-        ("Nome da Empresa", 32),
-        ("Nicho / Categoria", 22),
-        ("Região / Cidade", 20),
-        ("Telefone", 18),
-        ("É WhatsApp?", 14),
-        ("Link WhatsApp", 18),
-        ("Nome do Dono / Gerente", 24),
-        ("Nota", 8),
-        ("Total Avaliações", 16),
-        ("Possui Site?", 14),
-        ("Endereço", 35),
-        ("Link Maps", 15),
-        ("Melhor Abordagem (Copy Personalizada)", 60)
-    ]
-
-    cor_cabecalho = "1A365D"
-    fonte_cabecalho = Font(name="Segoe UI", size=11, bold=True, color="FFFFFF")
-    preenchimento_cabecalho = PatternFill(start_color=cor_cabecalho, end_color=cor_cabecalho, fill_type="solid")
-
-    fonte_normal = Font(name="Segoe UI", size=10)
-    fonte_bold = Font(name="Segoe UI", size=10, bold=True)
-    fonte_link = Font(name="Segoe UI", size=10, color="2B6CB0", underline="single")
-
-    fill_verde = PatternFill(start_color="C6F6D5", end_color="C6F6D5", fill_type="solid")
-    fill_amarelo = PatternFill(start_color="FEFCBF", end_color="FEFCBF", fill_type="solid")
-    fill_zebra = PatternFill(start_color="F7FAFC", end_color="F7FAFC", fill_type="solid")
-
-    borda_fina = Border(
-        left=Side(style='thin', color='E2E8F0'),
-        right=Side(style='thin', color='E2E8F0'),
-        top=Side(style='thin', color='E2E8F0'),
-        bottom=Side(style='thin', color='E2E8F0')
-    )
-
-    for col_idx, (titulo, largura) in enumerate(colunas, 1):
-        cell = ws.cell(row=1, column=col_idx, value=titulo)
-        cell.font = fonte_cabecalho
-        cell.fill = preenchimento_cabecalho
-        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-        col_letter = get_column_letter(col_idx)
-        ws.column_dimensions[col_letter].width = largura
-
-    ws.row_dimensions[1].height = 30
 
     leads_ordenados = sorted(leads, key=lambda x: x.get("score_potencial", 0), reverse=True)
+    for idx, lead in enumerate(leads_ordenados, 1):
+        lead["id_lead"] = f"LEAD-{id_lote}-{idx:03d}"
 
-    for row_idx, lead in enumerate(leads_ordenados, 2):
-        score = lead.get("score_potencial", 0)
-        prioridade = "ALTA" if score >= 85 else "MÉDIA"
-        lead_id = f"LEAD-{id_planilha}-{str(row_idx - 1).zfill(3)}"
-        lead["id_lead"] = lead_id
+    nome_pdf = f"Leads_{timestamp_str}_ID-{id_lote}.pdf"
+    caminho_pdf = os.path.join(pasta_saida, nome_pdf)
 
-        tel = lead.get("telefone", "")
-        num_zap = limpar_numero_whatsapp(tel)
-        is_zap = "Sim (Provável)" if (len(num_zap) >= 12 and num_zap[4:5] in ["9", "8"]) else ("Sim" if tel else "Não")
+    sucesso = gerar_pdf_leads(leads_ordenados, id_lote, caminho_pdf, page=page)
+    if not sucesso:
+        return "", id_lote
 
-        link_zap = f"https://wa.me/{num_zap}" if num_zap else ""
-        tem_site_str = "Sim" if lead.get("tem_site", False) else "NÃO (Oportunidade)"
+    if pasta_destino is None:
+        salvar_no_historico(leads_ordenados, id_lote)
 
-        linha_dados = [
-            lead_id,
-            f"{score}%",
-            prioridade,
-            lead.get("nome", "N/A"),
-            lead.get("nicho", "N/A"),
-            lead.get("cidade", "N/A"),
-            tel if tel else "Não informado",
-            is_zap,
-            link_zap,
-            lead.get("dono_gerente", "Consultar na Recepção / Secretária"),
-            lead.get("nota", 0.0),
-            lead.get("qtd_avaliacoes", 0),
-            tem_site_str,
-            lead.get("endereco", "N/A"),
-            lead.get("url_maps", ""),
-            lead.get("copy_abordagem", "")
-        ]
-
-        ws.row_dimensions[row_idx].height = 45
-
-        for col_idx, valor in enumerate(linha_dados, 1):
-            cell = ws.cell(row=row_idx, column=col_idx)
-            cell.font = fonte_normal
-            cell.border = borda_fina
-            cell.alignment = Alignment(vertical="center")
-
-            if col_idx == 1:
-                cell.value = valor
-                cell.font = fonte_bold
-                cell.alignment = Alignment(horizontal="center", vertical="center")
-            elif col_idx == 2:
-                cell.value = valor
-                cell.font = fonte_bold
-                cell.alignment = Alignment(horizontal="center", vertical="center")
-                if score >= 85:
-                    cell.fill = fill_verde
-                else:
-                    cell.fill = fill_amarelo
-            elif col_idx == 3:
-                cell.value = valor
-                cell.font = fonte_bold
-                cell.alignment = Alignment(horizontal="center", vertical="center")
-            elif col_idx in [7, 8, 11, 12, 13]:
-                cell.value = valor
-                cell.alignment = Alignment(horizontal="center", vertical="center")
-                if col_idx == 13 and not lead.get("tem_site", False):
-                    cell.font = Font(name="Segoe UI", size=10, bold=True, color="C53030")
-            elif col_idx == 9:
-                if link_zap:
-                    cell.value = "Abrir WhatsApp"
-                    cell.hyperlink = link_zap
-                    cell.font = fonte_link
-                    cell.alignment = Alignment(horizontal="center", vertical="center")
-                else:
-                    cell.value = "-"
-                    cell.alignment = Alignment(horizontal="center", vertical="center")
-            elif col_idx == 15:
-                url_maps = lead.get("url_maps", "")
-                if url_maps:
-                    cell.value = "Ver no Maps"
-                    cell.hyperlink = url_maps
-                    cell.font = fonte_link
-                    cell.alignment = Alignment(horizontal="center", vertical="center")
-            elif col_idx == 16:
-                cell.value = valor
-                cell.alignment = Alignment(vertical="center", wrap_text=True)
-            else:
-                cell.value = valor
-                if row_idx % 2 == 0:
-                    cell.fill = fill_zebra
-
-    wb.save(caminho_completo)
-    print(f"\n[SUCESSO] Planilha Excel salva com sucesso: {caminho_completo}")
-
-    # Gera PDF executivo correspondente
-    nome_pdf = f"Leads_{timestamp_str}_ID-{id_planilha}.pdf"
-    caminho_pdf = os.path.join(pasta_destino, nome_pdf)
-    try:
-        gerar_pdf_leads(leads_ordenados, id_planilha, caminho_pdf, page=page)
-    except Exception as e:
-        print(f"[!] Aviso: Falha ao gerar PDF ({e})")
-        caminho_pdf = ""
-
-    salvar_no_historico(leads_ordenados, id_planilha)
-
-    return caminho_completo, caminho_pdf, id_planilha
+    return caminho_pdf, id_lote

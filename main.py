@@ -1,7 +1,7 @@
 """
 Painel Principal do Bot de Captação de Leads (Google Maps).
 Filtra estabelecimentos sem site, com verificação profunda na web (anti-cardápio digital/anti-site),
-garante um mínimo de 50 leads e gera planilha Excel + Relatório Executivo em PDF.
+garante um mínimo de 50 leads e gera Relatório Executivo em PDF.
 """
 
 import sys
@@ -19,7 +19,7 @@ if hasattr(sys.stdout, "reconfigure"):
 from playwright.sync_api import sync_playwright
 from config import NICHOS, REGIOES, PASTA_PERFIL_NAVEGADOR, VERIFICACAO
 from scraper import buscar_leads_google_maps
-from exporter import salvar_planilha_excel
+from exporter import salvar_relatorio_pdf
 from historico import carregar_historico
 from verifier import VerificadorPresencaDigital, interceptar_novas_abas_whatsapp
 
@@ -30,7 +30,7 @@ def mostrar_banner():
  🚀 BOT PROSPECTOR: LEADS QUALIFICADOS (GOOGLE MAPS + INVESTIGAÇÃO WEB)
     Brasília DF, Valparaíso de Goiás e Entorno
     Filtro Rigoroso: 100% Sem Site | Sem Cardápio Digital | Alta Reputação
-    Garantia: Mínimo de 50 Leads por Lote | Exportação em Excel (.xlsx) e PDF
+    Garantia: Mínimo de 50 Leads por Lote | Exportação em Relatório PDF (.pdf)
     Anti-Duplicação: Leads já prospectados NUNCA são repetidos!
 ================================================================================
     """)
@@ -47,7 +47,7 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
     print(f"- Regiões mapeadas: {len(regioes_selecionadas)} sub-regiões (DF e Valparaíso)")
     print(f"- Meta Mínima de Leads: {meta_leads} leads 100% verificados sem site/cardápio")
     print(f"- Histórico Ativo: {historico.get('total_coletados', 0)} leads já salvos (não serão repetidos)")
-    print("- Saídas: Planilha Excel (.xlsx) + Relatório Executivo (.pdf)")
+    print("- Saída: Relatório Executivo (.pdf)")
     print(f"- Modo Visual: {'Ativado (janela visível)' if not headless else 'Invisível (Headless)'}")
     print("--------------------------------------------------------------------------------\n")
 
@@ -113,9 +113,9 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                 break
 
         if todos_os_leads:
-            caminho_excel, caminho_pdf, id_planilha = salvar_planilha_excel(todos_os_leads, page=page)
+            caminho_pdf, id_lote = salvar_relatorio_pdf(todos_os_leads, page=page)
         else:
-            caminho_excel, caminho_pdf, id_planilha = "", "", ""
+            caminho_pdf, id_lote = "", ""
 
         context.close()
 
@@ -129,15 +129,14 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
         com_zap = sum(1 for l in todos_os_leads if l.get("telefone"))
         alta_prioridade = sum(1 for l in todos_os_leads if l.get("score_potencial", 0) >= 85)
 
-        print("\n📊 RESUMO DOS ARQUIVOS GERADOS:")
-        print(f"  • ID do Lote: {id_planilha}")
+        print("\n📊 RESUMO DO RELATÓRIO GERADO:")
+        print(f"  • ID do Lote: {id_lote}")
         print(f"  • Total de Leads: {len(todos_os_leads)} (Meta: {meta_leads})")
         print(f"  • Com Telefone / WhatsApp: {com_zap}")
         print(f"  • Alta Prioridade (Score >= 85%): {alta_prioridade}")
-        print(f"  • Planilha Excel: {caminho_excel}")
         if caminho_pdf:
             print(f"  • Relatório PDF: {caminho_pdf}")
-        print("\nArquivos salvos no diretório 'Planilhas/' prontos para prospecção!\n")
+        print("\nRelatório salvo no diretório 'Planilhas/' pronto para prospecção!\n")
     else:
         print("[!] Nenhum lead inédito atendeu a todos os critérios restritos nesta rodada.")
 
@@ -203,7 +202,7 @@ def menu_interativo():
         print("--------------------------------------------------------------------------------")
         print("Escolha o modo de operação:")
         print("0 - 🔑 Conectar Contas (Fazer Login Manual no Instagram e WhatsApp Web)")
-        print("1 - 🚀 Prospecção Padrão (Mínimo de 50 Leads em PDF + Excel de todos os nichos)")
+        print("1 - 🚀 Prospecção Padrão (Mínimo de 50 Leads em PDF de todos os nichos)")
         print("2 - 🎯 Prospecção de 50+ Leads em Nicho Específico (ex: só Odonto, só Restaurantes, etc.)")
         print("3 - ⚙️ Prospecção Personalizada (Definir meta customizada, ex: 80 ou 100 leads)")
         print("4 - ⚡ Teste Rápido (3 leads de demonstração com verificação profunda)")
@@ -255,7 +254,7 @@ def menu_interativo():
             break
 
         elif escolha == "3":
-            qtd_str = input("Quantos leads mínimos deseja no arquivo final? [Ex: 50, 80, 100]: ").strip()
+            qtd_str = input("Quantos leads mínimos deseja no relatório PDF final? [Ex: 50, 80, 100]: ").strip()
             meta = int(qtd_str) if qtd_str.isdigit() else 50
             executar_prospeccao(NICHOS, REGIOES, meta_leads=meta, headless=headless_opt)
             break
