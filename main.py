@@ -7,7 +7,6 @@ garante um mínimo de 50 leads e gera planilha Excel + Relatório Executivo em P
 import sys
 import os
 import time
-from datetime import datetime
 
 # Garante suporte UTF-8 no terminal Windows
 if hasattr(sys.stdout, "reconfigure"):
@@ -18,11 +17,12 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 from playwright.sync_api import sync_playwright
-from config import NICHOS, REGIOES, FILTROS, META_MINIMA_LEADS, PASTA_PERFIL_NAVEGADOR
+from config import NICHOS, REGIOES, PASTA_PERFIL_NAVEGADOR, VERIFICACAO
 from scraper import buscar_leads_google_maps
 from exporter import salvar_planilha_excel
 from historico import carregar_historico
-from verifier import interceptar_novas_abas_whatsapp
+from verifier import VerificadorPresencaDigital, interceptar_novas_abas_whatsapp
+
 
 def mostrar_banner():
     print("""
@@ -35,20 +35,21 @@ def mostrar_banner():
 ================================================================================
     """)
 
+
 def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, meta_leads: int = 50, headless: bool = False):
     """Executa o ciclo de prospecção iterando por regiões até atingir a meta mínima de leads."""
     todos_os_leads = []
     inicio_tempo = time.time()
     historico = carregar_historico()
 
-    print(f"\n[CONFIGURAÇÃO DA PROSPECÇÃO]")
+    print("\n[CONFIGURAÇÃO DA PROSPECÇÃO]")
     print(f"- Nichos: {', '.join(nichos_selecionados.keys())}")
     print(f"- Regiões mapeadas: {len(regioes_selecionadas)} sub-regiões (DF e Valparaíso)")
     print(f"- Meta Mínima de Leads: {meta_leads} leads 100% verificados sem site/cardápio")
     print(f"- Histórico Ativo: {historico.get('total_coletados', 0)} leads já salvos (não serão repetidos)")
-    print(f"- Saídas: Planilha Excel (.xlsx) + Relatório Executivo (.pdf)")
+    print("- Saídas: Planilha Excel (.xlsx) + Relatório Executivo (.pdf)")
     print(f"- Modo Visual: {'Ativado (janela visível)' if not headless else 'Invisível (Headless)'}")
-    print(f"--------------------------------------------------------------------------------\n")
+    print("--------------------------------------------------------------------------------\n")
 
     os.makedirs(PASTA_PERFIL_NAVEGADOR, exist_ok=True)
     with sync_playwright() as p:
@@ -61,12 +62,15 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
             viewport={"width": 1600, "height": 900} if headless else None,
             ignore_https_errors=True
         )
-        # Garante redirecionamento inteligente de abas do WhatsApp para aba única
         interceptar_novas_abas_whatsapp(context)
         page = context.pages[0] if context.pages else context.new_page()
 
+        verificador = VerificadorPresencaDigital(context, config=VERIFICACAO)
+        acessivel_ig, logado_ig, msg_ig = verificador.instagram.verificar_sessao()
+        icone_ig = "✅" if (acessivel_ig and logado_ig) else "⚠️"
+        print(f"[*] Status do Instagram: {icone_ig} {msg_ig}")
+
         atingiu_meta = False
-        # Percorre nichos e regiões até bater a meta de leads
         while len(todos_os_leads) < meta_leads and not atingiu_meta:
             houve_novos = False
             for nicho_nome, dados_nicho in nichos_selecionados.items():
@@ -95,7 +99,8 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                             termo_busca=termo,
                             cidade=regiao,
                             limite_leads=limite_busca,
-                            historico=historico
+                            historico=historico,
+                            verificador=verificador,
                         )
 
                         if novos_leads:
@@ -103,12 +108,10 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                             todos_os_leads.extend(novos_leads)
                             print(f"[*] Progresso do lote: {len(todos_os_leads)}/{meta_leads} leads qualificados.")
 
-            # Se rodou todas as combinações sem encontrar nada novo, encerra para evitar loop infinito
             if not houve_novos:
                 print("\n[!] Varredura completa finalizada em todas as regiões e termos disponíveis.")
                 break
 
-        # Salva a planilha e gera o PDF reutilizando a sessão ativa do Playwright
         if todos_os_leads:
             caminho_excel, caminho_pdf, id_planilha = salvar_planilha_excel(todos_os_leads, page=page)
         else:
@@ -117,17 +120,16 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
         context.close()
 
     tempo_total = round((time.time() - inicio_tempo) / 60, 2)
-    print(f"\n================================================================================")
+    print("\n================================================================================")
     print(f"🏁 PROSPECÇÃO CONCLUÍDA EM {tempo_total} MINUTOS!")
     print(f"Total de leads inéditos e 100% verificados: {len(todos_os_leads)}")
-    print(f"================================================================================")
+    print("================================================================================")
 
     if todos_os_leads:
-
         com_zap = sum(1 for l in todos_os_leads if l.get("telefone"))
         alta_prioridade = sum(1 for l in todos_os_leads if l.get("score_potencial", 0) >= 85)
 
-        print(f"\n📊 RESUMO DOS ARQUIVOS GERADOS:")
+        print("\n📊 RESUMO DOS ARQUIVOS GERADOS:")
         print(f"  • ID do Lote: {id_planilha}")
         print(f"  • Total de Leads: {len(todos_os_leads)} (Meta: {meta_leads})")
         print(f"  • Com Telefone / WhatsApp: {com_zap}")
@@ -135,9 +137,10 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
         print(f"  • Planilha Excel: {caminho_excel}")
         if caminho_pdf:
             print(f"  • Relatório PDF: {caminho_pdf}")
-        print(f"\nArquivos salvos no diretório 'Planilhas/' prontos para prospecção!\n")
+        print("\nArquivos salvos no diretório 'Planilhas/' prontos para prospecção!\n")
     else:
         print("[!] Nenhum lead inédito atendeu a todos os critérios restritos nesta rodada.")
+
 
 def fazer_login_manual():
     """
@@ -145,7 +148,7 @@ def fazer_login_manual():
     o login manual no Instagram e escanear o QR Code do WhatsApp Web.
     Todas as sessões são salvas permanentemente em 'perfil_navegador/'.
     """
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print(" 🔑 CONECTAR CONTAS (LOGIN MANUAL NO INSTAGRAM E WHATSAPP WEB)")
     print("================================================================================")
     print(" Instruções:")
@@ -190,6 +193,7 @@ def fazer_login_manual():
         print("✅ Sessão salva com sucesso! Suas buscas agora utilizarão as contas conectadas.\n")
         time.sleep(1.5)
 
+
 def menu_interativo():
     while True:
         mostrar_banner()
@@ -216,10 +220,9 @@ def menu_interativo():
             print("\nEncerrando o Bot Prospector. Até logo!\n")
             break
 
-        headless_opt = False # Janela visível para o usuário acompanhar
+        headless_opt = False
 
         if escolha == "1":
-            # Prospecção completa de 50 leads distribuídos nos nichos solicitados
             executar_prospeccao(NICHOS, REGIOES, meta_leads=50, headless=headless_opt)
             break
 
@@ -242,7 +245,7 @@ def menu_interativo():
                 else:
                     regs = REGIOES
 
-                qtd_str = input(f"Quantidade mínima de leads desejada [Padrão: 50]: ").strip()
+                qtd_str = input("Quantidade mínima de leads desejada [Padrão: 50]: ").strip()
                 meta = int(qtd_str) if qtd_str.isdigit() else 50
 
                 executar_prospeccao(nicho_dict, regs, meta_leads=meta, headless=headless_opt)
@@ -258,7 +261,6 @@ def menu_interativo():
             break
 
         elif escolha == "4":
-            # Teste rápido de 3 leads
             nichos_teste = {
                 "Odontologia": NICHOS["Odontologia"],
                 "Restaurantes de Alto Custo": NICHOS["Restaurantes de Alto Custo"]
@@ -270,6 +272,6 @@ def menu_interativo():
             print(f"[!] Opção '{escolha}' inválida. Escolha entre 0 e 5.")
             time.sleep(1)
 
+
 if __name__ == "__main__":
     menu_interativo()
-

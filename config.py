@@ -175,3 +175,15 @@ FILTROS = {
     "min_avaliacoes": 5,             # Pelo menos 5 avaliações para garantir que tem clientela ativa
     "exigir_telefone": True,         # Deve ter telefone para poder abordar
 }
+
+
+# Configurações da verificação de presença digital (Maps + Instagram + Web)
+VERIFICACAO = {
+    "desqualificar_marketplace": False,    # iFood/Doctoralia não são site próprio
+    "rejeitar_inconclusivos": True,        # Links que falharem ao abrir/expandir reprovam o lead por segurança
+    "exigir_instagram_verificado": False,  # Se True, exige que o Instagram esteja acessível na rede; se False, avisa quando inacessível
+    "busca_web": True,
+    "adivinhar_dominios": True,
+    "max_links_agregador": 25,
+    "timeout_http_ms": 9000,
+}

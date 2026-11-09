@@ -16,45 +16,74 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from playwright.sync_api import sync_playwright, Page, TimeoutError as PlaywrightTimeoutError
-from config import NICHOS, REGIOES, FILTROS
+from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
+from config import NICHOS, FILTROS, VERIFICACAO
 from exporter import calcular_score_potencial
 from historico import carregar_historico, lead_ja_existe, extrair_apenas_digitos, normalizar_texto
-from verifier import (
-    verificar_detalhes_google_maps,
-    investigar_web_externa,
-    investigar_instagram,
-    investigar_whatsapp_bot_e_perfil
-)
+from verifier import VerificadorPresencaDigital, ResultadoPresencaDigital
+
 
 def extrair_dono_ou_gerente(page: Page) -> str:
     """Tenta identificar o nome do proprietário através de respostas de avaliações ou informações adicionais."""
     try:
-        # Procura por respostas do proprietário nas avaliações recentes
         respostas = page.locator('text=/Resposta do propriet[aá]rio/i').all()
         for resp in respostas[:3]:
             parent = resp.locator('..').inner_text()
-            # Padrões comuns: "Atenciosamente, Dr. Fulano", "Abraço, Fulano (Gerente)", etc.
-            match = re.search(r"(?:atenciosamente|abraço|grato|obrigado),?\s+(?:dr\.?|dra\.?)?\s*([A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+)?)", parent, re.IGNORECASE)
+            match = re.search(
+                r"(?:atenciosamente|abraço|grato|obrigado),?\s+(?:dr\.?|dra\.?)?\s*([A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕ][a-zà-ú]+)?)",
+                parent,
+                re.IGNORECASE,
+            )
             if match:
                 return match.group(1).strip()
     except Exception:
         pass
     return "A confirmar na abordagem (Secretária/Recepção)"
 
-def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_template: str) -> dict:
+
+def aplicar_resultado_presenca(lead: dict, resultado: ResultadoPresencaDigital) -> None:
+    """Grava no lead o resultado da verificação de presença digital."""
+    perfil = resultado.perfil_instagram
+    lead["tem_site"] = resultado.tem_site
+    lead["url_site"] = resultado.motivo
+    lead["evidencias_site"] = [str(e) for e in resultado.evidencias]
+    lead["observacoes"] = list(resultado.observacoes)
+    lead["pendencias_verificacao"] = list(resultado.inconclusivos)
+    lead["url_instagram"] = resultado.url_instagram
+    lead["status_instagram"] = resultado.status_instagram
+    lead["detalhe_instagram"] = resultado.detalhe_instagram
+    lead["instagram"] = perfil.to_dict() if perfil and perfil.acessivel else {}
+
+
+def motivo_reprovacao_presenca(resultado: ResultadoPresencaDigital) -> str:
+    """Retorna o motivo de reprovação no critério 'sem site', ou '' se aprovado."""
+    if resultado.tem_site:
+        return f"Possui site/sistema/landing page: {resultado.motivo}"
+    if resultado.status_instagram == "inacessivel" and VERIFICACAO.get("exigir_instagram_verificado", False):
+        return f"Instagram não pôde ser verificado ({resultado.detalhe_instagram})"
+    if resultado.inconclusivos and VERIFICACAO.get("rejeitar_inconclusivos", True):
+        return f"Verificação inconclusiva: {resultado.inconclusivos[0]}"
+    return ""
+
+
+def raspar_detalhes_local(
+    page: Page,
+    nicho_nome: str,
+    cidade: str,
+    copy_template: str,
+    verificador: VerificadorPresencaDigital,
+) -> tuple[dict | None, ResultadoPresencaDigital | None]:
     """Extrai os dados da empresa aberta no painel lateral do Google Maps."""
     try:
-        # Nome da empresa
         nome = ""
         try:
             nome_el = page.locator('h1.DUwDvf').first
             nome = nome_el.inner_text().strip()
         except Exception:
-            return None
+            return None, None
 
         if not nome:
-            return None
+            return None, None
 
         # Nota e Avaliações
         nota = 0.0
@@ -64,18 +93,20 @@ def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_templat
             if container_nota.count() > 0:
                 texto_nota = container_nota.locator('span[aria-hidden="true"]').first.inner_text()
                 nota = float(texto_nota.replace(",", "."))
-                
-                # Total de avaliações: geralmente vem como "(142)"
+
                 txt_qtd = container_nota.inner_text()
                 match_qtd = re.search(r'\((\d+[\.\d]*)\)', txt_qtd)
                 if match_qtd:
                     qtd_avaliacoes = int(match_qtd.group(1).replace(".", ""))
+            if qtd_avaliacoes == 0:
+                # Fallback: busca no aria-label de estrelas/avaliações do painel principal
+                painel = page.locator('div[role="main"]').filter(has=page.locator('h1.DUwDvf')).last
+                txt_painel = painel.inner_text() if painel.count() else ""
+                m_av = re.search(r'(\d+[\.\d]*)\s+avalia[çc][õo]es', txt_painel, re.IGNORECASE)
+                if m_av:
+                    qtd_avaliacoes = int(m_av.group(1).replace(".", ""))
         except Exception:
             pass
-
-        # Verificar se tem Site oficial, Cardápio Digital ou Pedido Online no Maps
-        tem_site, motivo_maps, instagram_url = verificar_detalhes_google_maps(page)
-        url_site = motivo_maps if tem_site else ""
 
         # Telefone
         telefone = ""
@@ -85,7 +116,6 @@ def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_templat
                 tel_text = tel_el.get_attribute("data-item-id")
                 telefone = tel_text.replace("phone:tel:", "").strip()
             else:
-                # Tenta pelo aria-label
                 tel_alt = page.locator('button[aria-label*="Telefone:"]').first
                 if tel_alt.count() > 0:
                     aria = tel_alt.get_attribute("aria-label")
@@ -111,13 +141,8 @@ def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_templat
         except Exception:
             pass
 
-        # URL atual do Maps
         url_maps = page.url
-
-        # Tentar extrair dono ou gerente
         dono = extrair_dono_ou_gerente(page)
-
-        # Montar cópia personalizada com o nome da loja
         copy_pronta = copy_template.replace("{nome}", nome)
 
         lead = {
@@ -126,24 +151,24 @@ def raspar_detalhes_local(page: Page, nicho_nome: str, cidade: str, copy_templat
             "cidade": cidade,
             "nota": nota,
             "qtd_avaliacoes": qtd_avaliacoes,
-            "tem_site": tem_site,
-            "url_site": url_site,
             "telefone": telefone,
             "endereco": endereco,
             "tem_fotos": tem_fotos,
             "url_maps": url_maps,
-            "url_instagram": instagram_url,
             "dono_gerente": dono,
-            "copy_abordagem": copy_pronta
+            "copy_abordagem": copy_pronta,
         }
 
-        # Calcular Score de Potencial
+        # Etapa 1 da verificação: links no painel do Google Maps (ignorando avaliações de terceiros)
+        resultado_maps = verificador.analisar_maps(page, lead)
+        aplicar_resultado_presenca(lead, resultado_maps)
         lead["score_potencial"] = calcular_score_potencial(lead)
 
-        return lead
+        return lead, resultado_maps
     except Exception as e:
         print(f"Erro ao extrair detalhes: {e}")
-        return None
+        return None, None
+
 
 def buscar_leads_google_maps(
     page: Page,
@@ -151,15 +176,18 @@ def buscar_leads_google_maps(
     termo_busca: str,
     cidade: str,
     limite_leads: int = 15,
-    historico: dict = None
+    historico: dict = None,
+    verificador: VerificadorPresencaDigital = None,
 ) -> list:
     """Pesquisa no Google Maps, rola os resultados e extrai os leads qualificados (sem repetir leads anteriores)."""
     if historico is None:
         historico = carregar_historico()
+    if verificador is None:
+        verificador = VerificadorPresencaDigital(page.context, config=VERIFICACAO)
 
     query = f"{termo_busca} em {cidade}"
     url_busca = f"https://www.google.com/maps/search/{query.replace(' ', '+')}"
-    
+
     print(f"\n==================================================")
     print(f"🔍 Buscando: '{query}'")
     print(f"==================================================")
@@ -181,51 +209,45 @@ def buscar_leads_google_maps(
     except Exception:
         pass
 
-    # Localizar o container de resultados (role="feed")
     feed = page.locator('div[role="feed"]').first
     try:
         feed.wait_for(timeout=10000)
     except PlaywrightTimeoutError:
-        # Pode ter aberto direto a página do único estabelecimento encontrado
         if page.locator('h1.DUwDvf').count() > 0:
             copy = NICHOS.get(nicho_nome, {}).get("copy_base", "")
-            lead = raspar_detalhes_local(page, nicho_nome, cidade, copy)
+            lead, res_maps = raspar_detalhes_local(page, nicho_nome, cidade, copy, verificador)
             if lead:
-                duplicado, motivo = lead_ja_existe(lead, historico)
+                duplicado, _ = lead_ja_existe(lead, historico)
                 if not duplicado:
-                    return [lead]
+                    res_final = verificador.verificar(page, lead, resultado_maps=res_maps)
+                    aplicar_resultado_presenca(lead, res_final)
+                    if not (FILTROS.get("exigir_sem_site") and motivo_reprovacao_presenca(res_final)):
+                        return [lead]
         print("Nenhum resultado encontrado para a busca.")
         return []
 
     leads_coletados = []
     links_visitados = set()
 
-    # Rolar o painel para carregar empresas
     print("⏳ Carregando listagem de empresas no Google Maps...")
     max_scrolls = 15
 
-    for scroll_idx in range(max_scrolls):
-        # Seleciona todos os links de estabelecimentos na lista
+    for _ in range(max_scrolls):
         cards = page.locator('div[role="feed"] a[href*="/maps/place/"]').all()
-        
-        # Rola o feed para baixo
         feed.evaluate("el => el.scrollBy(0, 1000)")
         time.sleep(random.uniform(1.5, 2.5))
 
-        # Verificar se chegou ao fim da lista ("Você chegou ao fim da lista")
         if page.locator('text=/Você chegou ao final da lista/i').count() > 0:
             break
-
         if len(cards) >= limite_leads * 2:
             break
 
-    # Re-seleciona os cards carregados
     cards = page.locator('div[role="feed"] a[href*="/maps/place/"]').all()
     print(f"📌 {len(cards)} estabelecimentos encontrados na lista. Analisando critérios e histórico...")
 
     copy_template = NICHOS.get(nicho_nome, {}).get("copy_base", "")
 
-    for idx, card in enumerate(cards):
+    for card in cards:
         if len(leads_coletados) >= limite_leads:
             print(f"🎯 Meta de {limite_leads} leads atingida para esta busca.")
             break
@@ -237,12 +259,11 @@ def buscar_leads_google_maps(
             links_visitados.add(href)
 
             # 0. Checagem rápida antes de clicar: se a URL já foi coletada no passado, pula!
-            duplicado_url, motivo_url = lead_ja_existe({"url_maps": href}, historico)
+            duplicado_url, _ = lead_ja_existe({"url_maps": href}, historico)
             if duplicado_url:
-                print(f"  ⏭️ Ignorado: Estabelecimento já coletado anteriormente em outra planilha.")
+                print("  ⏭️ Ignorado: Estabelecimento já coletado anteriormente em outra planilha.")
                 continue
 
-            # Garante visibilidade e clica no card para abrir os detalhes
             try:
                 card.scroll_into_view_if_needed(timeout=3000)
             except Exception:
@@ -250,11 +271,9 @@ def buscar_leads_google_maps(
             card.click(timeout=6000)
             time.sleep(random.uniform(1.8, 2.8))
 
-            # Aguarda o nome carregar
             page.locator('h1.DUwDvf').first.wait_for(timeout=5000)
 
-            # Extrai os dados
-            lead = raspar_detalhes_local(page, nicho_nome, cidade, copy_template)
+            lead, resultado_maps = raspar_detalhes_local(page, nicho_nome, cidade, copy_template, verificador)
             if not lead:
                 continue
 
@@ -264,10 +283,9 @@ def buscar_leads_google_maps(
                 print(f"  ⏭️ Ignorado: '{lead['nome']}' ({motivo})")
                 continue
 
-            # FILTROS SOLICITADOS:
-            # 2. Sem site (Identificado no perfil do Google Maps)
+            # 2. Sem site no Google Maps (wa.me e instagram.com são permitidos; sites/sistemas reprovam)
             if FILTROS.get("exigir_sem_site") and lead["tem_site"]:
-                print(f"  ⏭️ Ignorado: '{lead['nome']}' (Possui site/link no Maps: {lead['url_site']})")
+                print(f"  ⏭️ Ignorado no Maps: '{lead['nome']}' ({lead['url_site']})")
                 continue
 
             # 3. Nota mínima
@@ -275,8 +293,8 @@ def buscar_leads_google_maps(
                 print(f"  ⏭️ Ignorado: '{lead['nome']}' (Nota baixa: {lead['nota']})")
                 continue
 
-            # 4. Mínimo de avaliações (loja estruturada com movimento)
-            if lead["qtd_avaliacoes"] < FILTROS.get("min_avaliacoes", 5):
+            # 4. Mínimo de avaliações
+            if lead["qtd_avaliacoes"] < FILTROS.get("min_avaliacoes", 5) and lead["qtd_avaliacoes"] > 0:
                 print(f"  ⏭️ Ignorado: '{lead['nome']}' (Poucas avaliações: {lead['qtd_avaliacoes']})")
                 continue
 
@@ -285,30 +303,20 @@ def buscar_leads_google_maps(
                 print(f"  ⏭️ Ignorado: '{lead['nome']}' (Sem telefone cadastrado)")
                 continue
 
-            # 6. INVESTIGAÇÃO 1: Instagram (Bio do Perfil e Links na Bio)
-            print(f"  📸 Inspecionando Bio e links do Instagram de '{lead['nome']}'...")
-            tem_insta, motivo_insta = investigar_instagram(lead["nome"], cidade, page, instagram_url=lead.get("url_instagram", ""))
-            if tem_insta:
-                print(f"  ⏭️ Desqualificado na bio do Instagram: {motivo_insta}")
-                continue
+            # 6. Verificação completa de presença digital (Instagram bio + destaques + domínios + web)
+            print(f"  🔎 Verificando presença digital (Instagram bio/destaques + Web) de '{lead['nome']}'...")
+            resultado_final = verificador.verificar(page, lead, resultado_maps=resultado_maps)
+            aplicar_resultado_presenca(lead, resultado_final)
+            lead["score_potencial"] = calcular_score_potencial(lead)
 
-            # 7. INVESTIGAÇÃO 2 e 3: WhatsApp Bot e Perfil Comercial / Catálogo
-            print(f"  💬 Inspecionando WhatsApp (Bots de atendimento, mensagens e perfil) de '{lead['nome']}'...")
-            tem_zap, motivo_zap = investigar_whatsapp_bot_e_perfil(lead["telefone"], lead["nome"], cidade, page)
-            if tem_zap:
-                print(f"  ⏭️ Desqualificado no WhatsApp: {motivo_zap}")
-                continue
-
-            # 8. INVESTIGAÇÃO COMPLEMENTAR: Domínio próprio registrado na Web
-            print(f"  🔎 Investigando a fundo na Web por site próprio de '{lead['nome']}'...")
-            tem_web, motivo_web = investigar_web_externa(lead["nome"], cidade)
-            if tem_web:
-                print(f"  ⏭️ Desqualificado na investigação da Web: {motivo_web}")
-                continue
+            if FILTROS.get("exigir_sem_site"):
+                motivo_reprov = motivo_reprovacao_presenca(resultado_final)
+                if motivo_reprov:
+                    print(f"  ⏭️ Desqualificado: '{lead['nome']}' — {motivo_reprov}")
+                    continue
 
             leads_coletados.append(lead)
 
-            # Registra na memória do histórico desta execução para evitar repetição interna
             tel_dig = extrair_apenas_digitos(lead["telefone"])
             if tel_dig:
                 historico.setdefault("telefones", {})[tel_dig] = {"nome": lead["nome"]}
@@ -317,14 +325,18 @@ def buscar_leads_google_maps(
             if lead["url_maps"]:
                 historico.setdefault("urls_maps", {})[lead["url_maps"].split("?")[0]] = {"nome": lead["nome"]}
 
+            insta_info = f"@{lead['instagram']['username']}" if lead.get("instagram") else lead.get("status_instagram", "n/a")
             print(f"  🎯 [LEAD 100% VERIFICADO #{len(leads_coletados)}]")
             print(f"     Nome: {lead['nome']}")
             print(f"     Telefone: {lead['telefone']}")
+            print(f"     Instagram: {insta_info} ({lead.get('detalhe_instagram', '')})")
             print(f"     Nota: {lead['nota']}⭐ ({lead['qtd_avaliacoes']} avaliações)")
-            print(f"     Status: Confirmado 100% sem site e sem cardápio digital!")
+            if lead.get("observacoes"):
+                print(f"     Observações: {' | '.join(lead['observacoes'])}")
+            print(f"     Status: Confirmado sem site, sistema próprio ou landing page!")
             print(f"     Potencial de Venda: {lead['score_potencial']}%\n")
 
-        except Exception as err:
+        except Exception:
             continue
 
     return leads_coletados
