@@ -1,13 +1,17 @@
 """
-Módulo para exportação de leads qualificados em Relatório Executivo (.pdf).
-Design editorial suave (Soft Slate & Pastel), confortável aos olhos e escaneável:
-  1. Visão Geral em Tabela Limpa (consulta rápida de todos os leads e links clicáveis)
-  2. Fichas Individuais de Prospecção (dados completos + copy personalizada legível)
+Módulo Unificado de Persistência, Histórico Anti-Duplicação e Exportação em PDF (.pdf).
+
+Concentra em um único módulo:
+  1. Gerenciamento de histórico e desduplicação (`Planilhas/historico_leads.json`),
+     garantindo que leads já prospectados nunca sejam repetidos.
+  2. Geração do Relatório Executivo em PDF (`.pdf`) com design editorial suave
+     (Soft Slate & Pastel), contendo Visão Geral em Tabela + Fichas Individuais de Abordagem.
 """
 
 import sys
 import os
 import re
+import json
 import html
 import uuid
 from datetime import datetime
@@ -20,14 +24,147 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 from playwright.sync_api import sync_playwright, Page
-from historico import garantir_pasta_planilhas, salvar_no_historico
 
+PASTA_PLANILHAS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Planilhas")
+ARQUIVO_HISTORICO = os.path.join(PASTA_PLANILHAS, "historico_leads.json")
+
+
+# ======================================================================================
+# 1. GERENCIAMENTO DE HISTÓRICO E DESDUPLICAÇÃO DE LEADS
+# ======================================================================================
+
+def garantir_pasta_planilhas() -> str:
+    """Cria o diretório Planilhas se ainda não existir."""
+    os.makedirs(PASTA_PLANILHAS, exist_ok=True)
+    return PASTA_PLANILHAS
+
+
+def normalizar_texto(texto: str) -> str:
+    """Remove caracteres especiais e converte para minúsculas."""
+    if not texto:
+        return ""
+    texto = texto.lower().strip()
+    texto = re.sub(r"[^\w\s]", "", texto)
+    return re.sub(r"\s+", " ", texto)
+
+
+def extrair_apenas_digitos(telefone: str) -> str:
+    """Extrai somente os números do telefone."""
+    if not telefone:
+        return ""
+    digitos = re.sub(r"\D", "", str(telefone))
+    if digitos.startswith("0"):
+        digitos = digitos[1:]
+    return digitos
+
+
+def carregar_historico() -> dict:
+    """Carrega o banco de dados de leads já coletados."""
+    garantir_pasta_planilhas()
+    if os.path.exists(ARQUIVO_HISTORICO):
+        try:
+            with open(ARQUIVO_HISTORICO, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"[!] Aviso ao carregar histórico: {e}. Criando novo.")
+
+    return {
+        "telefones": {},
+        "nomes_cidade": {},
+        "urls_maps": {},
+        "total_coletados": 0,
+    }
+
+
+def lead_ja_existe(lead_ou_card: dict, historico: dict) -> tuple[bool, str]:
+    """Verifica se o lead já foi coletado anteriormente por URL, telefone ou nome+cidade."""
+    url = lead_ou_card.get("url_maps") or lead_ou_card.get("href")
+    if url:
+        url_base = url.split("?")[0]
+        if url_base in historico.get("urls_maps", {}):
+            return True, "URL do Google Maps já cadastrada"
+
+    tel = lead_ou_card.get("telefone")
+    if tel:
+        digitos = extrair_apenas_digitos(tel)
+        if digitos and digitos in historico.get("telefones", {}):
+            nome_anterior = historico["telefones"][digitos].get("nome", "")
+            return True, f"Telefone ({tel}) já cadastrado para '{nome_anterior}'"
+
+    nome = lead_ou_card.get("nome")
+    cidade = lead_ou_card.get("cidade", "")
+    if nome:
+        chave = f"{normalizar_texto(nome)}_{normalizar_texto(cidade)}"
+        if chave in historico.get("nomes_cidade", {}):
+            return True, f"Nome da empresa ('{nome}') já cadastrado nesta cidade"
+
+    return False, ""
+
+
+def registrar_lead_em_memoria(lead: dict, historico: dict) -> None:
+    """Registra o lead no dicionário de histórico em memória durante a sessão atual."""
+    tel_dig = extrair_apenas_digitos(lead.get("telefone", ""))
+    if tel_dig:
+        historico.setdefault("telefones", {})[tel_dig] = {"nome": lead.get("nome", "")}
+    if lead.get("nome"):
+        chave_nc = f"{normalizar_texto(lead['nome'])}_{normalizar_texto(lead.get('cidade', ''))}"
+        historico.setdefault("nomes_cidade", {})[chave_nc] = {"nome": lead["nome"]}
+    if lead.get("url_maps"):
+        historico.setdefault("urls_maps", {})[lead["url_maps"].split("?")[0]] = {"nome": lead.get("nome", "")}
+
+
+def salvar_no_historico(novos_leads: list, id_lote: str):
+    """Atualiza o arquivo JSON de histórico com os novos leads qualificados."""
+    historico = carregar_historico()
+    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    adicionados = 0
+    for lead in novos_leads:
+        nome = lead.get("nome", "")
+        cidade = lead.get("cidade", "")
+        tel = lead.get("telefone", "")
+        url = lead.get("url_maps", "")
+
+        info_registro = {
+            "nome": nome,
+            "cidade": cidade,
+            "data_coleta": agora,
+            "id_lote": id_lote,
+        }
+
+        if tel:
+            digitos = extrair_apenas_digitos(tel)
+            if digitos:
+                historico["telefones"][digitos] = info_registro
+
+        if nome:
+            chave = f"{normalizar_texto(nome)}_{normalizar_texto(cidade)}"
+            historico["nomes_cidade"][chave] = info_registro
+
+        if url:
+            url_base = url.split("?")[0]
+            historico["urls_maps"][url_base] = info_registro
+
+        adicionados += 1
+
+    historico["total_coletados"] = max(len(historico["telefones"]), len(historico["nomes_cidade"]))
+    historico["ultima_atualizacao"] = agora
+
+    with open(ARQUIVO_HISTORICO, "w", encoding="utf-8") as f:
+        json.dump(historico, f, ensure_ascii=False, indent=2)
+
+    print(f"[*] Histórico atualizado: {adicionados} novos leads registrados (Total no banco: {historico['total_coletados']}).")
+
+
+# ======================================================================================
+# 2. FORMATAÇÃO E EXPORTAÇÃO DE RELATÓRIO EXECUTIVO EM PDF (.PDF)
+# ======================================================================================
 
 def limpar_numero_whatsapp(telefone: str) -> str:
     """Extrai apenas dígitos e valida se tem formato com DDD + DDI 55."""
     if not telefone:
         return ""
-    digitos = re.sub(r"\D", "", telefone)
+    digitos = re.sub(r"\D", "", str(telefone))
     if digitos.startswith("0"):
         digitos = digitos[1:]
     if not digitos.startswith("55") and len(digitos) in [10, 11]:
@@ -52,20 +189,18 @@ def formatar_telefone_exibicao(telefone: str) -> str:
 
 
 def calcular_score_potencial(lead: dict) -> int:
-    """
-    Calcula uma porcentagem de potencial de venda (0 a 100%).
-    """
+    """Calcula uma porcentagem base de potencial de venda (0 a 100%)."""
     score = 0
     if not lead.get("tem_site", False):
         score += 40
 
-    nota = lead.get("nota", 0.0)
+    nota = float(lead.get("nota", 0.0) or 0.0)
     if nota >= 4.5:
         score += 15
     elif nota >= 4.0:
         score += 10
 
-    qtd = lead.get("qtd_avaliacoes", 0)
+    qtd = int(lead.get("qtd_avaliacoes", 0) or 0)
     if qtd >= 50:
         score += 15
     elif qtd >= 10:
@@ -73,11 +208,10 @@ def calcular_score_potencial(lead: dict) -> int:
     elif qtd > 0:
         score += 5
 
-    tel = lead.get("telefone", "")
-    if tel:
+    if lead.get("telefone"):
         score += 15
 
-    nicho = lead.get("nicho", "").lower()
+    nicho = str(lead.get("nicho", "")).lower()
     if any(k in nicho for k in ["plastica", "odonto", "restaurante", "advocacia", "hair", "beleza", "nail"]):
         score += 15
     else:
@@ -86,11 +220,11 @@ def calcular_score_potencial(lead: dict) -> int:
     return min(100, max(10, score))
 
 
-def _estilo_prioridade(score: int) -> dict:
+def _estilo_prioridade(score: int, em_ascensao: bool = False) -> dict:
     """Retorna cores pastel suaves de acordo com o score de conversão."""
     if score >= 85:
         return {
-            "label": "Alta Prioridade",
+            "label": "Prioridade Máxima" if em_ascensao else "Alta Prioridade",
             "bg": "#ECFDF5",
             "border": "#A7F3D0",
             "text": "#047857",
@@ -133,7 +267,8 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
 
     for idx, lead in enumerate(leads, 1):
         score = int(lead.get("score_potencial", 0))
-        prio = _estilo_prioridade(score)
+        em_ascensao = bool(lead.get("em_ascensao", False))
+        prio = _estilo_prioridade(score, em_ascensao=em_ascensao)
         lead_id = html.escape(str(lead.get("id_lead", f"LEAD-{id_lote}-{idx:03d}")))
         nome = html.escape(str(lead.get("nome", "N/A")))
         nicho = html.escape(str(lead.get("nicho", "N/A")))
@@ -147,10 +282,11 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
         copy = html.escape(str(lead.get("copy_abordagem", "") or ""))
         nota = float(lead.get("nota", 0.0) or 0.0)
         qtd_av = int(lead.get("qtd_avaliacoes", 0) or 0)
+        qtd_esc = int(lead.get("qtd_avaliacoes_escritas", 0) or 0)
         porte = html.escape(str(lead.get("porte_classificacao") or lead.get("perfil_lead") or "Oportunidade Digital"))
 
-        num_zap = limpar_numero_whatsapp(tel_raw)
-        link_zap = f"https://wa.me/{num_zap}" if num_zap else ""
+        num_zap = limpar_numero_whatsapp(lead.get("telefone_e164") or tel_raw)
+        link_zap = lead.get("link_whatsapp") or (f"https://wa.me/{num_zap}" if num_zap else "")
         status_zap = lead.get("whatsapp_confirmado")
         if status_zap is True:
             zap_badge = '<span class="tag tag-zap">WhatsApp Verificado</span>'
@@ -184,6 +320,8 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             itens_obs = " • ".join(html.escape(str(o)) for o in obs_lista[:3])
             obs_html = f'<div class="card-obs">💡 <strong>Insights da Triagem:</strong> {itens_obs}</div>'
 
+        sub_av = f"{qtd_av} avaliações ({qtd_esc} escritas)" if qtd_esc else f"{qtd_av} avaliações"
+
         linhas_resumo += f"""
         <tr>
             <td class="col-idx">
@@ -196,7 +334,7 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             </td>
             <td class="col-reputacao">
                 <div class="rep-nota">★ {nota:.1f}</div>
-                <div class="rep-qtd">{qtd_av} avaliações</div>
+                <div class="rep-qtd">{sub_av}</div>
             </td>
             <td class="col-contato">
                 <div class="cnt-tel">{tel_fmt}</div>
@@ -244,7 +382,7 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
                 </div>
                 <div class="info-item">
                     <span class="info-label">Reputação no Google</span>
-                    <span class="info-val">★ {nota:.1f} <span class="muted">({qtd_av} avaliações)</span></span>
+                    <span class="info-val">★ {nota:.1f} <span class="muted">({sub_av})</span></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Decisor / Responsável</span>
@@ -298,8 +436,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             font-size: 11px;
             line-height: 1.45;
         }}
-
-        /* Cabeçalho Editorial Suave */
         .report-header {{
             background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%);
             border: 1px solid #E2E8F0;
@@ -348,8 +484,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             color: #94A3B8;
             margin-top: 5px;
         }}
-
-        /* Painel de Indicadores (KPIs) */
         .kpi-row {{
             display: flex;
             gap: 12px;
@@ -380,8 +514,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             color: #94A3B8;
             margin-top: 1px;
         }}
-
-        /* Títulos de Seção */
         .section-header {{
             display: flex;
             justify-content: space-between;
@@ -397,8 +529,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             font-size: 10.5px;
             color: #64748B;
         }}
-
-        /* Tabela Resumo Suave */
         .table-card {{
             background: #FFFFFF;
             border: 1px solid #E2E8F0;
@@ -438,7 +568,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
         tr {{
             page-break-inside: avoid;
         }}
-
         .col-idx {{ width: 108px; white-space: nowrap; }}
         .idx-num {{
             display: inline-block;
@@ -458,7 +587,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             font-family: Consolas, monospace;
             white-space: nowrap;
         }}
-
         .col-empresa {{ width: 230px; }}
         .emp-nome {{
             font-weight: 600;
@@ -470,8 +598,7 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             color: #64748B;
             margin-top: 2px;
         }}
-
-        .col-reputacao {{ width: 105px; }}
+        .col-reputacao {{ width: 115px; }}
         .rep-nota {{
             font-weight: 700;
             color: #B45309;
@@ -481,7 +608,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             font-size: 9.5px;
             color: #64748B;
         }}
-
         .col-contato {{ width: 135px; }}
         .cnt-tel {{
             font-weight: 600;
@@ -490,8 +616,7 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             margin-bottom: 3px;
             white-space: nowrap;
         }}
-
-        .col-dono {{ width: 165px; }}
+        .col-dono {{ width: 170px; }}
         .dono-nome {{
             font-weight: 500;
             color: #334155;
@@ -502,7 +627,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             color: #0D9488;
             margin-top: 2px;
         }}
-
         .col-score {{ width: 175px; }}
         .score-row {{
             display: flex;
@@ -534,8 +658,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             height: 100%;
             border-radius: 999px;
         }}
-
-        /* Tags e Botões Suaves */
         .tag {{
             display: inline-block;
             font-size: 9px;
@@ -588,8 +710,6 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
             border-color: #BFDBFE;
         }}
         .muted {{ color: #94A3B8; }}
-
-        /* Fichas Detalhadas de Abordagem (Grid 2x2 compacto por página) */
         .page-break {{
             page-break-before: always;
         }}
@@ -788,10 +908,7 @@ def montar_html_relatorio(leads: list, id_lote: str, data_geracao: str = None) -
 
 
 def gerar_pdf_leads(leads: list, id_lote: str, caminho_pdf: str, page: Page = None) -> bool:
-    """
-    Renderiza o relatório PDF em formato A4 Paisagem com cabeçalho/rodapé suaves.
-    Retorna True se o PDF foi gerado com sucesso.
-    """
+    """Renderiza o relatório PDF em formato A4 Paisagem com cabeçalho/rodapé suaves."""
     html_content = montar_html_relatorio(leads, id_lote)
     footer_template = """
     <div style="width: 100%; font-family: 'Segoe UI', sans-serif; font-size: 8.5px; color: #94A3B8;
@@ -848,9 +965,8 @@ def gerar_pdf_leads(leads: list, id_lote: str, caminho_pdf: str, page: Page = No
 
 def salvar_relatorio_pdf(leads: list, id_lote: str = None, page: Page = None, pasta_destino: str = None) -> tuple[str, str]:
     """
-    Ordena os leads por potencial, gera exclusivamente o relatório em PDF (.pdf)
+    Ordena os leads por prioridade/potencial, gera exclusivamente o relatório em PDF (.pdf)
     e registra o lote no histórico de desduplicação.
-    Retorna (caminho_pdf, id_lote).
     """
     if not leads:
         return "", ""
@@ -864,7 +980,15 @@ def salvar_relatorio_pdf(leads: list, id_lote: str = None, page: Page = None, pa
     agora = datetime.now()
     timestamp_str = agora.strftime("%Y-%m-%d_%H-%M-%S")
 
-    leads_ordenados = sorted(leads, key=lambda x: x.get("score_potencial", 0), reverse=True)
+    leads_ordenados = sorted(
+        leads,
+        key=lambda x: (
+            1 if x.get("prioridade_maxima") else 0,
+            int(x.get("score_potencial", 0)),
+            float(x.get("nota", 0.0)),
+        ),
+        reverse=True,
+    )
     for idx, lead in enumerate(leads_ordenados, 1):
         lead["id_lead"] = f"LEAD-{id_lote}-{idx:03d}"
 

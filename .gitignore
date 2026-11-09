@@ -1,5 +1,16 @@
-# Ignora a pasta Planilhas inteira
+# Ambientes virtuais
+venv/
+.venv/
+env/
+
+# Relatórios e histórico gerados localmente
 Planilhas/
+
+# Perfil persistente do navegador (sessões e cookies)
 perfil_navegador/
+sessao_navegador/
+
+# Cache Python e arquivos de ambiente
 __pycache__/
+*.pyc
 .env

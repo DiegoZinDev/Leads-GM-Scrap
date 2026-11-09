@@ -6,28 +6,24 @@ Verificação de Presença Digital (Google Maps + Instagram Bio/Destaques + Agre
 import unittest
 from unittest.mock import MagicMock
 
-from links import (
+from verifier import (
+    PerfilInstagram,
+    RespostaHttp,
+    ResultadoPresencaDigital,
+    StatusSite,
     TipoLink,
+    VerificadorPresencaDigital,
+    avaliar_site,
     classificar_link,
     decodificar_redirect,
     extrair_dominios_de_email,
     extrair_dominios_de_texto,
     extrair_urls_de_html,
-)
-from instagram import (
-    PerfilInstagram,
     extrair_username,
+    pagina_pertence_ao_negocio,
     parse_reels_media,
     parse_web_profile_info,
     pontuar_correspondencia,
-)
-from verifier import (
-    RespostaHttp,
-    ResultadoPresencaDigital,
-    StatusSite,
-    VerificadorPresencaDigital,
-    avaliar_site,
-    pagina_pertence_ao_negocio,
 )
 
 
@@ -80,7 +76,7 @@ class TestClassificadorLinks(unittest.TestCase):
             "https://sites.appbarber.com.br/barbeariaogean-cobk?source=google_reserve",
             "https://www.trinks.com/salao-x",
             "https://pedido.anota.ai/loja/restaurante-x",
-            "https:// restaurante.goomer.app",
+            "https://restaurante.goomer.app",
             "https://calendly.com/dr-joao/consulta",
             "https://booksy.com/pt-br/12345_barbearia",
         ]
@@ -165,7 +161,6 @@ class TestInstagramParsing(unittest.TestCase):
         self.assertEqual(perfil.qtd_destaques, 2)
         self.assertIn("https://wa.me/5561999887766", perfil.links_bio)
 
-        # Destaques: um story com link de WhatsApp e outro com site de agendamento
         payload_reels = {
             "reels": {
                 "highlight:111": {
@@ -221,7 +216,7 @@ class TestVerificadorFluxosCompletos(unittest.TestCase):
         verificador = self._criar_verificador({"https://linktr.ee/barbearia_imperial": RespostaHttp(200, "https://linktr.ee/barbearia_imperial", html_linktree)}, perfil)
 
         res = ResultadoPresencaDigital(url_instagram="https://instagram.com/barbearia_imperial")
-        verificador. avaliar_url("https://wa.me/5561988887777", "Google Maps (Reserva)", res, {})
+        verificador.avaliar_url("https://wa.me/5561988887777", "Google Maps (Reserva)", res, {})
         verificador.analisar_instagram(res, {"nome": "Barbearia Imperial", "telefone": "61988887777", "cidade": "Taguatinga DF"})
 
         self.assertFalse(res.tem_site, f"Não deveria ter site, mas acusou: {res.evidencias}")

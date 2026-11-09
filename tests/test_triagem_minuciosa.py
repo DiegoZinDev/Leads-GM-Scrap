@@ -1,21 +1,23 @@
 """
-Testes automatizados da Implementação 4 (e critérios do Item 6):
-Triagem minuciosa de cada lead, validação de >= 10 avaliações escritas, regra de nota 4.0
-com exceção para > 10 avaliações, verificação obrigatória de WhatsApp (Maps + fallback Instagram)
-e priorização de autônomos e micro-empreendedores em ascensão.
+Testes automatizados das Implementações 4 e 5 (e critérios do Item 6):
+- Triagem minuciosa de cada lead, validação de >= 10 avaliações escritas, regra de nota 4.0
+  com exceção para > 10 avaliações, verificação obrigatória de WhatsApp (Maps + fallback Instagram)
+  e priorização de autônomos e micro-empreendedores em ascensão.
+- Algoritmo de Funil Eliminatório Sequencial em Lote (Pandas + NumPy) sobre todos os leads
+  coletados de uma região, eliminando critério por critério na sequência exata.
 """
 
 import unittest
 
-from instagram import PerfilInstagram
 from qualifier import (
     avaliar_reputacao_e_avaliacoes,
     classificar_perfil_empreendedor,
     eh_grande_rede_ou_orgao_publico,
+    executar_funil_sequencial,
     realizar_triagem_minuciosa,
     verificar_e_obter_whatsapp,
 )
-from verifier import Evidencia, ResultadoPresencaDigital
+from verifier import Evidencia, PerfilInstagram, ResultadoPresencaDigital
 
 
 class TestTriagemMinuciosa(unittest.TestCase):
@@ -155,6 +157,161 @@ class TestTriagemMinuciosa(unittest.TestCase):
         triagem = realizar_triagem_minuciosa(lead, presenca)
         self.assertFalse(triagem.aprovado)
         self.assertEqual(triagem.etapa_reprovacao, "possui_site_ou_sistema")
+
+
+class TestFunilSequencialEmLote(unittest.TestCase):
+    def test_funil_eliminatorio_sequencial_em_lote_pandas_numpy(self):
+        """
+        Simula 7 escritórios/clínicas coletados de uma região e verifica que o funil
+        elimina sequencialmente em cada um dos 6 critérios:
+          1. Franquia nacional (Oral Unic) -> eliminada no Critério 1 (restam 6)
+          2. Poucas avaliações escritas (< 10) -> eliminada no Critério 2 (restam 5)
+          3. Nota < 4.0 com apenas 10 avaliações (sem >10) -> eliminada no Critério 3 (restam 4)
+          4. Possui site/sistema na bio do Instagram -> eliminada no Critério 4 (restam 3)
+          5. Apenas telefone fixo sem WhatsApp nem no Maps nem no Instagram -> eliminada no Critério 5 (restam 2)
+          6. Os 2 sobreviventes (1 empresa consolidada c/ nota 3.8 mas >10 avaliações + 1 autônoma em ascensão
+             c/ WhatsApp na bio do Instagram) passam pelo Critério 6 e são ordenados com a autônoma em 1º lugar!
+        """
+        leads_regiao = [
+            # 1) Eliminado no Critério 1 (Franquia Nacional)
+            {
+                "nome": "Oral Unic Implantes Taguatinga",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 4.9,
+                "qtd_avaliacoes": 120,
+                "qtd_avaliacoes_escritas": 45,
+                "telefone": "(61) 99999-0001",
+            },
+            # 2) Eliminado no Critério 2 (Apenas 6 avaliações escritas < 10)
+            {
+                "nome": "Consultório Novo Horizonte",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 5.0,
+                "qtd_avaliacoes": 8,
+                "qtd_avaliacoes_escritas": 6,
+                "telefone": "(61) 99999-0002",
+            },
+            # 3) Eliminado no Critério 3 (Nota 3.7 com exatas 10 avaliações — não tem MAIS de 10)
+            {
+                "nome": "Clínica Dental Popular",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 3.7,
+                "qtd_avaliacoes": 10,
+                "qtd_avaliacoes_escritas": 10,
+                "telefone": "(61) 99999-0003",
+            },
+            # 4) Eliminado no Critério 4 (Possui site próprio na bio do Instagram)
+            {
+                "nome": "Studio Dental Prime",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 4.8,
+                "qtd_avaliacoes": 28,
+                "qtd_avaliacoes_escritas": 15,
+                "telefone": "(61) 99999-0004",
+            },
+            # 5) Eliminado no Critério 5 (Telefone fixo sem WhatsApp nem no Maps nem no Instagram)
+            {
+                "nome": "Clínica Tradicional Fixo",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 4.6,
+                "qtd_avaliacoes": 40,
+                "qtd_avaliacoes_escritas": 19,
+                "telefone": "(61) 3351-2200",
+            },
+            # 6) APROVADO (Empresa consolidada com nota 3.8 mas > 10 avaliações [290 avaliações] e celular WhatsApp)
+            {
+                "nome": "Centro Odontológico Integrado Brasília Ltda",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 3.8,
+                "qtd_avaliacoes": 290,
+                "qtd_avaliacoes_escritas": 85,
+                "telefone": "(61) 98877-6655",
+                "tem_fotos": False,
+            },
+            # 7) APROVADO COM PRIORIDADE MÁXIMA (Autônoma em ascensão, sem tel no Maps mas com wa.me no Instagram)
+            {
+                "nome": "Dra. Beatriz Mendes Odontologia Estética",
+                "nicho": "Odontologia",
+                "cidade": "Taguatinga DF",
+                "nota": 4.9,
+                "qtd_avaliacoes": 32,
+                "qtd_avaliacoes_escritas": 18,
+                "telefone": "",
+                "tem_fotos": True,
+                "dono_gerente": "Dra. Beatriz Mendes",
+            },
+        ]
+
+        def mock_investigacao(lead: dict) -> ResultadoPresencaDigital:
+            nome = lead["nome"]
+            if "Studio Dental Prime" in nome:
+                return ResultadoPresencaDigital(
+                    evidencias=[Evidencia("Instagram (bio)", "https://studiodentalprime.com.br", "site_proprio", "Site próprio", True)]
+                )
+            if "Dra. Beatriz Mendes" in nome:
+                perfil_bia = PerfilInstagram(
+                    username="drabeatrizmendes",
+                    acessivel=True,
+                    biografia="Facetas e Lentes em Taguatinga",
+                    links_bio=["https://wa.me/5561992223344"],
+                )
+                return ResultadoPresencaDigital(
+                    url_instagram="https://www.instagram.com/drabeatrizmendes/",
+                    perfil_instagram=perfil_bia,
+                    status_instagram="verificado",
+                )
+            return ResultadoPresencaDigital(status_instagram="verificado")
+
+        relatorio = executar_funil_sequencial(
+            leads_brutos=leads_regiao,
+            regiao="Taguatinga DF",
+            nicho="Odontologia",
+            config_filtros={"min_avaliacoes_escritas": 10, "nota_minima": 4.0, "exigir_sem_site": True},
+            config_verificacao={"exigir_instagram_verificado": False, "rejeitar_inconclusivos": True},
+            callback_investigacao=mock_investigacao,
+            silencioso=True,
+        )
+
+        # Verifica contagens exatas de entrada/sobreviventes em cada uma das 6 etapas do funil
+        self.assertEqual(relatorio.total_bruto_coletado, 7)
+        self.assertEqual(len(relatorio.etapas), 6)
+
+        # Etapa 1: 7 -> 6 (elimina Oral Unic)
+        self.assertEqual((relatorio.etapas[0].entrada, relatorio.etapas[0].sobreviventes), (7, 6))
+        # Etapa 2: 6 -> 5 (elimina Consultório Novo Horizonte c/ 6 escritas)
+        self.assertEqual((relatorio.etapas[1].entrada, relatorio.etapas[1].sobreviventes), (6, 5))
+        # Etapa 3: 5 -> 4 (elimina Clínica Dental Popular c/ 3.7 e apenas 10 av.)
+        self.assertEqual((relatorio.etapas[2].entrada, relatorio.etapas[2].sobreviventes), (5, 4))
+        # Etapa 4: 4 -> 3 (elimina Studio Dental Prime c/ site na bio)
+        self.assertEqual((relatorio.etapas[3].entrada, relatorio.etapas[3].sobreviventes), (4, 3))
+        # Etapa 5: 3 -> 2 (elimina Clínica Tradicional Fixo sem WhatsApp)
+        self.assertEqual((relatorio.etapas[4].entrada, relatorio.etapas[4].sobreviventes), (3, 2))
+        # Etapa 6: 2 -> 2 (classifica e ordena por prioridade de ascensão)
+        self.assertEqual((relatorio.etapas[5].entrada, relatorio.etapas[5].sobreviventes), (2, 2))
+
+        self.assertEqual(relatorio.total_qualificados, 2)
+        # Garante que a autônoma em ascensão (Dra. Beatriz) ficou em 1º lugar na fila e com WhatsApp do Instagram
+        primeiro = relatorio.leads_aprovados[0]
+        segundo = relatorio.leads_aprovados[1]
+        self.assertIn("Dra. Beatriz Mendes", primeiro["nome"])
+        self.assertTrue(primeiro["prioridade_maxima"])
+        self.assertEqual(primeiro["telefone"], "(61) 99222-3344")
+        self.assertIn("Instagram", primeiro["origem_whatsapp"])
+
+        self.assertIn("Centro Odontológico Integrado", segundo["nome"])
+        self.assertFalse(segundo["prioridade_maxima"])
+
+        # Verifica DataFrame Pandas e estatísticas NumPy
+        self.assertIsNotNone(relatorio.dataframe_final)
+        self.assertEqual(len(relatorio.dataframe_final), 2)
+        self.assertIn("score_medio", relatorio.estatisticas_numpy)
+        self.assertEqual(relatorio.estatisticas_numpy["total_em_ascensao"], 1)
 
 
 if __name__ == "__main__":
