@@ -1,19 +1,5 @@
-# Ambientes Virtuais
-venv/
-.venv/
-env/
-
-# Python cache
-__pycache__/
-*.pyc
-
-# Planilhas geradas (dados de leads)
-*.xlsx
-*.csv
-
-# Logs e arquivos temporários
-*.log
-
-# Perfil e sessões do navegador (cookies, logins de Instagram e WhatsApp)
+# Ignora a pasta Planilhas inteira
+Planilhas/
 perfil_navegador/
-sessao_navegador/
+__pycache__/
+.env
