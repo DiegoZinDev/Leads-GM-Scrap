@@ -83,6 +83,8 @@ class ResultadoPresencaDigital:
     evidencias: list[Evidencia] = field(default_factory=list)
     observacoes: list[str] = field(default_factory=list)
     inconclusivos: list[str] = field(default_factory=list)
+    links_maps_brutos: list[str] = field(default_factory=list)
+    links_expandidos: list[str] = field(default_factory=list)
     url_instagram: str = ""
     perfil_instagram: PerfilInstagram | None = None
     status_instagram: str = "nao_verificado"   # verificado | nao_encontrado | inacessivel | nao_verificado
@@ -343,11 +345,15 @@ class VerificadorPresencaDigital:
                 if not destino:
                     resultado.inconclusivos.append(f"{fonte}: encurtador sem destino resolvido ({cls.url})")
                     return
+                if destino not in resultado.links_expandidos:
+                    resultado.links_expandidos.append(destino)
                 self.avaliar_url(destino, f"{fonte} → {cls.host}", resultado, lead, origem, profundidade + 1)
                 return
             internos = extrair_urls_de_html(resp.texto, ignorar_host=cls.host)[: self.config["max_links_agregador"]]
             antes = len(resultado.evidencias)
             for u in internos:
+                if u not in resultado.links_expandidos:
+                    resultado.links_expandidos.append(u)
                 self.avaliar_url(u, f"{fonte} → {cls.host}", resultado, lead, origem, profundidade + 1)
             if len(resultado.evidencias) == antes:
                 resultado.observar(f"{cls.host} inspecionado: contém apenas redes sociais/WhatsApp")
@@ -381,7 +387,10 @@ class VerificadorPresencaDigital:
     def analisar_maps(self, page: Page, lead: dict) -> ResultadoPresencaDigital:
         resultado = ResultadoPresencaDigital()
         for link in coletar_links_maps(page):
-            self.avaliar_url(link.get("href", ""), rotular_link_maps(link), resultado, lead, "declarado")
+            href = link.get("href", "")
+            if href and href not in resultado.links_maps_brutos:
+                resultado.links_maps_brutos.append(href)
+            self.avaliar_url(href, rotular_link_maps(link), resultado, lead, "declarado")
         return resultado
 
     # ---------- etapa 2: Instagram ----------

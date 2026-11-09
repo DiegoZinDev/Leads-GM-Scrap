@@ -24,7 +24,7 @@ REGIOES = [
     "Etapa A Valparaíso GO"
 ]
 
-META_MINIMA_LEADS = 50  # Meta padrão exigida por lote/planilha
+META_MINIMA_LEADS = 50  # Meta padrão exigida por lote
 
 # Nichos e termos de busca específicos
 NICHOS = {
@@ -168,14 +168,17 @@ NICHOS = {
     }
 }
 
-# Critérios e filtros de qualidade
+# Critérios e filtros rigorosos de qualificação (Item 6)
 FILTROS = {
-    "exigir_sem_site": True,          # Focar prioritariamente em quem NÃO tem site
-    "nota_minima": 4.0,              # Somente negócios bem avaliados
-    "min_avaliacoes": 5,             # Pelo menos 5 avaliações para garantir que tem clientela ativa
-    "exigir_telefone": True,         # Deve ter telefone para poder abordar
+    "exigir_sem_site": True,                         # [OBRIGATÓRIO] Não possuir site, sistema próprio ou landing page
+    "exigir_whatsapp": True,                         # [OBRIGATÓRIO] Possuir WhatsApp válido (Maps ou fallback Instagram)
+    "min_avaliacoes": 10,                            # Mínimo de 10 avaliações no Google Maps
+    "min_avaliacoes_escritas": 10,                   # Mínimo de 10 avaliações escritas no Google Maps
+    "nota_minima": 4.0,                              # 4.0 estrelas (ou < 4.0 caso possua > 10 avaliações)
+    "permitir_nota_menor_com_mais_avaliacoes": True, # Permite < 4.0 se tiver > 10 avaliações
+    "priorizar_autonomos_micro_ascensao": True,      # [PRIORIDADE] Autônomos e micro-empreendedores em ascensão
+    "exigir_telefone": True,
 }
-
 
 # Configurações da verificação de presença digital (Maps + Instagram + Web)
 VERIFICACAO = {
