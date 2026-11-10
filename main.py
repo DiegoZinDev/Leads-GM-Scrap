@@ -28,8 +28,15 @@ from verifier import VerificadorPresencaDigital, interceptar_novas_abas_whatsapp
 
 
 def mostrar_banner():
-    print("""
+    print(r"""
 ================================================================================
+   ███████╗██╗███╗   ██╗
+   ╚══███╔╝██║████╗  ██║
+     ███╔╝ ██║██╔██╗ ██║
+    ███╔╝  ██║██║╚██╗██║
+   ███████╗██║██║ ╚████║
+   ╚══════╝╚═╝╚═╝  ╚═══╝
+
  🚀 BOT PROSPECTOR: LEADS QUALIFICADOS (FUNIL SEQUENCIAL PANDAS & NUMPY)
     Brasília DF, Valparaíso de Goiás e Entorno
     Coleta Regional em Lote + Triagem Eliminatória em 6 Etapas:
