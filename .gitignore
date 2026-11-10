@@ -1,19 +1,16 @@
-# Ambientes Virtuais
+# Ambientes virtuais
 venv/
 .venv/
 env/
 
-# Python cache
-__pycache__/
-*.pyc
+# Relatórios e histórico gerados localmente
+Planilhas/
 
-# Planilhas geradas (dados de leads)
-*.xlsx
-*.csv
-
-# Logs e arquivos temporários
-*.log
-
-# Perfil e sessões do navegador (cookies, logins de Instagram e WhatsApp)
+# Perfil persistente do navegador (sessões e cookies)
 perfil_navegador/
 sessao_navegador/
+
+# Cache Python e arquivos de ambiente
+__pycache__/
+*.pyc
+.env

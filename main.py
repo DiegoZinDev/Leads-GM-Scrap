@@ -1,14 +1,17 @@
 """
-Painel Principal do Bot de Captação de Leads (Google Maps) - Modo Turbo (Alta Velocidade).
-Filtra estabelecimentos sem site, com verificação profunda e paralela na web (anti-cardápio digital/anti-site),
-permite digitar nichos livres sem limite (resetados a cada nova busca) e gera planilha Excel + Relatório Executivo em PDF.
+Painel Principal do Bot de Captação de Leads (Google Maps + Instagram + Web).
+Opera em arquitetura de 2 fases (Coleta Regional Bruta + Funil Eliminatório Sequencial via Pandas/NumPy):
+  1. Coleta todos os leads candidatos da região escolhida (com nichos 100% dinâmicos ou pré-definidos);
+  2. Elimina sequencialmente por cada critério obrigatório (Ativo/Não-Franquia -> Mínimo 10 avaliações
+     escritas -> Nota >= 4.0 ou >10 av. -> 100% Sem Site/Sistema/Landing Page -> WhatsApp confirmado
+     no Maps ou Instagram -> Priorização de Autônomos e Micro-empreendedores em ascensão);
+  3. Exporta exclusivamente em Relatório Executivo PDF (Soft Slate & Pastel) com desduplicação JSON.
 """
 
-import sys
 import os
 import re
+import sys
 import time
-from datetime import datetime
 
 # Garante suporte UTF-8 no terminal Windows
 if hasattr(sys.stdout, "reconfigure"):
@@ -26,23 +29,35 @@ from config import (
     FILTROS,
     META_MINIMA_LEADS,
     PASTA_PERFIL_NAVEGADOR,
+    VERIFICACAO,
     definir_nichos_busca,
     resetar_nichos_busca,
 )
+from exporter import carregar_historico, salvar_relatorio_pdf
 from scraper import buscar_leads_google_maps
-from exporter import salvar_planilha_excel
-from historico import carregar_historico
-from verifier import interceptar_novas_abas_whatsapp
+from verifier import VerificadorPresencaDigital, interceptar_novas_abas_whatsapp
 
 
 def mostrar_banner():
-    print("""
+    print(r"""
 ================================================================================
- 🚀 BOT PROSPECTOR TURBO: LEADS QUALIFICADOS (GOOGLE MAPS + WEB PARALELA)
-    Nichos 100% Dinâmicos e Sem Limite | Regiões Configuráveis | Alta Velocidade
-    Filtro Rigoroso: 100% Sem Site | Sem Cardápio Digital | Alta Reputação
-    Exportação Automática: Planilha Excel (.xlsx) e Relatório Executivo (.pdf)
-    Anti-Duplicação: Leads já prospectados NUNCA são repetidos!
+   ███████╗██╗███╗   ██╗
+   ╚══███╔╝██║████╗  ██║
+     ███╔╝ ██║██╔██╗ ██║
+    ███╔╝  ██║██║╚██╗██║
+   ███████╗██║██║ ╚████║
+   ╚══════╝╚═╝╚═╝  ╚═══╝
+
+ 🚀 BOT PROSPECTOR: LEADS QUALIFICADOS (FUNIL SEQUENCIAL PANDAS & NUMPY)
+    Nichos 100% Dinâmicos e Sem Limite | Brasília DF, Valparaíso GO e Entorno
+    Coleta Regional em Lote + Triagem Eliminatória em 6 Etapas:
+      1. Empresas/Autônomos Ativos (Sem grandes redes ou franquias nacionais)
+      2. Mínimo de 10 Avaliações Escritas no Google Maps
+      3. 4.0+ Estrelas (ou < 4.0 caso possua mais de 10 avaliações)
+      4. [OBRIGATÓRIO] 100% Sem Site, Sistema Próprio ou Landing Page (Maps + IG)
+      5. [OBRIGATÓRIO] WhatsApp Confirmado (Maps ou Fallback na Bio do Instagram)
+      6. [PRIORIDADE] Foco em Autônomos e Micro-empreendedores em Ascensão
+    Saída Exclusiva: Relatório Executivo PDF (.pdf) | Histórico Anti-Duplicação
 ================================================================================
     """)
 
@@ -93,7 +108,6 @@ def solicitar_nichos_usuario() -> dict:
             print(f"[+] {len(NICHOS)} nichos base adicionados à fila!")
             break
 
-        # Separa por vírgula ou ponto e vírgula, permitindo vários nichos de uma só vez
         partes = [p.strip() for p in re.split(r"[,;]+", entrada) if p.strip()]
         adicionados_agora = []
         for p in partes:
@@ -116,7 +130,10 @@ def solicitar_regioes_customizadas(regioes_atuais: list) -> list:
     print("\n" + "-" * 80)
     print(" 📍 CONFIGURAÇÃO DE REGIÕES / CIDADES DE BUSCA")
     print("-" * 80)
-    print(f" Regiões atuais selecionadas ({len(regioes_atuais)}): {', '.join(regioes_atuais[:5])}{'...' if len(regioes_atuais) > 5 else ''}")
+    print(
+        f" Regiões atuais selecionadas ({len(regioes_atuais)}): "
+        f"{', '.join(regioes_atuais[:5])}{'...' if len(regioes_atuais) > 5 else ''}"
+    )
     print("\n Escolha uma opção de abrangência:")
     print("  1 - Todas as regiões padrão (Brasília DF + Valparaíso GO - 13 sub-regiões)")
     print("  2 - Apenas Brasília e Regiões Administrativas do DF")
@@ -153,22 +170,23 @@ def solicitar_regioes_customizadas(regioes_atuais: list) -> list:
 
 def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, meta_leads: int = 50, headless: bool = False):
     """
-    Executa o ciclo de prospecção nos nichos informados pelo usuário em alta velocidade e,
+    Executa o ciclo de prospecção nos nichos informados pelo usuário e,
     ao finalizar, reseta automaticamente a variável de nichos para a próxima busca.
     """
     todos_os_leads = []
     inicio_tempo = time.time()
     historico = carregar_historico()
+    nomes_nichos = list(nichos_selecionados.keys())
 
-    print(f"\n[CONFIGURAÇÃO DA PROSPECÇÃO TURBO]")
-    print(f"- Nichos da Busca ({len(nichos_selecionados)}): {', '.join(nichos_selecionados.keys())}")
-    print(f"- Regiões mapeadas ({len(regioes_selecionadas)}): {', '.join(regioes_selecionadas[:4])}{'...' if len(regioes_selecionadas) > 4 else ''}")
-    print(f"- Meta Mínima de Leads: {meta_leads} leads 100% verificados sem site/cardápio")
-    print(f"- Filtros: Nota >= {FILTROS.get('nota_minima', 4.0)}⭐ | Mín. {FILTROS.get('min_avaliacoes', 5)} avaliações | Exigir Tel: {'Sim' if FILTROS.get('exigir_telefone', True) else 'Não'}")
-    print(f"- Motor de Busca: Pré-filtragem em Feed + Extração JS Única + Multi-Threading Web/Zap/Insta")
+    print("\n[CONFIGURAÇÃO DA PROSPECÇÃO]")
+    print(f"- Nichos ({len(nomes_nichos)}): {', '.join(nomes_nichos)}")
+    print(f"- Regiões mapeadas: {len(regioes_selecionadas)} sub-regiões")
+    print(f"- Meta Mínima de Leads: {meta_leads} leads aprovados no Funil Sequencial")
+    print(f"- Mínimo de Avaliações Escritas: {FILTROS.get('min_avaliacoes_escritas', 10)} avaliações com texto")
     print(f"- Histórico Ativo: {historico.get('total_coletados', 0)} leads já salvos (não serão repetidos)")
+    print("- Saída: Relatório Executivo (.pdf)")
     print(f"- Modo Visual: {'Ativado (janela visível)' if not headless else 'Invisível (Headless)'}")
-    print(f"--------------------------------------------------------------------------------\n")
+    print("--------------------------------------------------------------------------------\n")
 
     os.makedirs(PASTA_PERFIL_NAVEGADOR, exist_ok=True)
     try:
@@ -178,27 +196,22 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                 headless=headless,
                 locale="pt-BR",
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                args=[
-                    "--disable-blink-features=AutomationControlled",
-                    "--disable-extensions",
-                    "--disable-component-extensions-with-background-pages",
-                    "--disable-default-apps",
-                    "--no-default-browser-check",
-                    "--start-maximized",
-                    "--window-size=1600,900"
-                ],
+                args=["--disable-blink-features=AutomationControlled", "--start-maximized", "--window-size=1600,900"],
                 viewport={"width": 1600, "height": 900} if headless else None,
-                ignore_https_errors=True
+                ignore_https_errors=True,
             )
-            # Garante redirecionamento inteligente de abas do WhatsApp para aba única
             interceptar_novas_abas_whatsapp(context)
             page = context.pages[0] if context.pages else context.new_page()
 
+            verificador = VerificadorPresencaDigital(context, config=VERIFICACAO)
+            acessivel_ig, logado_ig, msg_ig = verificador.instagram.verificar_sessao()
+            icone_ig = "✅" if (acessivel_ig and logado_ig) else "⚠️"
+            print(f"[*] Status do Instagram: {icone_ig} {msg_ig}")
+
             atingiu_meta = False
-            # Percorre nichos e regiões até bater a meta de leads
             while len(todos_os_leads) < meta_leads and not atingiu_meta:
                 houve_novos = False
-                for nicho_nome, dados_nicho in nichos_selecionados.items():
+                for nicho_nome, dados_nicho in list(nichos_selecionados.items()):
                     if len(todos_os_leads) >= meta_leads:
                         atingiu_meta = True
                         break
@@ -206,7 +219,6 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                     print(f"\n>>> NICHO ATUAL: [{nicho_nome.upper()}] | Progresso: {len(todos_os_leads)}/{meta_leads} leads <<<")
 
                     termos_nicho = dados_nicho.get("termos", [nicho_nome])
-                    copy_nicho = dados_nicho.get("copy_base", "")
 
                     for regiao in regioes_selecionadas:
                         if len(todos_os_leads) >= meta_leads:
@@ -219,7 +231,6 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                                 break
 
                             falta = meta_leads - len(todos_os_leads)
-                            # Permite extrair até 35 leads de uma mesma listagem rica sem precisar recarregar o Maps dezenas de vezes
                             limite_busca = min(35, max(5, falta))
 
                             novos_leads = buscar_leads_google_maps(
@@ -229,55 +240,54 @@ def executar_prospeccao(nichos_selecionados: dict, regioes_selecionadas: list, m
                                 cidade=regiao,
                                 limite_leads=limite_busca,
                                 historico=historico,
-                                copy_base=copy_nicho
+                                verificador=verificador,
                             )
 
                             if novos_leads:
                                 houve_novos = True
                                 todos_os_leads.extend(novos_leads)
                                 decorrido_min = round((time.time() - inicio_tempo) / 60, 2)
-                                print(f"[*] Progresso do lote: {len(todos_os_leads)}/{meta_leads} leads qualificados ({decorrido_min} min decorridos).")
+                                print(
+                                    f"[*] Progresso do lote: {len(todos_os_leads)}/{meta_leads} "
+                                    f"leads qualificados ({decorrido_min} min decorridos)."
+                                )
 
-                # Se rodou todas as combinações sem encontrar nada novo, encerra para evitar loop infinito
                 if not houve_novos:
                     print("\n[!] Varredura completa finalizada em todas as regiões e termos disponíveis.")
                     break
 
-            # Salva a planilha e gera o PDF reutilizando a sessão ativa do Playwright
             if todos_os_leads:
-                caminho_excel, caminho_pdf, id_planilha = salvar_planilha_excel(todos_os_leads, page=page)
+                caminho_pdf, id_lote = salvar_relatorio_pdf(todos_os_leads, page=page)
             else:
-                caminho_excel, caminho_pdf, id_planilha = "", "", ""
+                caminho_pdf, id_lote = "", ""
 
             context.close()
 
         tempo_total = round((time.time() - inicio_tempo) / 60, 2)
-        print(f"\n================================================================================")
+        print("\n================================================================================")
         print(f"🏁 PROSPECÇÃO CONCLUÍDA EM {tempo_total} MINUTOS!")
         print(f"Total de leads inéditos e 100% verificados: {len(todos_os_leads)}")
-        print(f"================================================================================")
+        print("================================================================================")
 
         if todos_os_leads:
             com_zap = sum(1 for l in todos_os_leads if l.get("telefone"))
+            em_ascensao = sum(1 for l in todos_os_leads if l.get("em_ascensao"))
             alta_prioridade = sum(1 for l in todos_os_leads if l.get("score_potencial", 0) >= 85)
 
-            print(f"\n📊 RESUMO DOS ARQUIVOS GERADOS:")
-            print(f"  • ID do Lote: {id_planilha}")
-            print(f"  • Nichos Prospectados: {', '.join(nichos_selecionados.keys())}")
+            print("\n📊 RESUMO DO RELATÓRIO GERADO:")
+            print(f"  • ID do Lote: {id_lote}")
+            print(f"  • Nichos Prospectados: {', '.join(nomes_nichos)}")
             print(f"  • Total de Leads: {len(todos_os_leads)} (Meta: {meta_leads})")
-            print(f"  • Com Telefone / WhatsApp: {com_zap}")
+            print(f"  • Com WhatsApp Verificado: {com_zap}")
+            print(f"  • Autônomos/Micro em Ascensão: {em_ascensao}")
             print(f"  • Alta Prioridade (Score >= 85%): {alta_prioridade}")
-            print(f"  • Planilha Excel: {caminho_excel}")
             if caminho_pdf:
                 print(f"  • Relatório PDF: {caminho_pdf}")
-            print(f"\nArquivos salvos no diretório 'Planilhas/' prontos para prospecção!\n")
+            print("\nRelatório salvo no diretório 'Planilhas/' pronto para prospecção!\n")
         else:
             print("[!] Nenhum lead inédito atendeu a todos os critérios restritos nesta rodada.")
-
     finally:
-        # Reseta a variável de nichos ao final da pesquisa para os próximos nichos que o usuário for buscar
         resetar_nichos_busca()
-        nichos_selecionados.clear()
         print("🔄 [RESET AUTOMÁTICO] Os nichos desta pesquisa foram resetados. Variável limpa para a próxima busca!")
 
 
@@ -285,7 +295,6 @@ def fazer_login_manual():
     """
     Abre o navegador visível com o perfil persistente para o usuário realizar
     o login manual no Instagram e escanear o QR Code do WhatsApp Web.
-    Todas as sessões são salvas permanentemente em 'perfil_navegador/'.
     """
     print("\n" + "=" * 80)
     print(" 🔑 CONECTAR CONTAS (LOGIN MANUAL NO INSTAGRAM E WHATSAPP WEB)")
@@ -309,7 +318,7 @@ def fazer_login_manual():
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
             args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
             no_viewport=True,
-            ignore_https_errors=True
+            ignore_https_errors=True,
         )
 
         page_insta = context.pages[0] if context.pages else context.new_page()
@@ -342,11 +351,11 @@ def menu_configuracoes_avancadas(config_sessao: dict):
         print(f"  1 - Alterar Meta Mínima de Leads por Lote     [Atual: {config_sessao['meta_leads']} leads]")
         print(f"  2 - Configurar Regiões / Cidades Alvo         [Atual: {len(config_sessao['regioes'])} região(ões)]")
         print(f"  3 - Ajustar Nota Mínima no Google Maps        [Atual: {FILTROS['nota_minima']} ⭐]")
-        print(f"  4 - Ajustar Mínimo de Avaliações Exigidas     [Atual: {FILTROS['min_avaliacoes']} avaliações]")
-        print(f"  5 - Exigir Telefone Cadastrado                [Atual: {'Sim' if FILTROS['exigir_telefone'] else 'Não'}]")
+        print(f"  4 - Ajustar Mínimo de Avaliações Escritas     [Atual: {FILTROS['min_avaliacoes_escritas']} avaliações]")
+        print(f"  5 - Exigir WhatsApp Confirmado                [Atual: {'Sim' if FILTROS['exigir_whatsapp'] else 'Não'}]")
         print(f"  6 - Modo da Janela do Navegador               [Atual: {'Invisível (Headless)' if config_sessao['headless'] else 'Visível na Tela'}]")
-        print(f"  7 - Restaurar Todas as Configurações Padrão")
-        print(f"  0 - Voltar ao Menu Principal")
+        print("  7 - Restaurar Todas as Configurações Padrão")
+        print("  0 - Voltar ao Menu Principal")
         print("-" * 80)
 
         op = input("\nEscolha o item que deseja configurar [0-7]: ").strip()
@@ -375,15 +384,19 @@ def menu_configuracoes_avancadas(config_sessao: dict):
             except ValueError:
                 print("[!] Valor inválido.")
         elif op == "4":
-            val = input(f"Digite o mínimo de avaliações no Google Maps (ex: 1, 5, 10, 30) [Atual: {FILTROS['min_avaliacoes']}]: ").strip()
+            val = input(
+                f"Digite o mínimo de avaliações escritas no Google Maps (ex: 5, 10, 20) [Atual: {FILTROS['min_avaliacoes_escritas']}]: "
+            ).strip()
             if val.isdigit() and int(val) >= 0:
+                FILTROS["min_avaliacoes_escritas"] = int(val)
                 FILTROS["min_avaliacoes"] = int(val)
-                print(f"✅ Mínimo de avaliações atualizado para {FILTROS['min_avaliacoes']}!")
+                print(f"✅ Mínimo de avaliações escritas atualizado para {FILTROS['min_avaliacoes_escritas']}!")
             else:
                 print("[!] Valor inválido.")
         elif op == "5":
-            FILTROS["exigir_telefone"] = not FILTROS["exigir_telefone"]
-            print(f"✅ Exigir telefone alterado para: {'Sim' if FILTROS['exigir_telefone'] else 'Não'}!")
+            FILTROS["exigir_whatsapp"] = not FILTROS["exigir_whatsapp"]
+            FILTROS["exigir_telefone"] = FILTROS["exigir_whatsapp"]
+            print(f"✅ Exigir WhatsApp alterado para: {'Sim' if FILTROS['exigir_whatsapp'] else 'Não'}!")
         elif op == "6":
             config_sessao["headless"] = not config_sessao["headless"]
             print(f"✅ Modo do navegador alterado para: {'Invisível (Headless)' if config_sessao['headless'] else 'Visível na Tela'}!")
@@ -392,7 +405,9 @@ def menu_configuracoes_avancadas(config_sessao: dict):
             config_sessao["regioes"] = list(REGIOES)
             config_sessao["headless"] = False
             FILTROS["nota_minima"] = 4.0
-            FILTROS["min_avaliacoes"] = 5
+            FILTROS["min_avaliacoes"] = 10
+            FILTROS["min_avaliacoes_escritas"] = 10
+            FILTROS["exigir_whatsapp"] = True
             FILTROS["exigir_telefone"] = True
             print("✅ Configurações restauradas para o padrão!")
         else:
@@ -403,7 +418,7 @@ def menu_interativo():
     config_sessao = {
         "meta_leads": META_MINIMA_LEADS,
         "regioes": list(REGIOES),
-        "headless": False
+        "headless": False,
     }
 
     while True:
@@ -414,7 +429,11 @@ def menu_interativo():
         status_nichos = "Limpo / Aguardando digitação" if not NICHOS_ATUAIS else f"{len(NICHOS_ATUAIS)} ativo(s)"
 
         print(f"Status do Perfil: {status_txt} | Leads no Histórico: {historico_atual.get('total_coletados', 0)}")
-        print(f"Configuração Atual: Meta = {config_sessao['meta_leads']} leads | Regiões = {len(config_sessao['regioes'])} | Nota >= {FILTROS['nota_minima']}⭐ ({FILTROS['min_avaliacoes']}+ aval.)")
+        print(
+            f"Configuração Atual: Meta = {config_sessao['meta_leads']} leads | "
+            f"Regiões = {len(config_sessao['regioes'])} | "
+            f"Nota >= {FILTROS['nota_minima']}⭐ ({FILTROS['min_avaliacoes_escritas']}+ aval. escritas)"
+        )
         print(f"Estado da Variável de Nichos: 🔄 {status_nichos} (Sem limite de nichos por busca)")
         print("--------------------------------------------------------------------------------")
         print("Escolha o modo de operação:")
@@ -422,7 +441,7 @@ def menu_interativo():
         print("1 - 🚀 Iniciar Prospecção (Digitar Nichos Livremente + Usar Configuração Atual)")
         print("2 - 🎯 Prospecção Personalizada Completa (Digitar Nichos + Escolher Regiões e Meta)")
         print("3 - ⚙️ Configurações Avançadas do Menu (Ajustar Metas, Cidades, Filtros, Nota e Janela)")
-        print("4 - ⚡ Teste Rápido (Digitar Nichos para Captar 3 Leads de Demonstração)")
+        print("4 - ⚡ Teste Rápido (Digitar Nichos para Captar 3 Leads com Funil Sequencial)")
         print("5 - 🚪 Sair")
 
         escolha = input("\nDigite o número da opção desejada [Padrão: 1]: ").strip()
@@ -440,18 +459,16 @@ def menu_interativo():
             continue
 
         elif escolha == "1":
-            # Usuário digita livremente os nichos que quer buscar agora; reseta após finalizar
             nichos_busca = solicitar_nichos_usuario()
             executar_prospeccao(
                 nichos_selecionados=nichos_busca,
                 regioes_selecionadas=config_sessao["regioes"],
                 meta_leads=config_sessao["meta_leads"],
-                headless=config_sessao["headless"]
+                headless=config_sessao["headless"],
             )
             input("\n[Pressione ENTER para voltar ao Menu Principal e realizar nova busca...]")
 
         elif escolha == "2":
-            # Fluxo completo: digita quantos nichos quiser, escolhe regiões e define meta de leads
             nichos_busca = solicitar_nichos_usuario()
             regs = solicitar_regioes_customizadas(config_sessao["regioes"])
 
@@ -462,19 +479,18 @@ def menu_interativo():
                 nichos_selecionados=nichos_busca,
                 regioes_selecionadas=regs,
                 meta_leads=meta,
-                headless=config_sessao["headless"]
+                headless=config_sessao["headless"],
             )
             input("\n[Pressione ENTER para voltar ao Menu Principal e realizar nova busca...]")
 
         elif escolha == "4":
-            # Teste rápido de 3 leads com os nichos que o usuário digitar
             print("\n⚡ MODO TESTE RÁPIDO (3 LEADS)")
             nichos_teste = solicitar_nichos_usuario()
             executar_prospeccao(
                 nichos_selecionados=nichos_teste,
                 regioes_selecionadas=config_sessao["regioes"][:3],
                 meta_leads=3,
-                headless=config_sessao["headless"]
+                headless=config_sessao["headless"],
             )
             input("\n[Pressione ENTER para voltar ao Menu Principal e realizar nova busca...]")
 
