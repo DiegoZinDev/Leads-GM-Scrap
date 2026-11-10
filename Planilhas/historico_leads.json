@@ -1067,6 +1067,336 @@
       "cidade": "Taguatinga DF",
       "data_coleta": "2026-10-27 10:42:18",
       "id_planilha": "2F51F6"
+    },
+    "61991008966": {
+      "nome": "Studio Jéssika Torres",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61986444305": {
+      "nome": "Studio Thalita Barros - Nail Design | Unha de Gel | Unha de Fibra | Manicure | Spa dos Pés - Guará - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61995084287": {
+      "nome": "Studio Belinha Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61998268671": {
+      "nome": "Ambar Studio e Esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61994663223": {
+      "nome": "Yule Instituto Europeu de Beleza e Estética",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61993903553": {
+      "nome": "Fast Escova II - unidade castanheiras",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61992841078": {
+      "nome": "Donna Unha",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "6132566360": {
+      "nome": "Studio Priscila Suetu",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61985995803": {
+      "nome": "Espaço unhas de lady",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61991586093": {
+      "nome": "Studio Kimie Unhas",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61981307253": {
+      "nome": "Bellas Unhas Guará",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61992482586": {
+      "nome": "Rayane Barros",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61984535396": {
+      "nome": "ALICE'S NAIL ART",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61995584686": {
+      "nome": "Evelyn Lohany Nails Design",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61994232521": {
+      "nome": "Studio Karla Soares Nail Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61920052897": {
+      "nome": "Manicure Gourmet | Banho de gel | Nail arte | Gel",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61993688642": {
+      "nome": "Studio Simone Lobão",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61999873254": {
+      "nome": "Studio Evilane Souza Nails",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61974010012": {
+      "nome": "Unhas e charme esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61996466552": {
+      "nome": "Míriam Vasconcelos",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "6130361046": {
+      "nome": "The Beauty´s House",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61982685558": {
+      "nome": "MR Beauty Studio DF",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61991916590": {
+      "nome": "Salão Águas Claras",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61996311773": {
+      "nome": "Lú Maria Manicure, e Esmaltação em Gel",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61999277599": {
+      "nome": "Espaço HR Helena Ribeiro Beauty",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61992400500": {
+      "nome": "Jay nails designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61986522585": {
+      "nome": "Aline Ribeiro Nail Designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61999993942": {
+      "nome": "Esmalteria Esmaltadas Fabi",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61992613838": {
+      "nome": "AC Concept Nails | Ana Carolina Master Nails",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61982207168": {
+      "nome": "My Studio Mega Hair | Asa Sul - Brasília",
+      "cidade": "Asa Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "6132562376": {
+      "nome": "Espaço Beauty Express",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61999831860": {
+      "nome": "Maria Amanda Studio de Beleza",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61981932074": {
+      "nome": "Natural Beauty por Yslannia Gomes",
+      "cidade": "Sudoeste Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61998266363": {
+      "nome": "NAIL DESIGNER | IZZA REIS - GUARÁ DF",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61985628851": {
+      "nome": "Espaço Linda Designer",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61998408643": {
+      "nome": "Estúdio Elisafashion",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61981541811": {
+      "nome": "Karol Alves - Designer de Unhas",
+      "cidade": "Vicente Pires DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61999414461": {
+      "nome": "Studio de unha, Amanda Nogueira",
+      "cidade": "Vicente Pires DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61991929056": {
+      "nome": "Nail Designer Bruna Oliveira",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61985633141": {
+      "nome": "STUDIO IASMIN MIRANDA NAILS DESIGNER",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "63985004770": {
+      "nome": "Lhu Nail Designer",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61993676133": {
+      "nome": "Mônica Mirella - Alongamento de Unhas e Podologia Preventiva",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61983406348": {
+      "nome": "Bendita Esmalteria",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61981097288": {
+      "nome": "SB Studio Beauty | Nails Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61994005445": {
+      "nome": "Du Arte Esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61981313263": {
+      "nome": "Natalya Santos",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61993726903": {
+      "nome": "Fanny Colors | Nail Designer e Manicure",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61986380928": {
+      "nome": "Nay Lacerda nail designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61991866744": {
+      "nome": "#POP! Esmalteria",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61995672950": {
+      "nome": "TAYM Esmalteria",
+      "cidade": "Sudoeste Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61982077679": {
+      "nome": "Unhasporjay",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "61986560872": {
+      "nome": "Império das Maquiagens Preço Único R$10 - Ceilândia Centro",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "61998692591": {
+      "nome": "GALERIA VALPARAISO",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "61991922621": {
+      "nome": "Ibá Açaí Valparaíso 1",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "61996408729": {
+      "nome": "Oggi Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
     }
   },
   "nomes_cidade": {
@@ -2137,6 +2467,336 @@
       "cidade": "Taguatinga DF",
       "data_coleta": "2026-10-27 10:42:18",
       "id_planilha": "2F51F6"
+    },
+    "studio jéssika torres_brasília df": {
+      "nome": "Studio Jéssika Torres",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio thalita barros nail design unha de gel unha de fibra manicure spa dos pés guará df_brasília df": {
+      "nome": "Studio Thalita Barros - Nail Design | Unha de Gel | Unha de Fibra | Manicure | Spa dos Pés - Guará - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio belinha designer_brasília df": {
+      "nome": "Studio Belinha Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "ambar studio e esmalteria_brasília df": {
+      "nome": "Ambar Studio e Esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "yule instituto europeu de beleza e estética_águas claras df": {
+      "nome": "Yule Instituto Europeu de Beleza e Estética",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "fast escova ii unidade castanheiras_águas claras df": {
+      "nome": "Fast Escova II - unidade castanheiras",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "donna unha_taguatinga df": {
+      "nome": "Donna Unha",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio priscila suetu_asa norte brasília df": {
+      "nome": "Studio Priscila Suetu",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "espaço unhas de lady_guará df": {
+      "nome": "Espaço unhas de lady",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio kimie unhas_guará df": {
+      "nome": "Studio Kimie Unhas",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "bellas unhas guará_guará df": {
+      "nome": "Bellas Unhas Guará",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "rayane barros_guará df": {
+      "nome": "Rayane Barros",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "alices nail art_ceilândia df": {
+      "nome": "ALICE'S NAIL ART",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "evelyn lohany nails design_brasília df": {
+      "nome": "Evelyn Lohany Nails Design",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio karla soares nail designer_brasília df": {
+      "nome": "Studio Karla Soares Nail Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "manicure gourmet banho de gel nail arte gel_brasília df": {
+      "nome": "Manicure Gourmet | Banho de gel | Nail arte | Gel",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio simone lobão_brasília df": {
+      "nome": "Studio Simone Lobão",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio evilane souza nails_brasília df": {
+      "nome": "Studio Evilane Souza Nails",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "unhas e charme esmalteria_brasília df": {
+      "nome": "Unhas e charme esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "míriam vasconcelos_águas claras df": {
+      "nome": "Míriam Vasconcelos",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "the beautys house_águas claras df": {
+      "nome": "The Beauty´s House",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "mr beauty studio df_águas claras df": {
+      "nome": "MR Beauty Studio DF",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "salão águas claras_águas claras df": {
+      "nome": "Salão Águas Claras",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "lú maria manicure e esmaltação em gel_taguatinga df": {
+      "nome": "Lú Maria Manicure, e Esmaltação em Gel",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "espaço hr helena ribeiro beauty_taguatinga df": {
+      "nome": "Espaço HR Helena Ribeiro Beauty",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "jay nails designer_taguatinga df": {
+      "nome": "Jay nails designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "aline ribeiro nail designer_taguatinga df": {
+      "nome": "Aline Ribeiro Nail Designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "esmalteria esmaltadas fabi_taguatinga df": {
+      "nome": "Esmalteria Esmaltadas Fabi",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "ac concept nails ana carolina master nails_taguatinga df": {
+      "nome": "AC Concept Nails | Ana Carolina Master Nails",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "my studio mega hair asa sul brasília_asa sul brasília df": {
+      "nome": "My Studio Mega Hair | Asa Sul - Brasília",
+      "cidade": "Asa Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "espaço beauty express_asa norte brasília df": {
+      "nome": "Espaço Beauty Express",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "maria amanda studio de beleza_asa norte brasília df": {
+      "nome": "Maria Amanda Studio de Beleza",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "natural beauty por yslannia gomes_sudoeste brasília df": {
+      "nome": "Natural Beauty por Yslannia Gomes",
+      "cidade": "Sudoeste Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "nail designer izza reis guará df_guará df": {
+      "nome": "NAIL DESIGNER | IZZA REIS - GUARÁ DF",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "espaço linda designer_guará df": {
+      "nome": "Espaço Linda Designer",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "estúdio elisafashion_guará df": {
+      "nome": "Estúdio Elisafashion",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "karol alves designer de unhas_vicente pires df": {
+      "nome": "Karol Alves - Designer de Unhas",
+      "cidade": "Vicente Pires DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio de unha amanda nogueira_vicente pires df": {
+      "nome": "Studio de unha, Amanda Nogueira",
+      "cidade": "Vicente Pires DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "nail designer bruna oliveira_ceilândia df": {
+      "nome": "Nail Designer Bruna Oliveira",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "studio iasmin miranda nails designer_ceilândia df": {
+      "nome": "STUDIO IASMIN MIRANDA NAILS DESIGNER",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "lhu nail designer_lago sul brasília df": {
+      "nome": "Lhu Nail Designer",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "mônica mirella alongamento de unhas e podologia preventiva_lago sul brasília df": {
+      "nome": "Mônica Mirella - Alongamento de Unhas e Podologia Preventiva",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "bendita esmalteria_lago sul brasília df": {
+      "nome": "Bendita Esmalteria",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "sb studio beauty nails designer_brasília df": {
+      "nome": "SB Studio Beauty | Nails Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "du arte esmalteria_brasília df": {
+      "nome": "Du Arte Esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "natalya santos_brasília df": {
+      "nome": "Natalya Santos",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "fanny colors nail designer e manicure_águas claras df": {
+      "nome": "Fanny Colors | Nail Designer e Manicure",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "nay lacerda nail designer_taguatinga df": {
+      "nome": "Nay Lacerda nail designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "pop esmalteria_taguatinga df": {
+      "nome": "#POP! Esmalteria",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "taym esmalteria_sudoeste brasília df": {
+      "nome": "TAYM Esmalteria",
+      "cidade": "Sudoeste Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "unhasporjay_guará df": {
+      "nome": "Unhasporjay",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "império das maquiagens preço único r10 ceilândia centro_ceilândia df": {
+      "nome": "Império das Maquiagens Preço Único R$10 - Ceilândia Centro",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "galeria valparaiso_valparaíso de goiás": {
+      "nome": "GALERIA VALPARAISO",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "ibá açaí valparaíso 1_valparaíso de goiás": {
+      "nome": "Ibá Açaí Valparaíso 1",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "oggi valparaíso de goiás_valparaíso de goiás": {
+      "nome": "Oggi Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
     }
   },
   "urls_maps": {
@@ -2949,8 +3609,338 @@
       "cidade": "Taguatinga DF",
       "data_coleta": "2026-10-27 10:42:18",
       "id_planilha": "2F51F6"
+    },
+    "https://www.google.com/maps/place/Studio+J%C3%A9ssika+Torres/@-15.8156032,-48.1910433,11z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x93598158ed566deb:0x273f24834de6863e!8m2!3d-16.0235931!4d-48.0644352!15sCithbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gQnJhc8OtbGlhIERGkgEMYmVhdXR5X3NhbG9u4AEA!16s%2Fg%2F11t1ffkt43": {
+      "nome": "Studio Jéssika Torres",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Thalita+Barros+-+Nail+Design+%7C+Unha+de+Gel+%7C+Unha+de+Fibra+%7C+Manicure+%7C+Spa+dos+P%C3%A9s+-+Guar%C3%A1+-+DF/@-15.803068,-48.2167212,11z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a31d65907d78d:0xf4ce9d5d1672344c!8m2!3d-15.8407231!4d-47.9726351!15sCillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEJyYXPDrWxpYSBERlorIillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIGJyYXPDrWxpYSBkZpIBCm5haWxfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjVLY0ZaVVpHdFZhMFV4VVcwd2QwOVVSbmxSVnpCNVUwY3hTMUpGUlJBQuABAPoBBAgAEEM!16s%2Fg%2F11knbm3r75": {
+      "nome": "Studio Thalita Barros - Nail Design | Unha de Gel | Unha de Fibra | Manicure | Spa dos Pés - Guará - DF",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Belinha+Designer/@-15.803068,-48.2167212,11z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935981346ef053e3:0xffe924efe5c126f3!8m2!3d-16.0385282!4d-48.0285803!15sCillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEJyYXPDrWxpYSBERlorIillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIGJyYXPDrWxpYSBkZpIBCm5haWxfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjFvTUZwWGJ6VldiVnByVVdwU01VMUliSEpaVkdSMFZsVmtUMlJ0WXhBQuABAPoBBAhNED8!16s%2Fg%2F11q9n_l1s1": {
+      "nome": "Studio Belinha Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Ambar+Studio+e+Esmalteria/@-15.7624884,-48.1774003,11z/data=!4m11!1m3!2m2!1sdesigner+de+unhas+e+spa+dos+pes+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a2f2654b75207:0x2cf02cca3cb3b113!8m2!3d-15.8396569!4d-47.9669124!15sCi9kZXNpZ25lciBkZSB1bmhhcyBlIHNwYSBkb3MgcGVzIGVtIEJyYXPDrWxpYSBERloxIi9kZXNpZ25lciBkZSB1bmhhcyBlIHNwYSBkb3MgcGVzIGVtIGJyYXPDrWxpYSBkZpIBDGJlYXV0eV9zYWxvbpoBJENoZERTVWhOTUc5blMwVkpRMEZuVFVSSmVscFRRVE5CUlJBQuABAPoBBAgAEDM!16s%2Fg%2F11m751ypch": {
+      "nome": "Ambar Studio e Esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Yule+Instituto+Europeu+de+Beleza+e+Est%C3%A9tica/@-15.8372573,-48.0393083,15z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935a333da50f3e5f:0xf99ca88f691868e!8m2!3d-15.8352375!4d-48.0112865!15sCi9hbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gw4FndWFzIENsYXJhcyBERloxIi9hbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gw6FndWFzIGNsYXJhcyBkZpIBFmhlYWx0aF9hbmRfYmVhdXR5X3Nob3DgAQA!16s%2Fg%2F11wh3fx299": {
+      "nome": "Yule Instituto Europeu de Beleza e Estética",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Fast+Escova+II+-+unidade+castanheiras/@-15.8360732,-48.0563972,15z/data=!4m11!1m3!2m2!1sdesigner+de+unhas+e+spa+dos+pes+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935a33ec200a0beb:0x7ac4bfd5da968c85!8m2!3d-15.8359227!4d-48.0192322!15sCjNkZXNpZ25lciBkZSB1bmhhcyBlIHNwYSBkb3MgcGVzIGVtIMOBZ3VhcyBDbGFyYXMgREZaNSIzZGVzaWduZXIgZGUgdW5oYXMgZSBzcGEgZG9zIHBlcyBlbSDDoWd1YXMgY2xhcmFzIGRmkgEMYmVhdXR5X3NhbG9umgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDIwMU5GWkdTakpPTTBwVlRsWktNMlJVU201WFZGWjFXVlJhY1ZKc1JSQULgAQD6AQQIABA1!16s%2Fg%2F11rqrgth99": {
+      "nome": "Fast Escova II - unidade castanheiras",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Donna+Unha/@-15.8086515,-48.070857,14z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Taguatinga+DF!6e1!3m6!1s0x935a3387e11a8e31:0x8916d903c0b8b966!8m2!3d-15.8130148!4d-48.0180506!15sCixhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gVGFndWF0aW5nYSBERlouIixhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gdGFndWF0aW5nYSBkZpIBD2Nvc21ldGljc19zdG9yZeABAA!16s%2Fg%2F11vb22nybg": {
+      "nome": "Donna Unha",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Priscila+Suetu/@-15.7502512,-47.9309908,14z/data=!3m1!5s0x935a3a2e3402df41:0x7496f00aaf778f4b!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Asa+Norte+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a3b91dfe5cec7:0x4fa307b0d87f3e75!8m2!3d-15.7524025!4d-47.8895281!15sCjNlc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEFzYSBOb3J0ZSBCcmFzw61saWEgREZaNSIzZXN0dWRpbyBkZSB1bmhhcyBtYW5pY3VyZSBlbSBhc2Egbm9ydGUgYnJhc8OtbGlhIGRmkgEMYmVhdXR5X3NhbG9umgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0T1JWSXhPVEJhUmxwb1RWVjRkMDVYTVc1alIyeEZaREIwU21Fell4QULgAQD6AQQIIRA4!16s%2Fg%2F11pddw2y5d": {
+      "nome": "Studio Priscila Suetu",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Espa%C3%A7o+unhas+de+lady/@-15.840869,-48.0106449,14z/data=!4m11!1m3!2m2!1snail+designer+em+Guar%C3%A1+DF!6e1!3m6!1s0x935a31bc5d5e5625:0x3404698a18ddaace!8m2!3d-15.8209932!4d-47.9901511!15sChpuYWlsIGRlc2lnbmVyIGVtIEd1YXLDoSBERlocIhpuYWlsIGRlc2lnbmVyIGVtIGd1YXLDoSBkZpIBDGJlYXV0eV9zYWxvbpoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VOaWJWcDZOVWQzRUFF4AEA-gEECAAQRg!16s%2Fg%2F11pq7b9dw1": {
+      "nome": "Espaço unhas de lady",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Kimie+Unhas/@-15.840869,-48.0106449,14z/data=!4m11!1m3!2m2!1snail+designer+em+Guar%C3%A1+DF!6e1!3m6!1s0x935a313955411bab:0x1df6024bd06b4fd4!8m2!3d-15.8297462!4d-47.9820601!15sChpuYWlsIGRlc2lnbmVyIGVtIEd1YXLDoSBERlocIhpuYWlsIGRlc2lnbmVyIGVtIGd1YXLDoSBkZpIBDGJlYXV0eV9zYWxvbpoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VOU2RsOW1kRTVSRUFF4AEA-gEECAAQQg!16s%2Fg%2F11rv5_xtkx": {
+      "nome": "Studio Kimie Unhas",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Bellas+Unhas+Guar%C3%A1/@-15.8469968,-48.0133495,14z/data=!4m11!1m3!2m2!1snail+designer+em+Guar%C3%A1+DF!6e1!3m6!1s0x935a2f2e7e5691ed:0x8fb4ccb6c068831!8m2!3d-15.8474409!4d-47.973427!15sChpuYWlsIGRlc2lnbmVyIGVtIEd1YXLDoSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11j0wj26d1": {
+      "nome": "Bellas Unhas Guará",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Rayane+Barros/@-15.8407231,-48.008684,14z/data=!4m10!1m2!2m1!1sdesigner+de+unhas+e+spa+dos+pes+em+Guar%C3%A1+DF!3m6!1s0x935a314334c9b6f1:0x64726d5a3b35c627!8m2!3d-15.8202827!4d-47.9810732!15sCixkZXNpZ25lciBkZSB1bmhhcyBlIHNwYSBkb3MgcGVzIGVtIEd1YXLDoSBERlouIixkZXNpZ25lciBkZSB1bmhhcyBlIHNwYSBkb3MgcGVzIGVtIGd1YXLDoSBkZpIBCm5haWxfc2Fsb26aASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVTkVNRTAyU1dKbkVBReABAPoBBAgAECU!16s%2Fg%2F11k53zhs77": {
+      "nome": "Rayane Barros",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/ALICE'S+NAIL+ART/@-15.8235903,-48.141878,14z/data=!4m10!1m2!2m1!1snail+designer+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcd7a210aa281:0x7b3817472f9098da!8m2!3d-15.8385647!4d-48.101313!15sCh5uYWlsIGRlc2lnbmVyIGVtIENlaWzDom5kaWEgREZaICIebmFpbCBkZXNpZ25lciBlbSBjZWlsw6JuZGlhIGRmkgEWaGVhbHRoX2FuZF9iZWF1dHlfc2hvcJoBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQydEtTVmt3ZUZSa1ZFSnRWREZzVUZWdVJrcGhibFpMWlZab1lWZFZSUkFC4AEA-gEECCQQRA!16s%2Fg%2F11w_h7y7g0": {
+      "nome": "ALICE'S NAIL ART",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Evelyn+Lohany+Nails+Design/@-15.9138706,-47.9983565,11z/data=!4m11!1m3!2m2!1snail+designer+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x9359812f25b7a9fb:0x4e52a60c9893cff3!8m2!3d-16.0376131!4d-48.0260153!15sCh1uYWlsIGRlc2lnbmVyIGVtIEJyYXPDrWxpYSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11yn25nwn1": {
+      "nome": "Evelyn Lohany Nails Design",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Karla+Soares+Nail+Designer/@-16.0376131,-48.3144064,11z/data=!4m11!1m3!2m2!1snail+designer+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a33d993b66c37:0x64edb30868fc0b1b!8m2!3d-16.0087128!4d-47.9898881!15sCh1uYWlsIGRlc2lnbmVyIGVtIEJyYXPDrWxpYSBERlofIh1uYWlsIGRlc2lnbmVyIGVtIGJyYXPDrWxpYSBkZpIBCm5haWxfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnBLVEdSR1dqTlZhbWN5WWtkR1lWRlZjRmhQVmxwb1QwaE9UbEpWUlJBQuABAPoBBAgAEDI!16s%2Fg%2F11y_4j6lvp": {
+      "nome": "Studio Karla Soares Nail Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Manicure+Gourmet+%7C+Banho+de+gel+%7C+Nail+arte+%7C+Gel/@-16.0235931,-48.3528263,11z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935981002d415b05:0xd24540a26957b8c4!8m2!3d-16.0181772!4d-48.0637549!15sCithbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gQnJhc8OtbGlhIERGkgEMYmVhdXR5X3NhbG9u4AEA!16s%2Fg%2F11wg50x_2l": {
+      "nome": "Manicure Gourmet | Banho de gel | Nail arte | Gel",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Simone+Lob%C3%A3o/@-16.0235931,-48.3528263,11z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935981016aa543c9:0x7e7349c424fb834f!8m2!3d-16.0191384!4d-48.0189429!15sCithbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gQnJhc8OtbGlhIERGkgEMYmVhdXR5X3NhbG9u4AEA!16s%2Fg%2F11jmd7d17c": {
+      "nome": "Studio Simone Lobão",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+Evilane+Souza+Nails/@-15.803068,-48.2167212,11z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a2f00093e5581:0xa716e071ee9f9be9!8m2!3d-15.8394998!4d-47.9670129!15sCillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEJyYXPDrWxpYSBERlorIillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIGJyYXPDrWxpYSBkZpIBCm5haWxfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnhKZUZReVNYcFVSazR6VW01d05tSXhRVE5TUlZVMVZHMWtUMWt5WXhBQuABAPoBBAgAEDY!16s%2Fg%2F11zh1skq30": {
+      "nome": "Studio Evilane Souza Nails",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Unhas+e+charme+esmalteria/@-15.7527372,-48.1774874,11z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a3164999cd4b3:0x5651359c7b5ef04d!8m2!3d-15.8003252!4d-47.9253014!15sCillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEJyYXPDrWxpYSBERlorIillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIGJyYXPDrWxpYSBkZpIBCm5haWxfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnBrVW1NeVJsTmFXRUpKVWtob1VtRnRkR0ZrYlU1S1ZsZHNlbHBHUlJBQuABAPoBBAgAEC4!16s%2Fg%2F11sk1jnlks": {
+      "nome": "Unhas e charme esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/M%C3%ADriam+Vasconcelos/@-15.8348781,-48.0343042,15z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935bcd865b969787:0x6fb4237e1ad39cd2!8m2!3d-15.839036!4d-48.0272293!15sCi9hbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gw4FndWFzIENsYXJhcyBERloxIi9hbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gw6FndWFzIGNsYXJhcyBkZpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11f5tc7s73": {
+      "nome": "Míriam Vasconcelos",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/The+Beauty%C2%B4s+House/@-15.8405964,-48.062733,15z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935a33efe14d1f21:0x681ec9041913221e!8m2!3d-15.8416976!4d-48.024086!15sCi1lc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIMOBZ3VhcyBDbGFyYXMgREZaLyItZXN0dWRpbyBkZSB1bmhhcyBtYW5pY3VyZSBlbSDDoWd1YXMgY2xhcmFzIGRmkgEMYmVhdXR5X3NhbG9umgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJzMU0xb3dkRE5YUm1odFRqTkdiR0pZYUVwVFJrWTFURlJHTVZNeFJSQULgAQD6AQQINhBB!16s%2Fg%2F11j__4vwc4": {
+      "nome": "The Beauty´s House",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/MR+Beauty+Studio+DF/@-15.8416976,-48.0421104,15z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935a33af81fdb0cb:0xd8a87f14219abed!8m2!3d-15.8418255!4d-48.0236968!15sCi1lc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIMOBZ3VhcyBDbGFyYXMgREZaLyItZXN0dWRpbyBkZSB1bmhhcyBtYW5pY3VyZSBlbSDDoWd1YXMgY2xhcmFzIGRmkgEMYmVhdXR5X3NhbG9umgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDIxR2ExWXdTbTlTZW14TlVqQTVhMkV3VmxaaVZsRTFVa2RzUzFSdVl4QULgAQD6AQQIGRAu!16s%2Fg%2F11y55w81lv": {
+      "nome": "MR Beauty Studio DF",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Sal%C3%A3o+%C3%81guas+Claras/@-15.8388834,-48.0623172,15z/data=!3m1!5s0x935a321067e07155:0x127f20afc9ae1e8f!4m11!1m3!2m2!1sdesigner+de+unhas+e+spa+dos+pes+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935a3371c95e2c6d:0xd0efb8da665c97df!8m2!3d-15.8368129!4d-48.0121259!15sCjNkZXNpZ25lciBkZSB1bmhhcyBlIHNwYSBkb3MgcGVzIGVtIMOBZ3VhcyBDbGFyYXMgREZaNSIzZGVzaWduZXIgZGUgdW5oYXMgZSBzcGEgZG9zIHBlcyBlbSDDoWd1YXMgY2xhcmFzIGRmkgEMYmVhdXR5X3NhbG9umgEkQ2hkRFNVaE5NRzluUzBWTllVcDNPV0YwYVdWcGNuWm5SUkFC4AEA-gEFCPMDEBo!16s%2Fg%2F11ht36nx6m": {
+      "nome": "Salão Águas Claras",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/L%C3%BA+Maria+Manicure,+e+Esmalta%C3%A7%C3%A3o+em+Gel/@-15.8313522,-48.0895427,14z/data=!4m11!1m3!2m2!1snail+designer+em+Taguatinga+DF!6e1!3m6!1s0x935a3374c21534d9:0x90a7563a8a701460!8m2!3d-15.8431002!4d-48.0442944!15sCh5uYWlsIGRlc2lnbmVyIGVtIFRhZ3VhdGluZ2EgREaSAQxiZWF1dHlfc2Fsb27gAQA!16s%2Fg%2F11trlkrcck": {
+      "nome": "Lú Maria Manicure, e Esmaltação em Gel",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Espa%C3%A7o+HR+Helena+Ribeiro+Beauty/@-15.7986463,-48.1393029,14z/data=!4m11!1m3!2m2!1snail+designer+em+Taguatinga+DF!6e1!3m6!1s0x935bcdeef51a7421:0x1e61d7c616c71c42!8m2!3d-15.8443064!4d-48.0441212!15sCh5uYWlsIGRlc2lnbmVyIGVtIFRhZ3VhdGluZ2EgREaSAQpuYWlsX3NhbG9u4AEA!16s%2Fg%2F11m78s7dqc": {
+      "nome": "Espaço HR Helena Ribeiro Beauty",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Jay+nails+designer/@-15.8443064,-48.0801701,14z/data=!4m11!1m3!2m2!1snail+designer+em+Taguatinga+DF!6e1!3m6!1s0x935bcd39930c1575:0x8b685d5f6013eb39!8m2!3d-15.8035322!4d-48.0964221!15sCh5uYWlsIGRlc2lnbmVyIGVtIFRhZ3VhdGluZ2EgREZaICIebmFpbCBkZXNpZ25lciBlbSB0YWd1YXRpbmdhIGRmkgEKbmFpbF9zYWxvbpoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VSMk9YUk1hMlZSRUFF4AEA-gEECAAQHQ!16s%2Fg%2F11qbhv3lbq": {
+      "nome": "Jay nails designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Aline+Ribeiro+Nail+Designer/@-15.8213197,-48.1159077,14z/data=!4m11!1m3!2m2!1snail+designer+em+Taguatinga+DF!6e1!3m6!1s0x935bcd833b740ff5:0x9c32eb7321df096b!8m2!3d-15.803506!4d-48.0964613!15sCh5uYWlsIGRlc2lnbmVyIGVtIFRhZ3VhdGluZ2EgREaSAQxiZWF1dHlfc2Fsb27gAQA!16s%2Fg%2F11x7mly_98": {
+      "nome": "Aline Ribeiro Nail Designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Esmalteria+Esmaltadas+Fabi/@-15.8055733,-48.1294468,14z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Taguatinga+DF!6e1!3m6!1s0x935bcd53dbcfd9bf:0x9c51962624ad9a0f!8m2!3d-15.823538!4d-48.0898035!15sCixhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gVGFndWF0aW5nYSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11yk68jpn1": {
+      "nome": "Esmalteria Esmaltadas Fabi",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/AC+Concept+Nails+%7C+Ana+Carolina+Master+Nails/@-15.8279664,-48.1152608,14z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Taguatinga+DF!6e1!3m6!1s0x935a2dbec8e85eb1:0xc9c6b443b03de72e!8m2!3d-15.8410222!4d-48.0439805!15sCiplc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIFRhZ3VhdGluZ2EgREZaLCIqZXN0dWRpbyBkZSB1bmhhcyBtYW5pY3VyZSBlbSB0YWd1YXRpbmdhIGRmkgEKbmFpbF9zYWxvbpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VOd2NtWnBRVGQzUlJBQuABAPoBBAgAED0!16s%2Fg%2F11m48k5mzl": {
+      "nome": "AC Concept Nails | Ana Carolina Master Nails",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/My+Studio+Mega+Hair+%7C+Asa+Sul+-+Bras%C3%ADlia/@-15.8355086,-47.952348,14z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Asa+Sul+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a2f9dea34245d:0xbd512449de18ad1f!8m2!3d-15.8342056!4d-47.9215432!15sCjFlc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEFzYSBTdWwgQnJhc8OtbGlhIERGWjMiMWVzdHVkaW8gZGUgdW5oYXMgbWFuaWN1cmUgZW0gYXNhIHN1bCBicmFzw61saWEgZGaSAQxiZWF1dHlfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnR6TTFOcmVHbFZWMXBEWlcxT1VWZEdhSEZYU0ZadFZsUldkVmRIWXhBQuABAPoBBQjFAhAf!16s%2Fg%2F11w2y8n4nj": {
+      "nome": "My Studio Mega Hair | Asa Sul - Brasília",
+      "cidade": "Asa Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Espa%C3%A7o+Beauty+Express/@-15.7502512,-47.9309908,14z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Asa+Norte+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a3b3aa7efc80d:0xea96bae9d4e5bcaa!8m2!3d-15.7627365!4d-47.8886328!15sCjNlc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEFzYSBOb3J0ZSBCcmFzw61saWEgREaSAQxiZWF1dHlfc2Fsb27gAQA!16s%2Fg%2F11t17yr5lt": {
+      "nome": "Espaço Beauty Express",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Maria+Amanda+Studio+de+Beleza/@-15.7502512,-47.9309908,14z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Asa+Norte+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a3bf8586e8529:0x6d4e66d1c8193b68!8m2!3d-15.750229!4d-47.8937736!15sCjNlc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEFzYSBOb3J0ZSBCcmFzw61saWEgREZaNSIzZXN0dWRpbyBkZSB1bmhhcyBtYW5pY3VyZSBlbSBhc2Egbm9ydGUgYnJhc8OtbGlhIGRmkgEMYmVhdXR5X3NhbG9umgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0d1RsTnFUbTVoVkd0M1QxVjRRMDFWWkRaaGFtd3laRlJvYkdNd1JSQULgAQD6AQQIFxA6!16s%2Fg%2F11xnm80mmv": {
+      "nome": "Maria Amanda Studio de Beleza",
+      "cidade": "Asa Norte Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Natural+Beauty+por+Yslannia+Gomes/@-15.8071188,-47.9515576,15z/data=!4m11!1m3!2m2!1snail+designer+em+Sudoeste+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a3bc67c8f9ef1:0xc76e789a447da71d!8m2!3d-15.7893129!4d-47.9090487!15sCiZuYWlsIGRlc2lnbmVyIGVtIFN1ZG9lc3RlIEJyYXPDrWxpYSBERpIBDGJlYXV0eV9zYWxvbuABAA!16s%2Fg%2F11nw0tny9x": {
+      "nome": "Natural Beauty por Yslannia Gomes",
+      "cidade": "Sudoeste Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/NAIL+DESIGNER+%7C+IZZA+REIS+-+GUAR%C3%81+DF/@-15.8394824,-47.9771725,14z/data=!4m11!1m3!2m2!1snail+designer+em+Guar%C3%A1+DF!6e1!3m6!1s0x935a2f474710d995:0x53dc29ba1dc742b2!8m2!3d-15.840869!4d-47.974596!15sChpuYWlsIGRlc2lnbmVyIGVtIEd1YXLDoSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11x_2y9ypx": {
+      "nome": "NAIL DESIGNER | IZZA REIS - GUARÁ DF",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Espa%C3%A7o+Linda+Designer/@-15.8469968,-48.0133495,14z/data=!4m11!1m3!2m2!1snail+designer+em+Guar%C3%A1+DF!6e1!3m6!1s0x935a2f7abe0b3de3:0x44edd7ce8efda41e!8m2!3d-15.8493654!4d-47.9758694!15sChpuYWlsIGRlc2lnbmVyIGVtIEd1YXLDoSBERpIBDGJlYXV0eV9zYWxvbuABAA!16s%2Fg%2F11rw_qm582": {
+      "nome": "Espaço Linda Designer",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Est%C3%BAdio+Elisafashion/@-15.8469968,-48.0133495,14z/data=!4m11!1m3!2m2!1snail+designer+em+Guar%C3%A1+DF!6e1!3m6!1s0x935a31f53c687e71:0x857aba859e25c6fe!8m2!3d-15.8240638!4d-47.9757989!15sChpuYWlsIGRlc2lnbmVyIGVtIEd1YXLDoSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11nxrfcpyq": {
+      "nome": "Estúdio Elisafashion",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Karol+Alves+-+Designer+de+Unhas/@-15.8079996,-48.0316998,14z/data=!4m10!1m2!2m1!1snail+designer+em+Vicente+Pires+DF!3m6!1s0x935a334f93ee2eb7:0xe08888ef7f655bef!8m2!3d-15.8167511!4d-48.0160506!15sCiFuYWlsIGRlc2lnbmVyIGVtIFZpY2VudGUgUGlyZXMgREaSAQxiZWF1dHlfc2Fsb27gAQA!16s%2Fg%2F11jz934p22": {
+      "nome": "Karol Alves - Designer de Unhas",
+      "cidade": "Vicente Pires DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Studio+de+unha,+Amanda+Nogueira/@-15.8086515,-48.070857,14z/data=!4m10!1m2!2m1!1sestudio+de+unhas+manicure+em+Vicente+Pires+DF!3m6!1s0x935a3345ede7b03f:0x68396d47bc4bd249!8m2!3d-15.8114583!4d-48.0223392!15sCi1lc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIFZpY2VudGUgUGlyZXMgREaSAQxiZWF1dHlfc2Fsb27gAQA!16s%2Fg%2F11h9khby1d": {
+      "nome": "Studio de unha, Amanda Nogueira",
+      "cidade": "Vicente Pires DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Nail+Designer+Bruna+Oliveira/@-15.8233998,-48.1419965,14z/data=!4m10!1m2!2m1!1snail+designer+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcdfd94f319f5:0x82ccbb24a88ec910!8m2!3d-15.8188049!4d-48.129141!15sCh5uYWlsIGRlc2lnbmVyIGVtIENlaWzDom5kaWEgREaSAQpuYWlsX3NhbG9u4AEA!16s%2Fg%2F11rgpt_65f": {
+      "nome": "Nail Designer Bruna Oliveira",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/STUDIO+IASMIN+MIRANDA+NAILS+DESIGNER/@-15.8188049,-48.1651899,14z/data=!4m10!1m2!2m1!1snail+designer+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcda878a21ac5:0x32c14804640e363d!8m2!3d-15.8235903!4d-48.1058291!15sCh5uYWlsIGRlc2lnbmVyIGVtIENlaWzDom5kaWEgREaSAQpuYWlsX3NhbG9u4AEA!16s%2Fg%2F11vrshkqld": {
+      "nome": "STUDIO IASMIN MIRANDA NAILS DESIGNER",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Lhu+Nail+Designer/@-15.8568513,-48.1206091,11z/data=!4m10!1m2!2m1!1snail+designer+em+Lago+Sul+Bras%C3%ADlia+DF!3m6!1s0x935a21881aae4147:0xd0cf18a801b762fb!8m2!3d-15.8976557!4d-47.7858281!15sCiZuYWlsIGRlc2lnbmVyIGVtIExhZ28gU3VsIEJyYXPDrWxpYSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11ntk13rzp": {
+      "nome": "Lhu Nail Designer",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/M%C3%B4nica+Mirella+-+Alongamento+de+Unhas+e+Podologia+Preventiva/@-15.8139667,-48.0197327,12z/data=!4m10!1m2!2m1!1salongamento+de+unhas+em+gel+em+Lago+Sul+Bras%C3%ADlia+DF!3m6!1s0x935a3dc5fe8798cf:0xf80e1208bb4f1f1b!8m2!3d-15.7464618!4d-47.7640169!15sCjRhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gTGFnbyBTdWwgQnJhc8OtbGlhIERGkgEKcG9kaWF0cmlzdOABAA!16s%2Fg%2F11tn9_5rr4": {
+      "nome": "Mônica Mirella - Alongamento de Unhas e Podologia Preventiva",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Bendita+Esmalteria/@-15.7464618,-47.9082125,12z/data=!4m10!1m2!2m1!1salongamento+de+unhas+em+gel+em+Lago+Sul+Bras%C3%ADlia+DF!3m6!1s0x935a31efa10fd3b9:0x10acd52f83c6d88f!8m2!3d-15.8704013!4d-47.8229874!15sCjRhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gTGFnbyBTdWwgQnJhc8OtbGlhIERGkgEKbmFpbF9zYWxvbuABAA!16s%2Fg%2F11z4q562r3": {
+      "nome": "Bendita Esmalteria",
+      "cidade": "Lago Sul Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/SB+Studio+Beauty+%7C+Nails+Designer/@-16.0376131,-48.3144064,11z/data=!4m11!1m3!2m2!1snail+designer+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935981d05e39073f:0xec3002ebfd795015!8m2!3d-16.0135486!4d-48.0622889!15sCh1uYWlsIGRlc2lnbmVyIGVtIEJyYXPDrWxpYSBERpIBCm5haWxfc2Fsb27gAQA!16s%2Fg%2F11lcgxyjkw": {
+      "nome": "SB Studio Beauty | Nails Designer",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Du+Arte+Esmalteria/@-16.0235931,-48.3528263,11z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a2b620cfca80b:0xbbebb9c6aecd8307!8m2!3d-16.004651!4d-48.0598733!15sCithbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gQnJhc8OtbGlhIERGkgEKbmFpbF9zYWxvbuABAA!16s%2Fg%2F11rtqwq8nk": {
+      "nome": "Du Arte Esmalteria",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Natalya+Santos/@-15.9038012,-48.3571742,11z/data=!4m11!1m3!2m2!1sestudio+de+unhas+manicure+em+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a309b1e384357:0xc658aa073116c62b!8m2!3d-15.7913337!4d-47.8836166!15sCillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIEJyYXPDrWxpYSBERlorIillc3R1ZGlvIGRlIHVuaGFzIG1hbmljdXJlIGVtIGJyYXPDrWxpYSBkZpIBDGJlYXV0eV9zYWxvbuABAA!16s%2Fg%2F1tdmr3sg": {
+      "nome": "Natalya Santos",
+      "cidade": "Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Fanny+Colors+%7C+Nail+Designer+e+Manicure/@-15.8381037,-48.0581192,15z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+%C3%81guas+Claras+DF!6e1!3m6!1s0x935a335e5993fc87:0x22828f92c20a3c29!8m2!3d-15.8372573!4d-48.0212839!15sCi9hbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gw4FndWFzIENsYXJhcyBERpIBDGJlYXV0eV9zYWxvbuABAA!16s%2Fg%2F11zfrjv5qx": {
+      "nome": "Fanny Colors | Nail Designer e Manicure",
+      "cidade": "Águas Claras DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Nay+Lacerda+nail+designer/@-15.8035322,-48.132471,14z/data=!4m11!1m3!2m2!1snail+designer+em+Taguatinga+DF!6e1!3m6!1s0x935bcdc305b5a9fd:0x714032fa5f08957d!8m2!3d-15.8235922!4d-48.0893598!15sCh5uYWlsIGRlc2lnbmVyIGVtIFRhZ3VhdGluZ2EgREaSAQpuYWlsX3NhbG9u4AEA!16s%2Fg%2F11mr4y1hqb": {
+      "nome": "Nay Lacerda nail designer",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/%23POP!+Esmalteria/@-15.8086515,-48.070857,14z/data=!4m11!1m3!2m2!1salongamento+de+unhas+em+gel+em+Taguatinga+DF!6e1!3m6!1s0x935bccbbdaa626ef:0x821795079fc69995!8m2!3d-15.8055733!4d-48.0933979!15sCixhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gVGFndWF0aW5nYSBERlouIixhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gdGFndWF0aW5nYSBkZpIBDGJlYXV0eV9zYWxvbpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSb05GOTZZMjlSUlJBQuABAPoBBAgAEEc!16s%2Fg%2F11f31qj4w2": {
+      "nome": "#POP! Esmalteria",
+      "cidade": "Taguatinga DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/TAYM+Esmalteria/@-15.7996104,-47.9408334,15z/data=!4m11!1m3!2m2!1snail+designer+em+Sudoeste+Bras%C3%ADlia+DF!6e1!3m6!1s0x935a31dfe919eee9:0x64663cc871fb997f!8m2!3d-15.7891673!4d-47.909086!15sCiZuYWlsIGRlc2lnbmVyIGVtIFN1ZG9lc3RlIEJyYXPDrWxpYSBERlooIiZuYWlsIGRlc2lnbmVyIGVtIHN1ZG9lc3RlIGJyYXPDrWxpYSBkZpIBCm5haWxfc2Fsb26aAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMnhHTVdOWFdqTlhXSEJ2VFRGS2QwMTZiSFZoYkVwc1UyNXdXbE5IWXhBQuABAPoBBAgAECI!16s%2Fg%2F11zzfw47sd": {
+      "nome": "TAYM Esmalteria",
+      "cidade": "Sudoeste Brasília DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Unhasporjay/@-15.8264325,-48.0167587,14z/data=!4m10!1m2!2m1!1salongamento+de+unhas+em+gel+em+Guar%C3%A1+DF!3m6!1s0x935a2f03a8dc5fd1:0x9e7235eafcfe201a!8m2!3d-15.8415429!4d-47.9806262!15sCihhbG9uZ2FtZW50byBkZSB1bmhhcyBlbSBnZWwgZW0gR3VhcsOhIERGWioiKGFsb25nYW1lbnRvIGRlIHVuaGFzIGVtIGdlbCBlbSBndWFyw6EgZGaSAQpuYWlsX3NhbG9u4AEA!16s%2Fg%2F11zyj3_kj7": {
+      "nome": "Unhasporjay",
+      "cidade": "Guará DF",
+      "data_coleta": "2026-11-05 21:14:54",
+      "id_planilha": "64AAA0"
+    },
+    "https://www.google.com/maps/place/Imp%C3%A9rio+das+Maquiagens+Pre%C3%A7o+%C3%9Anico+R$10+-+Ceil%C3%A2ndia+Centro/@-15.8235987,-48.1342514,15z/data=!4m10!1m2!2m1!1s1+em+Ceil%C3%A2ndia+DF!3m6!1s0x935bcdefbb4eb371:0xd91c1b9d3e8d7c19!8m2!3d-15.8176683!4d-48.1038198!15sChIxIGVtIENlaWzDom5kaWEgREZaFCISMSBlbSBjZWlsw6JuZGlhIGRmkgEfYmVhdXR5X3Byb2R1Y3RzX3ZlbmRpbmdfbWFjaGluZZoBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQycE9VMVpGVWpOa2EwMDBVVmR3VFU1dVZsQmhNSFI1VkRFNWExVnNSUkFC4AEA-gEECAAQPA!16s%2Fg%2F11p0hsztqk": {
+      "nome": "Império das Maquiagens Preço Único R$10 - Ceilândia Centro",
+      "cidade": "Ceilândia DF",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "https://www.google.com/maps/place/GALERIA+VALPARAISO/@-16.0752391,-47.9878554,16z/data=!4m10!1m2!2m1!1s1+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x9359851ba030c1b3:0x59a5945b6dd24cc0!8m2!3d-16.0735493!4d-47.9858788!15sChoxIGVtIFZhbHBhcmHDrXNvIGRlIEdvacOhc1ocIhoxIGVtIHZhbHBhcmHDrXNvIGRlIGdvacOhc5IBD3Nob3BwaW5nX2NlbnRlcpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VOU05VODJZbXRuUlJBQuABAPoBBAgAEEA!16s%2Fg%2F11twqhkxn5": {
+      "nome": "GALERIA VALPARAISO",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "https://www.google.com/maps/place/Ib%C3%A1+A%C3%A7a%C3%AD+Valpara%C3%ADso+1/@-16.0769908,-48.0056536,15z/data=!4m11!1m3!2m2!1s1+em+Valpara%C3%ADso+de+Goi%C3%A1s!6e1!3m6!1s0x9359834d21eeffed:0x2708fcf23adbdd42!8m2!3d-16.0697701!4d-47.9798479!15sChoxIGVtIFZhbHBhcmHDrXNvIGRlIEdvacOhc1ocIhoxIGVtIHZhbHBhcmHDrXNvIGRlIGdvacOhc5IBDmljZV9jcmVhbV9zaG9wmgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0U2FsRnVRWGhYUkZvd1ZqQjRiVlJVWXpGbFZWVTBZV3hrZFZGWFl4QULgAQD6AQQIORA4!16s%2Fg%2F11nqyfdqsl": {
+      "nome": "Ibá Açaí Valparaíso 1",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
+    },
+    "https://www.google.com/maps/place/Oggi+Valpara%C3%ADso+de+Goi%C3%A1s/@-16.0735493,-47.994891,16z/data=!4m10!1m2!2m1!1s1+em+Valpara%C3%ADso+de+Goi%C3%A1s!3m6!1s0x9359850fd471d1c5:0xd0a3695830e78a74!8m2!3d-16.072277!4d-47.9863703!15sChoxIGVtIFZhbHBhcmHDrXNvIGRlIEdvacOhc1ocIhoxIGVtIHZhbHBhcmHDrXNvIGRlIGdvacOhc5IBDmljZV9jcmVhbV9zaG9wmgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJwYWFtVkZTbVpWVjNSclZrVjBObFZGWkRWWmJXZ3hZVEpXZG1OclJSQULgAQD6AQQIABA9!16s%2Fg%2F11n3xxjn_r": {
+      "nome": "Oggi Valparaíso de Goiás",
+      "cidade": "Valparaíso de Goiás",
+      "data_coleta": "2026-11-08 12:38:40",
+      "id_planilha": "0B8C1D"
     }
   },
-  "total_coletados": 178,
-  "ultima_atualizacao": "2026-10-27 10:42:18"
+  "total_coletados": 233,
+  "ultima_atualizacao": "2026-11-08 12:38:40"
 }
