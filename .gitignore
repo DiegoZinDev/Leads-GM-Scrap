@@ -5,6 +5,7 @@ env/
 
 # Relatórios e histórico gerados localmente
 Planilhas/
+docs/
 
 # Perfil persistente do navegador (sessões e cookies)
 perfil_navegador/
