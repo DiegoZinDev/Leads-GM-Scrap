@@ -1,5 +1,5 @@
 """
-Configurações, Nichos, Regiões e Modelos de Abordagem para o Scraper de Leads
+Configurações, Nichos Dinâmicos, Regiões e Modelos de Abordagem para o Scraper de Leads
 """
 
 import os
@@ -7,7 +7,7 @@ import os
 # Diretório para perfil persistente do navegador (armazena cookies, login do Instagram e sessão do WhatsApp Web)
 PASTA_PERFIL_NAVEGADOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "perfil_navegador")
 
-# Regiões e Cidades alvo (expandidas para garantir volume mínimo de 50 leads)
+# Regiões e Cidades alvo padrão (expandidas para garantir volume mínimo de 50 leads)
 REGIOES = [
     "Brasília DF",
     "Valparaíso de Goiás",
@@ -26,7 +26,7 @@ REGIOES = [
 
 META_MINIMA_LEADS = 50  # Meta padrão exigida por lote
 
-# Nichos e termos de busca específicos
+# Templates de referência para nichos conhecidos (usados caso o usuário digite algum deles ou peça sugestões)
 NICHOS = {
     "Advocacia": {
         "termos": [
@@ -190,3 +190,67 @@ VERIFICACAO = {
     "max_links_agregador": 25,
     "timeout_http_ms": 9000,
 }
+
+# Variável dinâmica que armazena os nichos da pesquisa em andamento (sem limite de quantidade)
+# É definida conforme o que o usuário digita e resetada automaticamente após o fim da pesquisa
+NICHOS_ATUAIS = {}
+
+# Copy base universal e dinâmica que se adapta ao nicho digitado pelo usuário e ao nome da empresa
+COPY_PADRAO_DINAMICA = (
+    "Olá, equipe da {nome}! Tudo bem? Encontrei vocês no Google Maps pesquisando referências em {nicho} na região e vi que possuem excelentes avaliações! "
+    "Notei que vocês ainda não contam com um site oficial ou página própria conectada à ficha do Google para apresentar o trabalho e direcionar agendamentos/orçamentos. "
+    "Hoje, a maioria dos clientes pesquisa no Google antes de fechar negócio e busca a credibilidade de uma estrutura profissional integrada direto ao WhatsApp. "
+    "Desenvolvemos páginas de alta conversão sob medida para {nicho}. Poderíamos conversar 5 minutinhos para eu mostrar uma prévia de como atrair ainda mais clientes para a {nome}?"
+)
+
+
+def gerar_config_nicho(nicho_digitado: str) -> dict:
+    """
+    Gera dinamicamente os termos de pesquisa e a copy de abordagem para qualquer nicho digitado pelo usuário.
+    Se o nicho digitado corresponder a algum preset em NICHOS, utiliza a copy especializada mantendo o termo buscado.
+    """
+    nicho_limpo = nicho_digitado.strip()
+    if not nicho_limpo:
+        return {}
+
+    for chave_preset, dados_preset in NICHOS.items():
+        if chave_preset.lower() == nicho_limpo.lower():
+            termos = list(dados_preset.get("termos", []))
+            if nicho_limpo.lower() not in [t.lower() for t in termos]:
+                termos.insert(0, nicho_limpo)
+            return {
+                "termos": termos,
+                "ticket": dados_preset.get("ticket", "medio-alto"),
+                "copy_base": dados_preset.get("copy_base", COPY_PADRAO_DINAMICA.replace("{nicho}", nicho_limpo)),
+            }
+
+    return {
+        "termos": [nicho_limpo],
+        "ticket": "personalizado",
+        "copy_base": COPY_PADRAO_DINAMICA.replace("{nicho}", nicho_limpo),
+    }
+
+
+def definir_nichos_busca(lista_nichos: list) -> dict:
+    """
+    Popula a variável dinâmica NICHOS_ATUAIS com todos os nichos informados pelo usuário (sem limite).
+    """
+    global NICHOS_ATUAIS
+    NICHOS_ATUAIS.clear()
+
+    for item in lista_nichos:
+        nome_nicho = item.strip()
+        if nome_nicho:
+            NICHOS_ATUAIS[nome_nicho] = gerar_config_nicho(nome_nicho)
+
+    return dict(NICHOS_ATUAIS)
+
+
+def resetar_nichos_busca():
+    """
+    Reseta a variável de nichos após o fim da pesquisa, deixando-a limpa
+    para os próximos nichos que o usuário for buscar.
+    """
+    global NICHOS_ATUAIS
+    NICHOS_ATUAIS.clear()
+

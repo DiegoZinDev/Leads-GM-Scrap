@@ -24,7 +24,7 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
-from config import NICHOS, FILTROS, VERIFICACAO
+from config import NICHOS, NICHOS_ATUAIS, FILTROS, VERIFICACAO, gerar_config_nicho
 from exporter import (
     calcular_score_potencial,
     carregar_historico,
@@ -303,7 +303,7 @@ def coletar_leads_brutos_regiao(
     print(f"================================================================================")
 
     try:
-        page.goto(url_busca, timeout=45000)
+        page.goto(url_busca, timeout=30000, wait_until="domcontentloaded")
     except Exception as e:
         print(f"Erro ao carregar busca: {e}")
         return []
@@ -314,11 +314,15 @@ def coletar_leads_brutos_regiao(
         botao_aceitar = page.locator('button:has-text("Aceitar tudo"), button:has-text("Concordo")').first
         if botao_aceitar.count() > 0 and botao_aceitar.is_visible():
             botao_aceitar.click()
-            time.sleep(2)
+            time.sleep(0.8)
     except Exception:
         pass
 
-    copy_template = NICHOS.get(nicho_nome, {}).get("copy_base", "")
+    copy_template = (
+        NICHOS_ATUAIS.get(nicho_nome, {}).get("copy_base")
+        or NICHOS.get(nicho_nome, {}).get("copy_base")
+        or gerar_config_nicho(nicho_nome).get("copy_base", "")
+    )
     feed = page.locator('div[role="feed"]').first
 
     try:
