@@ -1,6 +1,4 @@
 # Ambientes virtuais
-venv/
-.venv/
 env/
 
 # Relatórios e histórico gerados localmente
