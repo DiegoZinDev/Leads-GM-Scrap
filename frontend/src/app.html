@@ -1,16 +1,22 @@
 <div class="site" [class.light]="workspace && light">
+
 <header><div class="bar"><a class="brand" href="#inicio" aria-label="Zin, início"><svg viewBox="0 0 36 32" aria-hidden="true"><path d="M4 4h29l-5 8H14l-5 7H0l10-15Zm8 16h14l-5 8H2l5-8z" fill="currentColor"/></svg>Zin</a>
-@if(workspace){<nav aria-label="Área de trabalho"><a href="#leads" [attr.aria-current]="page==='leads'?'page':null">Leads</a><a href="#buscas" [attr.aria-current]="page==='buscas'?'page':null">Buscas</a><a href="#relatorios" [attr.aria-current]="page==='relatorios'?'page':null">Relatórios</a></nav><button class="plain theme" (click)="light=!light">{{light?'Tema escuro':'Tema claro'}}</button>}
+@if(workspace){<nav aria-label="Área de trabalho"><a href="#leads" [attr.aria-current]="page==='leads'?'page':null">Leads</a><a href="#buscas" [attr.aria-current]="page==='buscas'?'page':null">Buscas</a><a href="#relatorios" [attr.aria-current]="page==='relatorios'?'page':null">Relatórios</a></nav><button class="plain theme" (click)="toggleTheme()">{{light?'Tema escuro':'Tema claro'}}</button>@if(account){<button class="plain" [disabled]="pending" (click)="logout()">Sair</button>}}
 @else {<div class="account"><a href="#entrar">Entrar</a><a class="outline" href="#cadastro">Criar conta <span aria-hidden="true">↗</span></a></div>}
 </div></header>
 <main [attr.data-page]="page">
 @if(page==='inicio'){
+<div class="hero-waves" aria-hidden="true" [innerHTML]="waves"></div>
 <section class="hero">
 <div class="atlas" [innerHTML]="map"></div>
-<div class="heroCopy"><h1 tabindex="-1">Todos os seus <br>clientes, em<br><em>um só lugar.</em></h1>
-<p>Encontre empresas no Google Maps, descubra quem precisa dos seus serviços e saiba por onde começar.</p>
-<div class="actions"><a class="primary" href="#cadastro">Criar minha conta <span aria-hidden="true">↗</span></a><a class="secondary" href="#leads">Ver demonstração <span aria-hidden="true">→</span></a></div></div>
-<div class="caption"><i></i> São Paulo, SP <span>Mapa ilustrativo</span></div>
+<div class="heroCopy"><h1 tabindex="-1" [attr.aria-label]="headlineText" [class.typing]="animateHeadline">
+  @for(line of headlineWords; track $index){
+    <span class="headline-line" aria-hidden="true">@for(word of line; track $index){<span class="headline-word">@for(letter of word; track $index){<span class="key" [style.--key]="wordOffsets[word]+$index">{{letter}}</span>}</span>@if(!$last){<ng-container>{{' '}}</ng-container>}}</span>
+  }
+</h1>
+<p>Descubra quais empresas da sua região abordar primeiro e veja o motivo de cada indicação.</p>
+<div class="actions"><a class="primary" href="#leads">Ver demonstração <span aria-hidden="true">→</span></a><a class="secondary" href="#cadastro">Criar conta</a></div></div>
+<div class="caption"><i></i> Brasil <span>Localização ilustrativa</span></div>
 </section>
 <section class="how"><h2>Do mapa à primeira conversa.</h2><div class="steps">
 <article><small>01 / TERRITÓRIO</small><h3>Escolha onde buscar</h3><p>Defina as regiões e os nichos que fazem sentido para sua prospecção.</p></article>
@@ -18,14 +24,44 @@
 <article><small>03 / CONTATO</small><h3>Prepare a abordagem</h3><p>Abra a ficha da empresa e copie uma mensagem para iniciar a conversa.</p></article></div></section>
 }
 @if(login){
-<section class="auth"><div class="authMap" [innerHTML]="map"></div><div class="formBox"><a class="back" href="#inicio">← Início</a><h1 tabindex="-1">{{page==='entrar'?'Entrar no Zin':page==='cadastro'?'Crie sua conta':'Recuperar senha'}}</h1><p>Demonstração da área de acesso. Use dados fictícios.</p>
-<form (submit)="auth($event)">@if(page==='cadastro'){<label>Nome de usuário<input required autocomplete="off"></label>}
-<label>E-mail<input required type="email" autocomplete="off"></label>
-@if(page!=='senha'){<label>Senha<input required type="password" autocomplete="off"></label>}
-<button class="primary">{{page==='entrar'?'Entrar':page==='cadastro'?'Cadastrar':'Solicitar código'}}</button></form>
-<p role="status">{{message}}</p><div class="authLinks"><a [href]="page==='entrar'?'#senha':'#entrar'">{{page==='entrar'?'Esqueci minha senha':'Já tenho conta'}}</a><a href="#leads">Abrir demonstração →</a></div></div></section>
+<section class="auth">
+  <div class="authMap" [innerHTML]="map"></div>
+  <div class="formBox">
+    <a class="back" href="#inicio">← Início</a>
+    @if(authStep==='done'){
+      <h1 tabindex="-1">{{page==='senha'?'Senha redefinida':'Conta criada'}}</h1>
+      <p>{{page==='senha'?'Você concluiu o teste de recuperação. A senha fictícia foi descartada.':'Sua conta está pronta. Entre com seu e-mail e senha.'}}</p>
+      <a class="primary next" href="#entrar">{{page==='senha'?'Voltar para entrar':'Entrar na conta'}} →</a>
+    } @else {
+      <h1 tabindex="-1">{{authStep==='code'?'Verifique o código':authStep==='password'?'Escolha uma nova senha':page==='entrar'?'Entrar no Zin':page==='cadastro'?'Crie sua conta':'Recuperar senha'}}</h1>
+      @if(authStep==='code'){
+        <p>Use o código de exemplo <strong class="demoCode">{{demoCode}}</strong>. Ele vale por cinco minutos.</p>
+      } @else if(authStep==='password'){
+        <p>Digite uma nova senha fictícia para concluir a simulação.</p>
+      } @else {
+        <p>{{page==='senha'?'Simule a recuperação. O código aparece aqui, sem envio de e-mail.':page==='entrar'?'Use o e-mail e a senha da sua conta.':'Escolha um nome e uma senha de 8 a 128 caracteres.'}}</p>
+      }
+      <form #accessForm (submit)="submitAuth($event)">
+        @if(authStep==='form'){
+          @if(page==='senha'){<button type="button" class="example" (click)="fillExample(accessForm)">Preencher com exemplo</button>}
+          @if(page==='cadastro'){<label>Nome de usuário<input name="username" maxlength="80" autocomplete="username" required></label>}
+          <label>E-mail<input name="email" maxlength="254" type="email" [attr.autocomplete]="page==='entrar'?'username':'email'" required></label>
+          @if(page!=='senha'){<label>Senha<input [attr.minlength]="page==='cadastro'?8:null" maxlength="128" name="password" type="password" [attr.autocomplete]="page==='entrar'?'current-password':'new-password'" required></label>}
+        } @else if(authStep==='code'){
+          <label>Código de seis dígitos<input name="code" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required [attr.aria-invalid]="message?'true':null" aria-describedby="auth-feedback" (input)="message=''"></label>
+          <button type="button" class="example" (click)="accessForm.reset();startCode()">Gerar outro código</button>
+        } @else {
+          <label>Nova senha fictícia<input name="password" type="password" autocomplete="new-password" required></label>
+        }
+        <p id="auth-feedback" role="status">{{message}}</p>
+        <button class="primary" [disabled]="pending">{{pending?'Aguarde…':authStep==='code'?'Verificar código':authStep==='password'?'Concluir recuperação':page==='senha'?'Gerar código de exemplo':page==='cadastro'?'Criar conta':'Entrar'}}</button>
+      </form>
+      <div class="authLinks"><a [href]="page==='entrar'?'#senha':'#entrar'">{{page==='entrar'?'Ver demonstração da recuperação':'Voltar para entrar'}}</a><a href="#leads">Abrir demonstração →</a></div>
+    }
+  </div>
+</section>
 }
-@if(workspace){<section class="work"><div class="demo">Ambiente de demonstração</div>
+@if(workspace){<section class="work"><div class="demo">@if(account){Conectado como {{account.username}} · }Dados de demonstração</div>
 @if(page==='leads'){<h1 tabindex="-1">Quem abordar hoje</h1><p>Empresas em ordem de prioridade para sua próxima conversa.</p>
 <div class="tools"><label>Filtrar empresas<input type="search" placeholder="Nome, região ou segmento" [value]="query" (input)="query=text($event)"></label><span>{{list.length}} de {{companies.length}} empresas</span></div>
 <div class="rows">@for(c of list;track c.name){<div class="row"><div class="score">{{c.score}}<small>/ 100</small></div><div><h2>{{c.name}}</h2><p>{{c.segment}} · {{c.region}}</p></div><span class="reason">{{c.reason}}</span><button class="outline" [attr.aria-expanded]="selected===c.name" (click)="selected=selected===c.name?'':c.name;message=''">{{selected===c.name?'Fechar':'Abordar'}}</button></div>

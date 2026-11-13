@@ -1,35 +1,58 @@
-<<<<<<< HEAD
-{"schemaVersion":2,"name":"Zin","direction":"Cartografia de prospecção","typography":{"display":"Space Grotesk","body":"DM Sans"},"motion":{"route":"1550ms","navigation":"260ms","reducedMotion":"static"}}
-=======
 {
-  "name": "Zin Jet-Age Design System",
-  "version": "2.0.0",
-  "direction": "vernacular-ephemera-jet-age-ticket-wallet",
-  "tokens": {
-    "colors": {
-      "carrierNavy": "#0B192C",
-      "couponIvory": "#FAF8F5",
-      "sealRed": "#D62828",
-      "carbonPurple": "#49306B",
-      "steelMuted": "#8D99AE",
-      "dark": {
-        "canvas": "#050B14",
-        "surface": "#0B192C",
-        "surfaceElevated": "#11223B",
-        "sealRed": "#E63946",
-        "carbonPurple": "#B598DC",
-        "steelMuted": "#8D99AE"
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T16:50:43.368213+00:00",
+  "title": "Zin · Identidade cartográfica",
+  "extensions": {
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "760px"
       }
+    ],
+    "motion": [
+      {
+        "name": "route",
+        "value": "6s",
+        "purpose": "Traçado e reinício das rotas até o usuário"
+      },
+      {
+        "name": "navigation",
+        "value": "260ms",
+        "purpose": "Entrada de seção"
+      },
+      {
+        "name": "typing",
+        "value": "44ms",
+        "purpose": "Intervalo nominal entre letras"
+      },
+      {
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "Mapa e título completos em repouso"
+      }
+    ],
+    "shadows": []
+  },
+  "components": [
+    {
+      "name": "Ação principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Entrada na demonstração ou confirmação do formulário.",
+      "html": "<button>Ver demonstração →</button>",
+      "css": "button{background:#bcff80;color:#17210e;border:1px solid transparent;border-radius:6px;padding:13px 18px;min-height:44px;font:750 15px sans-serif}button:focus-visible{outline:3px solid #a586fa;outline-offset:4px}"
     },
-    "typography": {
-      "fontFamily": "Inter, -apple-system, sans-serif",
-      "monoFamily": "monospace"
-    },
-    "radii": {
-      "sm": "4px",
-      "md": "6px",
-      "lg": "8px"
+    {
+      "name": "Campo de e-mail",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo obrigatório com rótulo externo.",
+      "html": "<label>E-mail<input type=\"email\" required></label>",
+      "css": "label{display:grid;gap:8px;color:#faf7ff;background:#1b1522;padding:12px;font:16px sans-serif}input{padding:11px 13px;border:1px solid #897895;border-radius:6px;background:#100d16;color:#faf7ff;font:inherit}input:focus-visible{outline:3px solid #a586fa;outline-offset:4px}"
     }
+  ],
+  "narrative": {
+    "northStar": "Identidade cartográfica",
+    "overview": "A página pública mostra a relação entre território e oportunidade. Nove cidades brasileiras enviam trajetos tracejados ao marcador verde do usuário em Brasília. O mapa é ilustrativo e dispensa localização do visitante."
   }
 }
->>>>>>> 331b6cc02bb76a942784057947e0a26e4c6053bd

@@ -8,15 +8,17 @@ web
 
 ## Stack
 
-<<<<<<< HEAD
-Frontend Angular 20 com Vite e TypeScript. Coletor Python com Playwright, pandas e NumPy. A arquitetura prevista inclui uma API Spring Boot e SQLite; o protótipo web atual usa dados demonstrativos. As seções de operação e capacidades descrevem os requisitos de destino.
-=======
-Frontend em **Angular + TypeScript + HTML5 + CSS3**, Backend em **Java 25 + Spring Boot 3** rodando na porta `8090`, banco de dados relacional local em **SQLite** (`Planilhas/zin_leads.db`) e motor analítico/coletor em **Python 3.10+** (`pandas`, `numpy`, `selenium`, `fpdf2`).
->>>>>>> 331b6cc02bb76a942784057947e0a26e4c6053bd
+Frontend Angular 20 com TypeScript e compilação antecipada pelo Angular CLI. Coletor Python com Playwright, pandas e NumPy. Cadastro, login e sessão usam Java 25, Spring Boot 3, Spring Security e Spring Data JPA com Hibernate e SQLite. Os dados de prospecção da interface continuam demonstrativos. As seções de operação e capacidades descrevem os requisitos de destino.
 
 ## Users
 
 Consultores comerciais, agências B2B e equipes de prospecção de vendas no Brasil que precisam identificar, qualificar e abordar empresas locais com lacunas reais de presença digital (ausência de site próprio, baixa conversão em canais digitais ou presença subotimizada no Google Maps) sem desperdiçar tempo com listas brutas ou contatos desqualificados.
+
+## Experiência web disponível
+
+A entrada pública oferece a demonstração da fila de empresas, login e cadastro. O mapa nacional liga nove cidades a Brasília, localização ilustrativa do usuário. A recuperação permite testar um código válido por cinco minutos. Leads apresenta três empresas fictícias, filtro e mensagem copiável. Buscas simula as seis etapas de seleção, e Relatórios apresenta o arquivo semanal em estado vazio. O tema escolhido na área de trabalho acompanha o visitante ao recarregar.
+
+As sete rotas e suas capturas estão no [catálogo de telas](docs/Documentacao_Oficial_Zin.docx). As capacidades integradas descritas a seguir são requisitos de destino.
 
 ## Product Purpose
 
@@ -31,7 +33,7 @@ Diferente de scrapers genéricos que apenas extraem telefones crus, o **Zin** op
 2. Acelera buscas em estados de extensão continental por meio de **particionamento geográfico transparente em 4 quadrantes (Norte, Sul, Leste, Oeste)** nos bastidores, consolidando apenas a elite de cada sub-região sem sobrecarregar a interface do usuário;
 3. Separa claramente a **operação diária de abordagem** (visão *Leads* alimentada pelo SQLite, sem poluição de arquivos PDF) da **auditoria e histórico gerencial** (visão *Relatórios* organizada por Lotes Semanais de PDFs).
 
-## Operating Context
+## Operating Context — operação integrada prevista
 
 - O operador autentica-se na plataforma web (`http://localhost:8090`) ou opera o menu de terminal Python (`main.py`).
 - Na plataforma web, o usuário configura um lote escolhendo **até 10 regiões do Brasil** (cidades ou estados inteiros) e os nichos de negócio desejados.
@@ -56,33 +58,13 @@ Diferente de scrapers genéricos que apenas extraem telefones crus, o **Zin** op
 ## Brand Commitments
 
 - **Nome da Marca**: **`Zin`** (sem sufixos técnicos como `:8090` ou `ZinLeads` na navegação principal).
-<<<<<<< HEAD
 - **Identidade web**: mapa roxo escuro com rotas verde-neon, tipografia branca e base preta. As decisões visuais estão em DESIGN.md. O terminal mantém o banner ASCII.
 - **Operação diária**: abrir na fila de empresas a abordar, com pontuação e diagnóstico visíveis. Oferecer temas claro e escuro na área de trabalho.
-=======
-- **Assinatura Visual ASCII `ZIN`**: O banner em arte de blocos (`███████╗██╗███╗   ██╗...`) é a marca oficial tanto no menu de terminal (`main.py`) quanto nos cabeçalhos das telas de autenticação (Login, Cadastro, Alterar Senha) e no canto superior esquerdo da aplicação web, em versão levemente reduzida.
-- **Paleta Oficial Escolhida (Direção Carteira Jet-Age de Viagem)**:
-  - **Carrier Navy**: `#0B192C` (Estrutura primária, shell de navegação e cabeçalho)
-  - **Coupon Ivory**: `#FAF8F5` (Superfície limpa de trabalho, leitura e fichas)
-  - **Seal Red**: `#D62828` (Chancela de aprovação/corte e ações primárias de execução)
-  - **Carbon Purple**: `#49306B` (Destaque de scores numéricos e algarismos tabulares)
-  - **Steel Muted**: `#8D99AE` (Linhas de grade, picotes e legendas contextuais)
-  - **Tema Padrão**: **Modo Escuro (Dark Mode Inverso)** ativo por padrão: `#050B14` (Fundo profundo), `#0B192C` (Superfície Navy), `#11223B` (Superfície elevada), `#FAF8F5` (Texto de alto contraste), `#B598DC` (Numerais/Scores) e `#E63946` (Chancela ativa/CTA).
-- **Modo Claro e Modo Escuro**: A interface deve possuir alternância fluida entre os dois modos com conformidade WCAG AA estrita, iniciando por padrão no Modo Escuro.
->>>>>>> 331b6cc02bb76a942784057947e0a26e4c6053bd
 - **Interface Limpa de Jargões de Infraestrutura**: Não exibir rótulos de arquitetura interna na UI final (como *"Protótipos de Engenharia Web • Angular + Spring Boot (:8090) + SQLite"*, *"Persistência Automática"* no formulário do Dashboard ou cards técnicos *"Motor Python + SQLite"* na barra lateral).
 
 ## Evidence on Hand
 
-<<<<<<< HEAD
 A implementação disponível está mapeada em [docs/arquitetura.md](docs/arquitetura.md). O catálogo de telas documenta o protótipo local. O histórico e os PDFs do coletor permanecem em Planilhas/.
-=======
-- Motor Python funcional e testado (`23/23` testes unitários passando em `tests/test_funil_sequencial.py`), consolidado em 6 módulos principais: `config.py`, `scraper.py`, `processador_dados.py`, `classificador.py`, `gerador_relatorios.py`, `gerenciador_historico.py` e `main.py`.
-- Histórico real de lotes e leads já processados em `Planilhas/historico_leads.json` e `Planilhas/analytics_lotes.json`, além de relatórios executivos `.pdf` gerados em `Planilhas/`.
-- Documentação arquitetural estruturada em `docs/` seguindo **arc42 + C4 Model + Diátaxis + ADRs**.
-- Protótipos interativos de 6 telas validados e sincronizados no Figma (`fileKey: v2nPbeJYBXsmR1OWsUlnLw`, `node-id=11-3`).
-- Nenhum depoimento externo de clientes, precificação comercial de planos ou integrações com CRMs de terceiros foram definidos — trabalhos futuros não devem fabricar essas alegações.
->>>>>>> 331b6cc02bb76a942784057947e0a26e4c6053bd
 
 ## Product Principles
 

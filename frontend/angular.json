@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "projects": {
+    "zin": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "index": "index.html",
+            "outputPath": {"base": "dist", "browser": ""},
+            "tsConfig": "tsconfig.json",
+            "styles": ["src/style.css"],
+            "outputHashing": "all"
+          },
+          "configurations": {"development": {"optimization": false, "sourceMap": true}}
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {"buildTarget": "zin:build:development", "proxyConfig": "proxy.conf.json"}
+        }
+      }
+    }
+  },
+  "cli": {"analytics": false}
+}
