@@ -1,1 +1,35 @@
+<<<<<<< HEAD
 {"schemaVersion":2,"name":"Zin","direction":"Cartografia de prospecção","typography":{"display":"Space Grotesk","body":"DM Sans"},"motion":{"route":"1550ms","navigation":"260ms","reducedMotion":"static"}}
+=======
+{
+  "name": "Zin Jet-Age Design System",
+  "version": "2.0.0",
+  "direction": "vernacular-ephemera-jet-age-ticket-wallet",
+  "tokens": {
+    "colors": {
+      "carrierNavy": "#0B192C",
+      "couponIvory": "#FAF8F5",
+      "sealRed": "#D62828",
+      "carbonPurple": "#49306B",
+      "steelMuted": "#8D99AE",
+      "dark": {
+        "canvas": "#050B14",
+        "surface": "#0B192C",
+        "surfaceElevated": "#11223B",
+        "sealRed": "#E63946",
+        "carbonPurple": "#B598DC",
+        "steelMuted": "#8D99AE"
+      }
+    },
+    "typography": {
+      "fontFamily": "Inter, -apple-system, sans-serif",
+      "monoFamily": "monospace"
+    },
+    "radii": {
+      "sm": "4px",
+      "md": "6px",
+      "lg": "8px"
+    }
+  }
+}
+>>>>>>> 331b6cc02bb76a942784057947e0a26e4c6053bd

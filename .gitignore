@@ -1,7 +1,10 @@
 # Ambientes virtuais
 env/
+<<<<<<< HEAD
 venv/
 .venv/
+=======
+>>>>>>> 331b6cc02bb76a942784057947e0a26e4c6053bd
 
 # Relatórios e histórico gerados localmente
 Planilhas/
