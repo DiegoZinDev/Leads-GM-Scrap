@@ -24,15 +24,15 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
-from config import NICHOS, NICHOS_ATUAIS, FILTROS, VERIFICACAO, gerar_config_nicho
-from exporter import (
+from .config import NICHOS, NICHOS_ATUAIS, FILTROS, VERIFICACAO, gerar_config_nicho
+from .exporter import (
     calcular_score_potencial,
     carregar_historico,
     lead_ja_existe,
     registrar_lead_em_memoria,
 )
-from qualifier import executar_funil_sequencial
-from verifier import VerificadorPresencaDigital, ResultadoPresencaDigital
+from .qualifier import executar_funil_sequencial
+from .verifier import VerificadorPresencaDigital, ResultadoPresencaDigital
 
 
 def extrair_dono_ou_gerente(page: Page) -> str:

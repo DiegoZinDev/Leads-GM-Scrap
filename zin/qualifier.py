@@ -18,7 +18,7 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
-from verifier import (
+from .verifier import (
     ClienteHttp,
     PerfilInstagram,
     ResultadoPresencaDigital,

@@ -1,0 +1,38 @@
+<div class="site" [class.light]="workspace && light">
+<header><div class="bar"><a class="brand" href="#inicio" aria-label="Zin, início"><svg viewBox="0 0 36 32" aria-hidden="true"><path d="M4 4h29l-5 8H14l-5 7H0l10-15Zm8 16h14l-5 8H2l5-8z" fill="currentColor"/></svg>Zin</a>
+@if(workspace){<nav aria-label="Área de trabalho"><a href="#leads" [attr.aria-current]="page==='leads'?'page':null">Leads</a><a href="#buscas" [attr.aria-current]="page==='buscas'?'page':null">Buscas</a><a href="#relatorios" [attr.aria-current]="page==='relatorios'?'page':null">Relatórios</a></nav><button class="plain theme" (click)="light=!light">{{light?'Tema escuro':'Tema claro'}}</button>}
+@else {<div class="account"><a href="#entrar">Entrar</a><a class="outline" href="#cadastro">Criar conta <span aria-hidden="true">↗</span></a></div>}
+</div></header>
+<main [attr.data-page]="page">
+@if(page==='inicio'){
+<section class="hero">
+<div class="atlas" [innerHTML]="map"></div>
+<div class="heroCopy"><h1 tabindex="-1">Todos os seus <br>clientes, em<br><em>um só lugar.</em></h1>
+<p>Encontre empresas no Google Maps, descubra quem precisa dos seus serviços e saiba por onde começar.</p>
+<div class="actions"><a class="primary" href="#cadastro">Criar minha conta <span aria-hidden="true">↗</span></a><a class="secondary" href="#leads">Ver demonstração <span aria-hidden="true">→</span></a></div></div>
+<div class="caption"><i></i> São Paulo, SP <span>Mapa ilustrativo</span></div>
+</section>
+<section class="how"><h2>Do mapa à primeira conversa.</h2><div class="steps">
+<article><small>01 / TERRITÓRIO</small><h3>Escolha onde buscar</h3><p>Defina as regiões e os nichos que fazem sentido para sua prospecção.</p></article>
+<article><small>02 / SELEÇÃO</small><h3>Veja quem priorizar</h3><p>Compare empresas pela pontuação e pelas lacunas de presença digital.</p></article>
+<article><small>03 / CONTATO</small><h3>Prepare a abordagem</h3><p>Abra a ficha da empresa e copie uma mensagem para iniciar a conversa.</p></article></div></section>
+}
+@if(login){
+<section class="auth"><div class="authMap" [innerHTML]="map"></div><div class="formBox"><a class="back" href="#inicio">← Início</a><h1 tabindex="-1">{{page==='entrar'?'Entrar no Zin':page==='cadastro'?'Crie sua conta':'Recuperar senha'}}</h1><p>Demonstração da área de acesso. Use dados fictícios.</p>
+<form (submit)="auth($event)">@if(page==='cadastro'){<label>Nome de usuário<input required autocomplete="off"></label>}
+<label>E-mail<input required type="email" autocomplete="off"></label>
+@if(page!=='senha'){<label>Senha<input required type="password" autocomplete="off"></label>}
+<button class="primary">{{page==='entrar'?'Entrar':page==='cadastro'?'Cadastrar':'Solicitar código'}}</button></form>
+<p role="status">{{message}}</p><div class="authLinks"><a [href]="page==='entrar'?'#senha':'#entrar'">{{page==='entrar'?'Esqueci minha senha':'Já tenho conta'}}</a><a href="#leads">Abrir demonstração →</a></div></div></section>
+}
+@if(workspace){<section class="work"><div class="demo">Ambiente de demonstração</div>
+@if(page==='leads'){<h1 tabindex="-1">Quem abordar hoje</h1><p>Empresas em ordem de prioridade para sua próxima conversa.</p>
+<div class="tools"><label>Filtrar empresas<input type="search" placeholder="Nome, região ou segmento" [value]="query" (input)="query=text($event)"></label><span>{{list.length}} de {{companies.length}} empresas</span></div>
+<div class="rows">@for(c of list;track c.name){<div class="row"><div class="score">{{c.score}}<small>/ 100</small></div><div><h2>{{c.name}}</h2><p>{{c.segment}} · {{c.region}}</p></div><span class="reason">{{c.reason}}</span><button class="outline" [attr.aria-expanded]="selected===c.name" (click)="selected=selected===c.name?'':c.name;message=''">{{selected===c.name?'Fechar':'Abordar'}}</button></div>
+@if(selected===c.name){<div class="detail"><h3>Mensagem de abordagem</h3><p>{{pitch(c.name)}}</p><button class="primary" (click)="copy(c.name)">Copiar mensagem</button></div>}}
+@empty{<p>Nenhuma empresa encontrada. <button class="plain" (click)="query=''">Limpar filtro</button></p>}</div>}
+@if(page==='buscas'){<h1 tabindex="-1">Nova busca</h1><p>Experimente a configuração de um lote de prospecção.</p><form class="searchForm" (submit)="run($event)"><label>Região<input required placeholder="Ex.: Campinas, SP" (input)="searchRegion=text($event);demoRun=false;message=''"></label><label>Nicho<input required placeholder="Ex.: clínicas" (input)="searchNiche=text($event);demoRun=false;message=''"></label><button class="primary">Simular busca</button></form>@if(demoRun){<h2>{{searchNiche}} · {{searchRegion}}</h2><p>Etapas da seleção simulada</p><ol>@for(step of ['Coleta inicial','Deduplicação','Validação de contato','Qualidade mínima','Presença digital','Seleção por pontuação'];track step){<li>{{step}}</li>}</ol>}}
+@if(page==='relatorios'){<h1 tabindex="-1">Relatórios semanais</h1><p>Consulte os documentos de cada lote pela semana de geração.</p><div class="empty"><h2>Nenhum relatório nesta demonstração</h2><p>Os PDFs aparecem aqui após a conclusão de uma coleta real.</p><a href="#buscas">Ver configuração de busca →</a></div>}
+<p role="status">{{message}}</p></section>}
+</main></div>
+
