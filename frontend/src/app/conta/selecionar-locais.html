@@ -1,0 +1,23 @@
+<fieldset class="locais">
+  <legend>{{ titulo() }}</legend>
+  @for (local of locais; track local; let i = $index) {
+    <div class="local">
+      <label>Estado<select #estado required [value]="local.uf" (change)="local.uf = estado.value; local.cidade = ''">
+        <option value="">Selecione o estado</option>
+        @for (item of estados; track item.uf) { <option [value]="item.uf">{{ item.nome }} ({{ item.uf }})</option> }
+      </select></label>
+      @if (local.uf) {
+        <label>Cidade<select #municipio required [value]="local.cidade" (change)="local.cidade = municipio.value">
+          <option value="">Selecione a cidade</option>
+          @for (cidade of cidades(local.uf); track cidade) {
+            <option [value]="cidade" [disabled]="ocupada(local.uf, cidade, i)">{{ cidade }}</option>
+          }
+        </select></label>
+      }
+      <input type="hidden" name="localidade" [value]="local.cidade + ' - ' + local.uf">
+      @if (i > 0) { <button class="plain" type="button" (click)="locais.splice(i, 1)">Remover local</button> }
+    </div>
+  }
+  <button class="plain" type="button" [disabled]="!locais[locais.length - 1].cidade"
+    (click)="locais.push({ uf: '', cidade: '' })">Adicionar mais um local (opcional)</button>
+</fieldset>

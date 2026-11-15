@@ -1,0 +1,36 @@
+<div class="site">
+<header><div class="bar">
+  <a class="brand" href="#inicio" aria-label="UrWork, início">
+    <svg class="brand-mark" viewBox="0 0 32 34" fill="none" stroke="currentColor" aria-hidden="true" focusable="false">
+      <path d="M5 8v9a8 9 0 0 0 16 0V4m-6 6 6-6 6 6" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M2 32h24" stroke-width="3"/>
+    </svg>UrWork
+  </a>
+  <div class="account">
+    @if (sessao.conta()) {
+      @if (pagina() !== 'conta' && pagina() !== 'perfil') { <a class="outline" href="#conta">Minha conta</a> }
+      <button class="plain" [disabled]="saindo()" (click)="sair()">Sair</button>
+    } @else if (sessao.conta() === null) {
+      <a href="#entrar">Entrar</a><a class="outline" href="#cadastro">Criar conta</a>
+    }
+  </div>
+</div></header>
+<main>
+  @if (sessao.indisponivel()) {
+    <p class="aviso" role="status">Não foi possível confirmar a sessão. <button class="plain" (click)="sessao.consultar()">Tentar novamente</button></p>
+  }
+  @if (mensagem()) { <p class="aviso" role="status">{{mensagem()}}</p> }
+  @switch (pagina()) {
+    @case ('inicio') { <urwork-inicio [conectado]="!!sessao.conta()" [animar]="animar" /> }
+    @case ('conta') {
+      <section class="work"><h1 tabindex="-1">Minha conta</h1>
+        <p>{{ sessao.conta()?.username }}</p><p>{{ sessao.conta()?.email }}</p>
+      </section>
+    }
+    @case ('aguardar') { <p class="aviso" role="status">Consultando sua sessão…</p> }
+    @case ('entrar') { <urwork-formulario modo="entrar" /> }
+    @case ('cadastro') { <urwork-formulario modo="cadastro" /> }
+    @case ('perfil') { <urwork-formulario modo="perfil" /> }
+  }
+</main>
+</div>

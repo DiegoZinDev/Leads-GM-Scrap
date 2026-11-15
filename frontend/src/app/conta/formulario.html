@@ -1,0 +1,62 @@
+<section class="auth">
+  <div class="authMap" aria-hidden="true" [innerHTML]="mapa"></div>
+  <div class="formBox" [class.perfil-form]="modo() !== 'entrar' && !criada()">
+    <a class="back" href="#inicio">← Início</a>
+    @if (criada()) {
+      <h1 tabindex="-1">Conta criada</h1>
+      <p>Use seu e-mail e sua senha para acessar o UrWork.</p>
+      <a class="primary next" href="#entrar">Entrar na conta</a>
+    } @else {
+      <h1 tabindex="-1">{{ modo() === 'entrar' ? 'Entrar no UrWork' : modo() === 'cadastro' ? 'Crie sua conta' : 'Complete seu perfil' }}</h1>
+      @if (modo() === 'perfil') { <p>Complete os dados da sua conta para continuar.</p> }
+      <form (submit)="enviar($event)">
+        @if (modo() === 'cadastro') {
+          <label>Nome completo<input name="username" maxlength="80" autocomplete="name" required></label>
+        }
+        @if (modo() !== 'perfil') {
+          <label>E-mail<input name="email" type="email" maxlength="254" [attr.autocomplete]="modo() === 'entrar' ? 'username' : 'email'" required></label>
+          <label>Senha
+            <input name="password" type="password" [attr.maxlength]="modo() === 'cadastro' ? 8 : 128" [attr.pattern]="modo() === 'cadastro' ? regraSenha : null"
+              [attr.autocomplete]="modo() === 'entrar' ? 'current-password' : 'new-password'" [attr.aria-describedby]="modo() === 'cadastro' ? 'regra-senha' : null" required>
+            @if (modo() === 'cadastro') { <small id="regra-senha">Até 8 caracteres, com uma letra maiúscula, um caractere especial e pelo menos dois números.</small> }
+          </label>
+        }
+        @if (modo() !== 'entrar') {
+          <label>CPF<input name="cpf" inputmode="numeric" maxlength="14" pattern="[0-9]{11}|[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}" placeholder="000.000.000-00" required></label>
+          <label class="linha-inteira">Para que vai usar o UrWork?
+            <select name="finalidade" #tipo required (change)="finalidade.set(tipo.value)">
+              <option value="">Escolha uma finalidade</option>
+              <option value="FREELANCER">Encontrar clientes como freelancer</option>
+              <option value="EMPRESA">Prospectar clientes para minha empresa</option>
+              <option value="EMPREGO">Procurar vagas de emprego</option>
+            </select>
+          </label>
+          @switch (finalidade()) {
+            @case ('FREELANCER') {
+              <label>Serviço que presta<input name="servico" maxlength="120" required></label>
+              <urwork-locais titulo="Onde pode atender" />
+            }
+            @case ('EMPRESA') {
+              <label>Nome da empresa<input name="empresa" autocomplete="organization" maxlength="120" required></label>
+              <label>Ramo de atuação<input name="ramo" maxlength="120" required></label>
+            }
+            @case ('EMPREGO') {
+              <label>Vaga que procura<input name="cargo" maxlength="120" required></label>
+              <label>Ramo de interesse<input name="ramo" maxlength="120" required></label>
+              <urwork-locais titulo="Localidade disponível" />
+              <label>Modalidade de trabalho<select name="modalidade" required>
+                <option value="">Escolha uma modalidade</option>
+                <option value="PRESENCIAL">Presencial</option><option value="HIBRIDO">Híbrido</option><option value="REMOTO">Remoto</option>
+              </select></label>
+            }
+          }
+        }
+        <p id="auth-feedback" role="status">{{ mensagem() }}</p>
+        <button class="primary" [disabled]="pendente()">{{ pendente() ? 'Aguarde…' : modo() === 'entrar' ? 'Entrar' : modo() === 'cadastro' ? 'Criar conta' : 'Salvar perfil' }}</button>
+      </form>
+      @if (modo() !== 'perfil') {
+        <div class="authLinks"><a [href]="modo() === 'entrar' ? '#cadastro' : '#entrar'">{{ modo() === 'entrar' ? 'Criar uma conta' : 'Já tenho uma conta' }}</a></div>
+      }
+    }
+  </div>
+</section>

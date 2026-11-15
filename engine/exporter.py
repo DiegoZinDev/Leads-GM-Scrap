@@ -25,7 +25,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 from playwright.sync_api import sync_playwright, Page
 
-PASTA_PLANILHAS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Planilhas")
+PASTA_PLANILHAS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Planilhas")
 ARQUIVO_HISTORICO = os.path.join(PASTA_PLANILHAS, "historico_leads.json")
 
 

@@ -1,11 +1,12 @@
 # Ambientes virtuais
+env/
 venv/
 .venv/
-env/
 
-# Relatórios e histórico gerados localmente
+# Relatórios, histórico e bancos locais do operador
 Planilhas/
-docs/
+/dtb/
+/DTB/
 
 # Perfil persistente do navegador (sessões e cookies)
 perfil_navegador/
@@ -15,3 +16,4 @@ sessao_navegador/
 __pycache__/
 *.pyc
 .env
+~$*.docx

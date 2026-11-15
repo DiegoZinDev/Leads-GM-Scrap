@@ -5,7 +5,7 @@ Configurações, Nichos Dinâmicos, Regiões e Modelos de Abordagem para o Scrap
 import os
 
 # Diretório para perfil persistente do navegador (armazena cookies, login do Instagram e sessão do WhatsApp Web)
-PASTA_PERFIL_NAVEGADOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "perfil_navegador")
+PASTA_PERFIL_NAVEGADOR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "perfil_navegador")
 
 # Regiões e Cidades alvo padrão (expandidas para garantir volume mínimo de 50 leads)
 REGIOES = [
