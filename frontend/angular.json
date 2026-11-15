@@ -1,7 +1,7 @@
 {
   "version": 1,
   "projects": {
-    "zin": {
+    "urwork": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -20,7 +20,7 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {"buildTarget": "zin:build:development", "proxyConfig": "proxy.conf.json"}
+          "options": {"buildTarget": "urwork:build:development", "proxyConfig": "proxy.conf.json"}
         }
       }
     }

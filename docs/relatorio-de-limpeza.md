@@ -1,20 +1,44 @@
-# Inventário de limpeza · 13 de novembro de 2026
+# Inventário do repositório · 14 de novembro de 2026
 
-Medição local da árvore de trabalho antes da reorganização, em MiB. Os volumes variam após builds, coletas e reinstalações. Nenhum dos itens inventariados foi excluído nesta revisão.
+## Resultado da primeira etapa
 
-| Item | Volume observado | Recomendação e efeito |
-|---|---:|---|
-| `venv/` | 270,3 MiB · 7.072 arquivos | Prioridade para retirar do índice Git em uma mudança dedicada. Existem **4.233 arquivos rastreados** e o executável aponta para uma instalação Python ausente. Recriar em `.venv/`, instalar os requisitos e validar a CLI antes de descartar a cópia. A regra de ignore adicionada só protege arquivos ainda não rastreados. A retirada do índice mantém a cópia local e o histórico Git. |
-| `frontend/node_modules/` | 82,8 MiB · 7.038 arquivos | Reinstalável com `npm ci`. Remover com o servidor parado. Preservar os dois manifestos npm, inclusive o lockfile. |
-| `frontend/dist/` | 1,1 MiB · 8 arquivos | Recriável com `npm run build`. Preservar se alguma implantação estiver servindo essa pasta. |
-| `__pycache__/` e caches dentro dos pacotes | 0,3 MiB na raiz | Bytecode regenerado pelo Python. Pode ser limpo com o interpretador parado. |
-| `tests/__pycache__/` | 3 arquivos · < 0,1 MiB | Restos compilados. A pasta não contém fontes de testes nesta revisão. As fontes anteriores estão no commit `250ddfc`; revisar sua compatibilidade antes de recuperar a suíte. |
-| `frontend/public/` | Vazia | Removível enquanto não houver recursos estáticos independentes. |
-| `perfil_navegador/` | 583,6 MiB · 4.498 arquivos | **Preservar.** O coletor reutiliza login e cookies. Descartar apenas se o operador quiser reiniciar as sessões com o navegador fechado. |
-| `Planilhas/` | 1,4 MiB · 3 arquivos | **Preservar.** Dois PDFs e um JSON. Arquivar PDFs individualmente se necessário. Remover o histórico pode reintroduzir empresas em coletas futuras. |
-| `.gemini/settings.json`, `.skills.json` | Configuração | Revisar se o time abandonar essas ferramentas. A preferência por outro visual não é suficiente para concluir que essas configurações perderam a função. |
-| `.vscode/settings.json` | Configuração | Manter a configuração compartilhada do interpretador apontando para o ambiente recomendado no README. |
-| `.impeccable/`, `DESIGN.md`, `PRODUCT.md` | Diretrizes | Manter. Alimentam o trabalho de produto e design. |
-| `.git/`, fontes, requisitos e documentação | Histórico e entregáveis | Manter. O DOCX oficial precisa ser versionável; arquivos temporários do Word continuam ignorados. |
+O índice do Git continha 4.233 entradas de `venv/`, 7.038 de `frontend/node_modules/` e uma de `frontend/dist/`. As 11.272 entradas saíram do índice. O ambiente `venv/` antigo já estava ausente do disco. As dependências e os arquivos compilados do frontend permanecem disponíveis no computador. A retirada do índice aparece como exclusão preparada para o próximo commit e conserva o histórico anterior.
 
-As três pastas reinstaláveis de maior interesse somam cerca de **354,2 MiB**. A economia em disco dura até a próxima instalação ou compilação. Para reduzir a poluição do repositório, a maior diferença vem de deixar de rastrear o ambiente Python. O tamanho da árvore de trabalho não mede a redução do histórico Git.
+Uma instalação isolada com `npm ci`, usando os manifestos do projeto, reproduziu o build do Angular. Em um novo checkout, compile o frontend antes do empacotamento Maven conforme o [README](../README.md).
+
+## Código, ferramentas e material de projeto
+
+| Local | Função observada | Decisão |
+|---|---|---|
+| `main.py`, `engine/`, `engine/requirements.txt` | Entrada, implementação e dependências Python do terminal. O perfil e os relatórios têm caminhos derivados da posição do pacote. | Manter a entrada principal e o motor compartilhado. |
+| `frontend/` | Angular e TypeScript. `angular.json` define o build e o servidor de desenvolvimento. O script `preview` usa Vite; os dois servidores têm configuração de proxy para a API. | Manter fontes, manifestos, lockfile e configurações. |
+| `backend/` | API, segurança, JPA, esquema SQLite, teste de integração e Maven Wrapper. | Manter fontes e wrapper. O Maven empacota o conteúdo de `frontend/dist/`. |
+| `docs/`, `PRODUCT.md`, `DESIGN.md`, `README.md` | Inventário, arquitetura, requisitos aprovados, design e instruções de execução. O catálogo UrWork retrata as telas atuais; o documento Zin é histórico. | Manter. Atualizar as capturas ao entregar telas reais do UrWork. |
+| `.impeccable/`, `.skills.json`, `.gemini/`, `.vscode/` | Recursos de design, seleção de ferramentas e configuração local do editor. O VS Code usa o interpretador em `.venv/`. | Manter as configurações em uso. Reavaliar as específicas de ferramenta se o fluxo de trabalho mudar. |
+| `.git/` e arquivos `.gitignore` | Histórico, índice e regras para dependências, caches e dados de execução. | Manter. |
+
+## Dados do operador
+
+| Local | Conteúdo e origem | Decisão |
+|---|---|---|
+| `dtb/UrWork.db` | Banco oficial local da instalação UrWork. | Preservar fora do Git. |
+| Bancos anteriores | As cópias de zin_leads.db em DTB e Planilhas eram idênticas. Uma foi renomeada; a outra foi arquivada fora do projeto, em %LOCALAPPDATA%/UrWork/backups/. | Preservar o backup anterior à migração. |
+| `Planilhas/historico_leads.json` e PDFs | Histórico usado para deduplicação e três relatórios locais. O terminal grava o histórico após o sucesso da geração do PDF. | Preservar o conjunto. Reinstalar o Python não recupera esses dados. |
+| `perfil_navegador/` | Perfil persistente do Chromium usado pelo operador, incluindo suas sessões externas. | Manter fora do Git e separado de futuras conexões dos usuários do site. |
+
+## Diretórios recriáveis e resíduos
+
+| Local | Situação | Ação possível |
+|---|---|---|
+| `.venv/` | Ambiente Python ativo no computador. | Recriar pelos requisitos se necessário; para a operação atual, manter. |
+| `frontend/node_modules/`, `frontend/.angular/`, `frontend/dist/`, `backend/target/` | Dependências e saídas de compilação. | Reinstalar ou recompilar com o README. Limpar somente com os consumidores parados. |
+| `__pycache__/` e caches nos pacotes | Bytecode local gerado pelo Python. | Dispensáveis para executar as fontes. |
+| `tests/__pycache__/` | Três arquivos compilados, sem fontes atuais nessa pasta. Há fontes anteriores no commit `250ddfc`. | Avaliar os testes históricos ao extrair o motor; o cache não é uma suíte executável de referência. |
+| `frontend/public/` | Vazia e sem entrada de recursos correspondente no build Angular. | Pode ser removida enquanto vazia. |
+| `frontend/.impeccable/live/` | Diretórios locais vazios de sessões e anotações. | Podem ser recriados pela ferramenta. O contexto de design do projeto fica na raiz. |
+
+## Verificações operacionais
+
+- O terminal abriu pela entrada oficial, exibiu o menu e encerrou pela opção 5.
+- O teste de integração executou cadastro, login, consulta de sessão e logout em um banco temporário.
+- O JAR empacotado, iniciado em uma porta isolada com outro banco temporário, serviu a página e o JavaScript (HTTP 200). A consulta de sessão sem credenciais retornou HTTP 401.

@@ -1,6 +1,6 @@
 ---
-name: Zin
-description: "Sistema visual da prospecção territorial do Zin"
+name: UrWork
+description: "Sistema visual da prospecção territorial do UrWork"
 colors:
   canvas: "#100d16"
   surface: "#1b1522"
@@ -41,7 +41,7 @@ components:
     textColor: "{colors.text}"
     rounded: "{rounded.control}"
 ---
-# Zin · Identidade cartográfica
+# UrWork · Identidade cartográfica
 
 ## Overview
 

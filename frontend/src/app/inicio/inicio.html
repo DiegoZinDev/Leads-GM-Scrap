@@ -1,0 +1,16 @@
+<div class="hero-waves" aria-hidden="true" [innerHTML]="waves"></div>
+<section class="hero">
+<div class="atlas" [innerHTML]="map"></div>
+<div class="heroCopy"><h1 tabindex="-1" [attr.aria-label]="headlineText" [class.typing]="animar()">
+  @for(line of headlineWords; track $index){
+    <span class="headline-line" aria-hidden="true">@for(word of line; track $index){<span class="headline-word">@for(letter of word; track $index){<span class="key" [style.--key]="wordOffsets[word]+$index">{{letter}}</span>}</span>@if(!$last){<ng-container>{{' '}}</ng-container>}}</span>
+  }
+</h1>
+<p>Descubra quais empresas da sua região abordar primeiro e veja o motivo de cada indicação.</p>
+<div class="actions"><a class="primary" [href]="conectado() ? '#conta' : '#cadastro'">{{conectado() ? 'Minha conta' : 'Criar conta'}} <span aria-hidden="true">→</span></a>@if(!conectado()){<a class="secondary" href="#entrar">Entrar</a>}</div></div>
+<div class="caption"><i></i> Brasil <span>Localização ilustrativa</span></div>
+</section>
+<section class="how"><h2>Do mapa à primeira conversa.</h2><div class="steps">
+<article><small>01 / TERRITÓRIO</small><h3>Escolha onde buscar</h3><p>Defina as regiões e os nichos que fazem sentido para sua prospecção.</p></article>
+<article><small>02 / SELEÇÃO</small><h3>Veja quem priorizar</h3><p>Compare empresas pela pontuação e pelas lacunas de presença digital.</p></article>
+<article><small>03 / CONTATO</small><h3>Prepare a abordagem</h3><p>Abra a ficha da empresa e copie uma mensagem para iniciar a conversa.</p></article></div></section>

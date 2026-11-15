@@ -8,72 +8,79 @@ web
 
 ## Stack
 
-Frontend Angular 20 com TypeScript e compilação antecipada pelo Angular CLI. Coletor Python com Playwright, pandas e NumPy. Cadastro, login e sessão usam Java 25, Spring Boot 3, Spring Security e Spring Data JPA com Hibernate e SQLite. Os dados de prospecção da interface continuam demonstrativos. As seções de operação e capacidades descrevem os requisitos de destino.
+Angular com TypeScript na interface, Spring Boot com Spring Web, Spring Security e Spring Data JPA/Hibernate no backend, e Python com Playwright, pandas e NumPy no motor de busca. A instalação usa `dtb/UrWork.db` na máquina que executa o Spring. O backend controla o acesso aos dados web. Uma migração para MySQL pode ser avaliada quando houver hospedagem.
 
 ## Users
 
-Consultores comerciais, agências B2B e equipes de prospecção de vendas no Brasil que precisam identificar, qualificar e abordar empresas locais com lacunas reais de presença digital (ausência de site próprio, baixa conversão em canais digitais ou presença subotimizada no Google Maps) sem desperdiçar tempo com listas brutas ou contatos desqualificados.
+O UrWork atende freelancers que procuram clientes para os serviços que prestam, empresas B2B que buscam compradores e pessoas que procuram emprego no Brasil ou no exterior. O perfil escolhido sugere critérios iniciais. A mesma pessoa pode alternar entre Leads e Vagas.
 
 ## Experiência web disponível
 
-A entrada pública oferece a demonstração da fila de empresas, login e cadastro. O mapa nacional liga nove cidades a Brasília, localização ilustrativa do usuário. A recuperação permite testar um código válido por cinco minutos. Leads apresenta três empresas fictícias, filtro e mensagem copiável. Buscas simula as seis etapas de seleção, e Relatórios apresenta o arquivo semanal em estado vazio. O tema escolhido na área de trabalho acompanha o visitante ao recarregar.
+A navegação do UrWork oferece início, login, cadastro e Minha conta. O cadastro aceita homônimos e solicita CPF, e-mail e os campos da finalidade escolhida. Após o login, pessoas com cadastro anterior preenchem o perfil uma vez para acessar Minha conta. A tela de conta exibe nome e e-mail. O terminal continua responsável pelas buscas de empresas, com histórico de deduplicação e PDFs em `Planilhas/`.
 
-As sete rotas e suas capturas estão no [catálogo de telas](docs/Documentacao_Oficial_Zin.docx). As capacidades integradas descritas a seguir são requisitos de destino.
+O fluxo de prospecção web, os filtros de vagas e as conexões sociais por usuário descritos a seguir fazem parte do escopo aprovado para desenvolvimento.
 
 ## Product Purpose
 
-**Zin** transforma a prospecção comercial no Google Maps em um fluxo de inteligência analítica e acionável. Em vez de despejar planilhas brutas, o produto executa coleta regional automatizada em duas fases, filtra os dados por um **Funil Eliminatório Sequencial de 6 Etapas** vetorizado (`pandas` + `numpy`) e entrega tanto uma base viva de leads qualificados no SQLite quanto relatórios executivos em PDF agrupados em lotes semanais, acompanhados de *scripts* (copies) consultivos prontos para abordagem via WhatsApp.
-
-O sucesso do produto significa reduzir drasticamente o tempo entre escolher um mercado-alvo (até 10 regiões/nichos) e iniciar conversas comerciais de alta conversão com decisores qualificados.
+Encontrar empresas que possam comprar um serviço ou vagas compatíveis com o candidato. O primeiro marco será configurar uma prospecção no site, acompanhar o motor Python em execução e consultar os resultados reais após reabrir o navegador. O terminal continuará disponível durante a transição.
 
 ## Positioning
 
-Diferente de scrapers genéricos que apenas extraem telefones crus, o **Zin** opera como um funil estatístico determinístico:
-1. Elimina ruído em 6 estágios sequenciais (Deduplicação → Higienização → Filtro de Qualidade Mínima → Corte de Presença Digital → Score Estatístico por Percentil `numpy` → Seleção da Elite Top N);
-2. Acelera buscas em estados de extensão continental por meio de **particionamento geográfico transparente em 4 quadrantes (Norte, Sul, Leste, Oeste)** nos bastidores, consolidando apenas a elite de cada sub-região sem sobrecarregar a interface do usuário;
-3. Separa claramente a **operação diária de abordagem** (visão *Leads* alimentada pelo SQLite, sem poluição de arquivos PDF) da **auditoria e histórico gerencial** (visão *Relatórios* organizada por Lotes Semanais de PDFs).
+Em **Nova prospecção**, a pessoa define o que considera uma oportunidade qualificada. Em **Buscas**, examina cada resultado e sua origem. Em **Relatórios**, recupera os documentos das execuções para as quais pediu PDF.
 
 ## Operating Context — operação integrada prevista
 
-- O operador autentica-se na plataforma web (`http://localhost:8090`) ou opera o menu de terminal Python (`main.py`).
-- Na plataforma web, o usuário configura um lote escolhendo **até 10 regiões do Brasil** (cidades ou estados inteiros) e os nichos de negócio desejados.
-- Enquanto o motor Python executa a coleta e o funil eliminatório, o backend Spring Boot acompanha o progresso em tempo real (`SSE`) e persiste os leads aprovados no banco SQLite (`Planilhas/zin_leads.db`), além de catalogar os relatórios PDF gerados na pasta `Planilhas/`.
-- Na aba **Leads**, o operador filtra os leads do SQLite por região, prioridade (`Prioridade Máxima`, `Alta Prioridade`, `Qualificado`), diagnóstico digital e dispara ou copia a *copy* personalizada de WhatsApp com 1 clique.
-- Na aba **Relatórios**, o operador consulta os dossiês PDF gerados pelo motor Python agrupados em **Lotes Semanais**, com data e horário exatos de geração.
+1. A pessoa entra com e-mail e senha, escolhe **Leads** ou **Vagas** em Nova prospecção e revisa os valores sugeridos pelo perfil.
+2. As conexões de Instagram e WhatsApp aparecem antes dos filtros sociais. A pessoa escolhe os filtros disponíveis, a quantidade desejada e, se quiser um PDF, o título do documento.
+3. Ao acionar **Gerar prospecção**, o Spring salva os critérios da execução e inicia o motor Python. A instalação local aceita uma coleta ativa de cada vez. Os filtros e o botão ficam desabilitados enquanto o trabalho está em andamento.
+4. O painel de progresso à direita recebe eventos do Spring por SSE e mostra etapa, candidatos analisados, resultados qualificados e percentual da meta, por exemplo, “18 de 30 qualificados · 60% da meta”. Se as fontes se esgotarem, a execução termina com a quantidade alcançada. Ao recarregar a página, a pessoa pode recuperar o estado salvo.
+5. Os resultados confirmados permanecem disponíveis se houver uma interrupção ou falha no PDF. **Buscas** abre na aba **Leads** e oferece **Vagas** ao lado. Ambas reúnem os resultados de todas as buscas da conta, com detalhe, fonte, data e filtro por execução. A mesma oportunidade encontrada em várias buscas mantém o vínculo com cada execução e aparece uma vez na listagem geral.
 
 ## Capabilities and Constraints
 
-- **Cobertura Nacional com Limite de 10 Regiões por Lote**: O usuário pode selecionar até 10 regiões brasileiras (municípios ou estados) por execução.
-- **Divisão Transparente em 4 Quadrantes para Estados Gigantes**: Quando o usuário seleciona **Amazonas (AM), Piauí (PI), Pará (PA), Bahia (BA), Mato Grosso (MT) ou Minas Gerais (MG)**, o sistema divide internamente a busca em 4 macrorregiões (**Norte, Sul, Leste e Oeste**), processa uma por vez e mescla apenas os principais leads nos dados finais. Essa divisão é estritamente um mecanismo interno de aceleração e **não deve ser exibida na interface do usuário**.
-- **Separação Estrita entre Leads (SQLite) e Relatórios (PDFs Semanais)**:
-  - A visão **Leads** exibe exclusivamente os registros armazenados na tabela `leads` do SQLite (sem misturar listagem de PDFs).
-  - O menu de terminal do Python (`main.py`) continua gerando e salvando os relatórios `.pdf` normalmente.
-  - A visão **Relatórios** da interface web lista os PDFs organizados por **Lotes Semanais**, exibindo o dia e horário em que cada PDF foi gerado.
-- **Autenticação Completa e Tabela `usuario` no SQLite**:
-  - Telas obrigatórias: **Login**, **Cadastro** e **Alterar Senha**.
-  - A tabela `usuario` no SQLite possui exatamente as colunas: `id_usuario`, `username`, `email`, `senha` e `token`.
-  - A coluna `token` armazena um código temporário para alteração de senha com **validade estrita de 5 minutos (TTL = 300s)**: assim que utilizado ou após transcorridos os 5 minutos, o token deve ser apagado (`NULL`).
-- **Porta do Servidor Backend**: O servidor Spring Boot deve rodar na porta **`8090`** (`http://localhost:8090`).
+### Conta e perfil
+
+O cadastro solicita nome completo, e-mail, CPF, senha e finalidade. O nome completo aceita homônimos. O e-mail de login e o CPF são únicos por conta. O backend normaliza o CPF para 11 dígitos e valida seus dígitos verificadores. A verificação de titularidade é um procedimento distinto. As contas existentes preservam senha e acesso, e completam o perfil e o CPF antes da primeira prospecção.
+
+| Finalidade | Campos complementares |
+|---|---|
+| Freelancer em busca de clientes | Serviço prestado e localidades onde atende. |
+| Empresa própria (B2B) | Nome da empresa e ramo. O nicho dos clientes procurados é configurado por busca. O CPF é o da pessoa responsável pela conta. |
+| Busca por emprego | Tipo de vaga, ramo, localidades e modalidade presencial, híbrida ou remota. |
+
+A conta autenticada determina o acesso a conexões, execuções, resultados e relatórios. O perfil de navegador usado hoje pelo operador do terminal continua separado das conexões do site. O CPF aparece mascarado quando for necessário exibi-lo. Logs, eventos de progresso e PDFs omitem esse dado.
+
+### Critérios de prospecção
+
+| Grupo | Configurações e comportamento |
+|---|---|
+| Comuns | Nicho ou palavras-chave, termos a excluir, localidade e quantidade desejada. O conjunto de filtros disponível acompanha os dados observáveis de cada fonte. |
+| Leads | Categoria, município ou região, raio quando disponível, estrelas mínimas, faixa de quantidade de avaliações, presença de site próprio, canal de contato, autônomo ou empresa e tempo de atividade. Um filtro de presença oferece “indiferente”, “com” e “sem”. Um sinal inconclusivo fica registrado como desconhecido. A data da primeira evidência de atividade tem rótulo próprio e distingue-se da fundação comprovada. |
+| Conexões sociais | Sem conexão, os filtros dependentes ficam desabilitados. A conexão de Instagram libera presença, seguidores ou engajamento conforme as permissões e os dados acessíveis. A de WhatsApp libera os sinais de contato que a fonte oferece. O backend verifica as condições ao iniciar a coleta, inclusive se a sessão tiver expirado. |
+| Vagas | Cargo, nicho, senioridade, jornada integral ou parcial, turno, vínculo (por exemplo, CLT, estágio ou PJ), localidade, modalidade, país e interesse em trabalhar no exterior. Experiência na área sugere um nível que a pessoa pode alterar. Filtros sobre a empresa contratante dependem dos dados da fonte. |
+| Preferências do candidato | Escolaridade, graduação concluída ou em andamento, faixa salarial e moeda. Vagas compatíveis com salário divulgado ganham destaque. Anúncios sem salário informado continuam elegíveis. Um currículo opcional em PDF ou DOCX pode sugerir critérios para a pessoa revisar. A busca também funciona sem anexo. |
+
+Cada fonte de vagas precisa ser validada quanto a identificador, cargo, empresa, localidade, data e link de candidatura. Catho, Gupy e LinkedIn são fontes candidatas, com cobertura a confirmar por plataforma.
+
+### PDF e lote semanal
+
+Uma prospecção pode gerar um PDF com os resultados daquele lote. O nome combina título escolhido pelo usuário, data, hora e ID atribuído pelo banco, por exemplo, `Clientes de Campinas - 2026-11-14 - 14h35 - 42.pdf`. O backend armazena o documento no SQLite local e o organiza em **Relatórios** pela semana de geração. O relatório registra a data e o horário da coleta. Os resultados individuais ficam disponíveis em Buscas mesmo quando a opção de PDF está desmarcada.
 
 ## Brand Commitments
 
-- **Nome da Marca**: **`Zin`** (sem sufixos técnicos como `:8090` ou `ZinLeads` na navegação principal).
-- **Identidade web**: mapa roxo escuro com rotas verde-neon, tipografia branca e base preta. As decisões visuais estão em DESIGN.md. O terminal mantém o banner ASCII.
-- **Operação diária**: abrir na fila de empresas a abordar, com pontuação e diagnóstico visíveis. Oferecer temas claro e escuro na área de trabalho.
-- **Interface Limpa de Jargões de Infraestrutura**: Não exibir rótulos de arquitetura interna na UI final (como *"Protótipos de Engenharia Web • Angular + Spring Boot (:8090) + SQLite"*, *"Persistência Automática"* no formulário do Dashboard ou cards técnicos *"Motor Python + SQLite"* na barra lateral).
+A marca aprovada é **UrWork**. A página inicial conserva o mapa ilustrativo em roxo escuro, as rotas em verde-neon, a base preta e a tipografia branca. O movimento de fundo mantém o conteúdo legível. A área de trabalho oferece tema claro e escuro. As ações usam o vocabulário do operador, como “Gerar prospecção”, “Ver vaga” e “Baixar relatório”. As decisões visuais existentes estão em [DESIGN.md](DESIGN.md).
 
 ## Evidence on Hand
 
-A implementação disponível está mapeada em [docs/arquitetura.md](docs/arquitetura.md). O catálogo de telas documenta o protótipo local. O histórico e os PDFs do coletor permanecem em Planilhas/.
+A arquitetura e o catálogo registram a versão disponível. O motor já separa a varredura por lotes da interface de terminal. [Arquitetura](docs/arquitetura.md) · [Catálogo de telas](docs/Documentacao_Oficial_UrWork.docx) · [Coleta por lotes](engine/prospeccao.py) · [Qualificação](engine/qualifier.py) · [Exportação](engine/exporter.py)
 
 ## Product Principles
 
-1. **Rigor Estatístico Antes do Volume Bruto**: Cada lead exibido ao operador precisa justificar sua presença por meio de métricas auditáveis (Score 0–100, percentil no lote, estrelas, volume de avaliações e diagnóstico digital).
-2. **Complexidade Geográfica Invisível**: Acelerações de engenharia (como a divisão em 4 quadrantes para estados continentais ou o pipeline assíncrono Python ↔ SQLite) acontecem de forma transparente, mantendo a decisão do usuário simples e direta.
-3. **Separação Clara entre Ação Comercial e Arquivo Gerencial**: Operar leads no dia a dia (tabela viva SQLite + WhatsApp copy) e auditar relatórios históricos (lotes semanais de PDFs) são tarefas distintas e têm superfícies dedicadas.
-4. **Sobriedade Editorial sem Poluição Técnica**: A interface fala a língua da operação comercial B2B, ocultando detalhes de infraestrutura, portas de servidor ou nomes de bancos de dados da superfície de uso.
+1. Cada resultado traz evidência suficiente para a pessoa decidir se vale a abordagem ou candidatura.
+2. Uma execução conserva os critérios usados e as fontes consultadas para explicar o resultado mesmo depois de o perfil mudar.
+3. A pessoa escolhe o nível de investigação e os dados adicionais que deseja fornecer, inclusive conexões e currículo.
+4. Recursos em construção ficam fora da navegação pública até oferecerem um fluxo utilizável.
 
 ## Accessibility & Inclusion
 
-- **Conformidade WCAG 2.1 AA Estrita**: Contraste mínimo de `4.5:1` para texto normal e `3:1` para componentes de interface e textos grandes, tanto no modo Light Editorial quanto no Dark Mode Inverso.
-- **Navegação Completa por Teclado**: Todas as tabelas de leads (`Leads`), acordeões de lotes semanais (`Relatórios`), seletores de regiões (até 10 tags), modais/drawers de copy e fluxos de autenticação (`Login`, `Cadastro`, `Alterar Senha` com input de código de 6 dígitos) devem possuir `focus-visible` nítido, ordem de tabulação lógica e suporte a atalhos de teclado (`Tab`, `Shift+Tab`, `Enter`, `Space`, `Escape`).
+A interface tem como alvo WCAG 2.1 AA, com contraste mínimo de 4,5:1 para texto normal e 3:1 para texto grande e componentes. Os formulários, abas, listas e relatórios devem permitir navegação por teclado, com ordem lógica, rótulos claros e foco visível. Filtros indisponíveis explicam qual conexão é necessária. O estado da coleta também é comunicado por texto, e as animações respeitam a preferência de movimento reduzido.

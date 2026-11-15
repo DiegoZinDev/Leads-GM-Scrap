@@ -112,6 +112,14 @@
 .heroCopy, .caption { z-index: 1; }
 .heroCopy { position: relative; }
 .ribbon-fold { transform-origin: 0 var(--fold-origin); }
+.brand .brand-mark { width: 32px; height: 34px; margin-right: 3px; }
+.aviso { padding: 12px clamp(20px,5vw,88px); }
+.perfil-form { max-width: 650px; }
+.perfil-form form { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.perfil-form .linha-inteira, .perfil-form form > button, .perfil-form form > [role="status"] { grid-column: 1 / -1; }
+.formBox select { font: inherit; width: 100%; color: var(--text); background: var(--bg); padding: 11px 13px; border: 1px solid var(--control-border); border-radius: 6px; }
+.formBox select:focus-visible { outline: 3px solid #a586fa; outline-offset: 4px; }
+@media (max-width: 600px) { .perfil-form form { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: no-preference) {
   .ribbon-fold { animation: ribbon-flex var(--fold-time) ease-in-out var(--phase) infinite alternate; }
   @keyframes ribbon-flex {
@@ -120,3 +128,9 @@
     100% { transform: translateY(-4px) scaleY(.84); }
   }
 }
+
+.locais { margin: 0; padding: 0; border: 0; min-width: 0; }
+.locais legend { font-weight: 650; margin-bottom: 8px; }
+.local { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(210px,100%),1fr)); gap: 12px; margin-bottom: 12px; }
+.locais .plain { padding: 8px 0; text-align: left; }
+.locais .plain:disabled { opacity: .6; }
