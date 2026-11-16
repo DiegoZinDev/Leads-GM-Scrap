@@ -111,6 +111,7 @@ class Relatorios {
                 var builder=new ProcessBuilder(MotorPython.interpretador(raiz),"-m","engine.relatorio")
                     .directory(raiz.toFile()).redirectInput(entrada.toFile()).redirectOutput(saida.toFile())
                     .redirectError(ProcessBuilder.Redirect.DISCARD);
+                builder.environment().keySet().removeIf(k -> k.regionMatches(true,0,"URWORK_META_",0,12));
                 builder.environment().put("PYTHONIOENCODING","utf-8");
                 var processo=builder.start();
                 try {

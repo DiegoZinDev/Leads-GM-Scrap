@@ -23,7 +23,7 @@ def executar(pedido, emitir):
         contexto = navegador.new_context(locale="pt-BR")
         verificador = VerificadorPresencaDigital(contexto, config=VERIFICACAO)
         nichos = {nicho: gerar_config_nicho(nicho)}
-        for lote in coletar_lotes(contexto.new_page(), nichos, [regiao], meta, {}, verificador):
+        for lote in coletar_lotes(contexto.new_page(), nichos, [regiao], meta, {}, verificador, pedido.get("filtrosSociais") or {}):
             for lead in lote:
                 total += 1
                 emitir({"tipo": "lead", "total": total, "lead": lead})

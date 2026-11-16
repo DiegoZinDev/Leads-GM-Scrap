@@ -51,3 +51,20 @@ Os testes da varredura podem ser executados com `.\.venv\Scripts\python.exe -m u
 - [Design](DESIGN.md) — identidade, tipografia, cores e movimento.
 
 Ao alterar uma tela, revise a seção correspondente no catálogo Word. Confira a rota no protótipo, refaça a captura com dados fictícios e registre a revisão. Para acrescentar uma tela, use a mesma sequência de objetivo, campos, ações, estados, prévia e integrações pendentes.
+
+### Conexões sociais da prospecção
+
+Configure o Facebook Login for Business no aplicativo Meta e registre a URL exata de retorno do site. Em desenvolvimento, use uma origem aceita pela Meta que encaminhe `/api` ao Spring e preserve o cookie da sessão. O retorno usa `/api/conexoes/retorno`. As configurações de login são independentes para Instagram e WhatsApp.
+
+| Variável do backend | Valor |
+| --- | --- |
+| `URWORK_META_APP_ID`, `URWORK_META_APP_SECRET` | Credenciais do aplicativo empresarial. |
+| `URWORK_META_VERSAO` | Versão da Graph API habilitada no aplicativo, no formato `vNN.0`. |
+| `URWORK_META_CALLBACK` | URL absoluta de retorno registrada, na mesma origem da interface. |
+| `URWORK_META_CONFIG_INSTAGRAM` | ID da configuração de login com a permissão `instagram_basic`. |
+| `URWORK_META_CONFIG_WHATSAPP` | ID da configuração de login com a permissão `whatsapp_business_management`. |
+| `URWORK_META_CHAVE` | Segredo aleatório de pelo menos 32 caracteres, estável entre reinícios, usado para cifrar os tokens no banco local. Guarde-o separadamente do banco. A troca exige reconexão das contas. |
+
+Sem configuração, a prospecção básica permanece disponível. Para homologar, use contas empresariais de teste com acesso ao aplicativo. Para atender contas externas, confira as exigências de aprovação das permissões no painel da Meta. A autorização é revalidada antes de cada nova execução que solicite um filtro social. Desconectar remove a credencial do UrWork. O usuário também pode revogar a permissão nas configurações da Meta. [Referência de inspeção de tokens](https://developers.facebook.com/docs/graph-api/reference/debug_token/).
+
+O motor usa o perfil de Instagram identificado na coleta, a contagem de seguidores quando a fonte a informa e os links de WhatsApp publicados para um número brasileiro. Um resultado inconclusivo recebe `null`. A conexão de WhatsApp não consulta mensagens nem confirma se um número arbitrário está cadastrado. A medição de engajamento continua pendente.

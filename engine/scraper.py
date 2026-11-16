@@ -31,7 +31,8 @@ from .exporter import (
     lead_ja_existe,
     registrar_lead_em_memoria,
 )
-from .qualifier import executar_funil_sequencial
+from .qualifier import executar_funil_sequencial, normalizar_numero_br
+from urllib.parse import parse_qs, urlsplit
 from .verifier import VerificadorPresencaDigital, ResultadoPresencaDigital
 
 
@@ -409,6 +410,38 @@ def coletar_leads_brutos_regiao(
     return leads_brutos
 
 
+def corresponde_filtros_sociais(lead, filtros):
+    perfil = lead.get("instagram") or {}
+    instagram = lead.get("status_instagram") == "verificado" and bool(perfil.get("acessivel"))
+    urls = [*lead.get("links_brutos_maps", []), *perfil.get("links_bio", []),
+            *perfil.get("links_destaques", []), *lead.get("links_agregador_instagram", [])]
+    whatsapp = False
+    for url in urls:
+        try:
+            endereco = urlsplit(url)
+            if endereco.scheme not in ("https", "http"):
+                continue
+            if endereco.hostname == "wa.me":
+                numero = endereco.path.strip("/")
+            elif endereco.hostname in ("api.whatsapp.com", "web.whatsapp.com", "www.whatsapp.com", "whatsapp.com") and endereco.path.rstrip("/") == "/send":
+                numero = parse_qs(endereco.query).get("phone", [""])[0]
+            else:
+                continue
+            if re.fullmatch(r"[+]?[0-9]+", numero) and normalizar_numero_br(numero):
+                whatsapp = True
+                break
+        except ValueError:
+            continue
+    lead["sinais_sociais"] = {"instagramVerificado": True if instagram else None,
+                              "whatsappLinkPublicado": True if whatsapp else None,
+                              "seguidores": perfil.get("seguidores") if instagram else None}
+    minimo = filtros.get("seguidoresMinimos")
+    return ((not filtros.get("instagramVerificado") or instagram)
+            and (not filtros.get("whatsappLinkPublicado") or whatsapp)
+            and (minimo is None or (instagram and perfil.get("seguidores") is not None
+                                    and perfil["seguidores"] >= minimo)))
+
+
 def buscar_leads_google_maps(
     page: Page,
     nicho_nome: str,
@@ -417,6 +450,7 @@ def buscar_leads_google_maps(
     limite_leads: int = 15,
     historico: dict = None,
     verificador: VerificadorPresencaDigital = None,
+    filtros_sociais: dict | None = None,
 ) -> list:
     """
     Executa a captação de leads na região em 2 fases:
@@ -461,6 +495,9 @@ def buscar_leads_google_maps(
     for lead in relatorio_funil.leads_aprovados:
         if len(leads_qualificados) >= limite_leads:
             break
+
+        if filtros_sociais is not None and not corresponde_filtros_sociais(lead, filtros_sociais):
+            continue
 
         # Verifica desduplicação pós-Instagram (caso o telefone de WhatsApp tenha vindo da bio)
         duplicado_pos, motivo_pos = lead_ja_existe(lead, historico)

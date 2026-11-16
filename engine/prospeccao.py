@@ -3,7 +3,7 @@
 from .scraper import buscar_leads_google_maps
 
 
-def coletar_lotes(page, nichos: dict, regioes: list, meta: int, historico: dict, verificador):
+def coletar_lotes(page, nichos: dict, regioes: list, meta: int, historico: dict, verificador, filtros_sociais=None):
     """Entrega cada lote qualificado até atingir a meta ou esgotar a varredura."""
     total = 0
     while total < meta:
@@ -19,6 +19,7 @@ def coletar_lotes(page, nichos: dict, regioes: list, meta: int, historico: dict,
                         limite_leads=min(35, meta - total),
                         historico=historico,
                         verificador=verificador,
+                        filtros_sociais=filtros_sociais,
                     )
                     if leads:
                         total += len(leads)

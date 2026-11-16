@@ -67,6 +67,75 @@ class ProspeccaoHttpTest {
         return c;
     }
 
+    @MockitoBean Meta meta;
+
+    @Test void conexoesControlamFiltrosPorContaERevalidamAntesDaColeta() throws Exception {
+        var hash=encoder.encode("Senha12!");
+        for (String nome : List.of("social","vizinho"))
+            db.update("INSERT INTO usuario(username,email,senha,cpf) VALUES(?,?,?,?)",nome,nome+"@gmail.com",hash,nome);
+        var a=login("social@gmail.com"); var b=login("vizinho@gmail.com");
+        assertEquals(401,get(cliente(),"conexoes").statusCode());
+        assertTrue(get(a,"conexoes").body().contains("NAO_CONFIGURADA"));
+        when(meta.configurada(any())).thenReturn(true);
+        when(meta.valor("CHAVE")).thenReturn("chave-dedicada-de-testes-com-32-caracteres");
+        when(meta.autorizar(any(),anyString())).thenAnswer(i -> URI.create("https://www.facebook.com/?state="+i.getArgument(1)));
+        when(meta.trocar("abc")).thenReturn("token-de-teste");
+        when(meta.valida(any(),eq("token-de-teste"))).thenReturn(true);
+        var dados=json.createObjectNode().put("chave",UUID.randomUUID().toString()).put("meta",1)
+            .put("nicho","Serviços").put("regiao","Campinas - SP");
+        var filtros=dados.putObject("filtrosSociais");
+        filtros.put("engajamento",true);
+        assertEquals(400,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        filtros.remove("engajamento");
+        filtros.put("seguidoresMinimos",0).put("whatsappLinkPublicado",true);
+        assertEquals(409,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        var desconectada=post(a,"prospeccoes",dados.toString(),"application/json");
+        assertEquals("DESCONECTADA",desconectada.headers().firstValue("UrWork-Conexao-Social").orElseThrow());
+        for (var rede : Meta.Rede.values()) {
+            var inicio=post(a,"conexoes/"+rede+"/autorizar","","application/json");
+            String state=json.readTree(inicio.body()).get("url").asText().split("state=")[1];
+            String rota="conexoes/retorno?code=abc&state="+state;
+            assertEquals(400,get(b,rota).statusCode());
+            assertEquals(303,get(a,rota).statusCode());
+            assertEquals(400,get(a,rota).statusCode());
+            if (rede==Meta.Rede.INSTAGRAM) assertEquals(409,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        }
+        assertFalse(get(b,"conexoes").body().contains("\"CONECTADA\""));
+        assertFalse(get(a,"conexoes").body().contains("token-de-teste"));
+        assertEquals(0,db.queryForObject("SELECT COUNT(*) FROM conexao_social WHERE token='token-de-teste'",Integer.class));
+        var resposta=post(a,"prospeccoes",dados.toString(),"application/json");
+        assertEquals(202,resposta.statusCode());
+        var salvo=json.readTree(resposta.body());
+        assertEquals(0,salvo.at("/filtrosSociais/seguidoresMinimos").intValue());
+        assertTrue(salvo.at("/filtrosSociais/whatsappLinkPublicado").booleanValue());
+        get(a,"prospeccoes/"+salvo.get("id")+"/eventos");
+        when(meta.valida(eq(Meta.Rede.INSTAGRAM),any())).thenReturn(false);
+        assertTrue(get(a,"conexoes").body().contains("EXPIRADA"));
+        assertEquals(200,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        dados.put("chave",UUID.randomUUID().toString());
+        var expirada=post(a,"prospeccoes",dados.toString(),"application/json");
+        assertEquals(409,expirada.statusCode());
+        assertEquals("EXPIRADA",expirada.headers().firstValue("UrWork-Conexao-Social").orElseThrow());
+        when(meta.valida(eq(Meta.Rede.INSTAGRAM),any())).thenThrow(new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE));
+        var fora=post(a,"prospeccoes",dados.toString(),"application/json");
+        assertEquals(503,fora.statusCode());
+        assertEquals("INDISPONIVEL",fora.headers().firstValue("UrWork-Conexao-Social").orElseThrow());
+    }
+
+    @Test void introspeccaoExigeAppPermissaoEValidade() throws Exception {
+        var dados=json.createObjectNode().put("is_valid",true).put("app_id","1").put("expires_at",50);
+        dados.putArray("scopes").add("instagram_basic");
+        assertTrue(Meta.permite(dados,Meta.Rede.INSTAGRAM,"1",49));
+        assertFalse(Meta.permite(dados,Meta.Rede.WHATSAPP,"1",49));
+        assertFalse(Meta.permite(dados,Meta.Rede.INSTAGRAM,"2",49));
+        assertFalse(Meta.permite(dados,Meta.Rede.INSTAGRAM,"1",50));
+        dados.putArray("granular_scopes").addObject().put("scope","instagram_basic").putArray("target_ids");
+        assertFalse(Meta.permite(dados,Meta.Rede.INSTAGRAM,"1",49));
+        dados.remove("granular_scopes");
+        dados.put("data_access_expires_at",10);
+        assertFalse(Meta.permite(dados,Meta.Rede.INSTAGRAM,"1",10));
+    }
+
     @Test void semanaDeGeracaoComecaNaSegundaEmBrasilia() {
         assertEquals(java.time.LocalDate.parse("2025-12-29"),Relatorios.semana(java.time.Instant.parse("2026-01-05T02:59:59Z")));
         assertEquals(java.time.LocalDate.parse("2026-01-05"),Relatorios.semana(java.time.Instant.parse("2026-01-05T03:00:00Z")));
@@ -93,7 +162,9 @@ class ProspeccaoHttpTest {
         assertTrue(get(a,"prospeccoes/"+exec+"/eventos").body().contains("DISPONIVEL"));
         assertEquals(200,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
         dados.put("tituloPdf","Diferente");
-        assertEquals(409,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        var conflito=post(a,"prospeccoes",dados.toString(),"application/json");
+        assertEquals(409,conflito.statusCode());
+        assertTrue(conflito.headers().firstValue("UrWork-Conexao-Social").isEmpty());
         var lista=json.readTree(get(a,"relatorios").body());
         assertEquals(1,lista.size());
         var item=lista.get(0);
@@ -170,7 +241,9 @@ class ProspeccaoHttpTest {
             assertTrue(salvo.await(5,TimeUnit.SECONDS));
             assertEquals(200,post(a,"prospeccoes",pedido,"application/json").statusCode());
             assertEquals(409,post(a,"prospeccoes",pedido.replace("TI","Saúde"),"application/json").statusCode());
-            assertEquals(409,post(b,"prospeccoes",pedido,"application/json").statusCode());
+            var ocupada=post(b,"prospeccoes",pedido,"application/json");
+            assertEquals(409,ocupada.statusCode());
+            assertTrue(ocupada.headers().firstValue("UrWork-Conexao-Social").isEmpty());
             assertEquals(404,get(b,caminho).statusCode());
             assertEquals(404,get(b,caminho+"/eventos").statusCode());
             assertEquals(404,get(b,"leads?execucao="+id).statusCode());

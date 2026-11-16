@@ -2,8 +2,9 @@ import { Component, DestroyRef, inject, signal, viewChild } from '@angular/core'
 import { Sessao } from '../conta/sessao';
 import { SelecionarLocais } from '../conta/selecionar-locais';
 import { consultar, Execucao, mensagemErro } from './api';
+import { Conexoes } from './conexoes';
 
-@Component({ selector: 'urwork-nova', imports: [SelecionarLocais], templateUrl: './nova.html' })
+@Component({ selector: 'urwork-nova', imports: [SelecionarLocais, Conexoes], templateUrl: './nova.html' })
 export class NovaProspeccao {
   private sessao = inject(Sessao);
   private vida = inject(DestroyRef);
@@ -11,6 +12,7 @@ export class NovaProspeccao {
   private fonte?: EventSource;
   private timer?: number;
   private seletor = viewChild.required(SelecionarLocais);
+  private conexoes = viewChild.required(Conexoes);
   criteriosRecuperados?: Execucao;
   gerarPdf = signal(false);
   tituloPdf = signal('');
@@ -40,6 +42,7 @@ export class NovaProspeccao {
         this.criteriosRecuperados = atual;
         this.gerarPdf.set(!!atual.tituloPdf);
         this.tituloPdf.set(atual.tituloPdf ?? '');
+        this.conexoes().restaurar(atual.filtrosSociais ?? {});
         const separador = atual.regiao.lastIndexOf(' - ');
         if (separador >= 0) this.seletor().locais = [{
           cidade: atual.regiao.slice(0, separador), uf: atual.regiao.slice(separador + 3)
@@ -53,15 +56,18 @@ export class NovaProspeccao {
 
   async gerar(evento: SubmitEvent) {
     evento.preventDefault();
-    if (!this.pronto() || this.enviando() || this.execucao()?.estado === 'EM_ANDAMENTO') return;
+    const redes = this.conexoes();
+    if (!this.pronto() || this.enviando() || redes.alterando() || redes.consultando() || this.execucao()?.estado === 'EM_ANDAMENTO') return;
     const campos = new FormData(evento.currentTarget as HTMLFormElement);
     const titulo = this.tituloPdf();
     if (this.gerarPdf() && (!titulo.trim() || titulo.length > 100 || /[<>:"/\\|?*\u0000-\u001f\u007f-\u009f]/u.test(titulo))) {
       this.erro.set('Use de 1 a 100 caracteres no título, sem caracteres de controle nem < > : " / \\ | ? *.');
       return;
     }
+    const filtrosSociais = redes.selecionados();
     const criterios = { nicho: String(campos.get('nicho')).trim(), regiao: String(campos.get('localidade')),
-      meta: Number(campos.get('meta')), ...(this.gerarPdf() ? { tituloPdf: titulo.trim() } : {}) };
+      meta: Number(campos.get('meta')), ...(this.gerarPdf() ? { tituloPdf: titulo.trim() } : {}),
+      ...(filtrosSociais ? { filtrosSociais } : {}) };
     if (!criterios.nicho || !criterios.regiao || !Number.isSafeInteger(criterios.meta) || criterios.meta < 1) {
       this.erro.set('Informe o nicho, a região e uma meta inteira maior que zero.');
       return;
@@ -73,7 +79,19 @@ export class NovaProspeccao {
       const anterior = JSON.parse(sessionStorage.getItem(this.armazenamento) ?? 'null');
       const chave = anterior?.assinatura === assinatura ? anterior.chave : crypto.randomUUID();
       sessionStorage.setItem(this.armazenamento, JSON.stringify({ assinatura, chave }));
-      const resposta = await this.sessao.post('/api/prospeccoes', JSON.stringify({ chave, ...criterios }), true);
+      const resposta = await this.sessao.comCsrf('/api/prospeccoes', 'POST', JSON.stringify({ chave, ...criterios }), true);
+      const motivo = resposta.headers.get('UrWork-Conexao-Social');
+      const falhasSociais: Record<string, string> = {
+        NAO_CONFIGURADA: 'A instalação não tinha a conexão exigida ao iniciar a busca.',
+        DESCONECTADA: 'A rede estava desconectada ao iniciar a busca.',
+        EXPIRADA: 'A autorização estava expirada ao iniciar a busca.',
+        INDISPONIVEL: 'A fonte social estava indisponível ao iniciar a busca.'
+      };
+      if (motivo && Object.hasOwn(falhasSociais, motivo) && [409, 503].includes(resposta.status)) {
+        await redes.atualizar();
+        this.erro.set(falhasSociais[motivo] + ' Revise as conexões e os filtros antes de tentar novamente.');
+        return;
+      }
       if (!resposta.ok) throw resposta;
       const atual: Execucao = await resposta.json();
       if (JSON.parse(sessionStorage.getItem(this.armazenamento) ?? 'null')?.chave === chave)

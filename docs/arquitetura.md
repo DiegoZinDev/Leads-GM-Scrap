@@ -62,6 +62,22 @@ O snapshot HTTP/SSE inclui `tituloPdf` e `estadoPdf` (`SEM_PDF`, `PENDENTE`, `DI
 
 Em **Relatórios**, `GET /api/relatorios` lista os PDFs disponíveis da conta, do mais recente ao mais antigo. Cada item traz `id`, `execucao`, `titulo`, `geradoEm` (UTC), `semana` (segunda-feira da geração em America/Sao_Paulo) e `nomeArquivo`. Agrupar pelo campo `semana`. O filtro opcional `?semana=2026-11-09` exige a data ISO de uma segunda-feira e retorna 400 para valor inválido. **Baixar relatório** usa `GET /api/relatorios/{id}/pdf`, com nome de arquivo no cabeçalho de download. Documento inexistente, indisponível ou de outra conta retorna 404.
 
+### Nova prospecção na etapa 6
+
+Validação: com SQLite temporário e as duas redes sem configuração, o navegador iniciou a busca sem filtros e recuperou o lead pelo backend real. Os cenários controlados cobriram expiração, indisponibilidade, remoção de filtros e recuperação das capacidades. Os arquivos do build Angular testado foram conferidos no JAR de distribuição. A autorização com contas empresariais reais ainda depende da configuração Meta descrita no README.
+
+Antes dos filtros, consultar `GET /api/conexoes`. Cada item identifica a `rede` (INSTAGRAM ou WHATSAPP), o `estado` (NAO_CONFIGURADA, DESCONECTADA, CONECTADA, EXPIRADA ou INDISPONIVEL) e a lista de `capacidades`. Para conectar, enviar `POST /api/conexoes/{rede}/autorizar` com CSRF e abrir a URL recebida na mesma aba. Ao voltar a `/#nova-prospeccao`, consultar as conexões novamente. Para desvincular localmente, enviar `DELETE /api/conexoes/{rede}` com CSRF (204).
+
+| Capacidade | Controle | Campo opcional de `filtrosSociais` |
+|---|---|---|
+| INSTAGRAM_VERIFICADO | Com perfil de Instagram identificado | `instagramVerificado` (booleano) |
+| SEGUIDORES_MINIMOS | Mínimo de seguidores | `seguidoresMinimos` (inteiro ≥ 0 ou nulo) |
+| WHATSAPP_LINK_PUBLICADO | Com link público de WhatsApp | `whatsappLinkPublicado` (booleano) |
+
+Habilitar cada controle conforme as capacidades retornadas. Se perder a capacidade, limpar o filtro e explicar o motivo. Se o início da busca indicar conflito de conexão ou permissão (409) ou fonte indisponível (503), consultar o estado antes de uma nova tentativa. A busca sem filtros sociais continua disponível. Os sinais vêm da coleta pública; um perfil identificado indica que o motor encontrou o perfil. Valores nulos em `dados.sinais_sociais` são desconhecidos e registros anteriores podem omitir esse campo.
+
+Quando o POST de prospecção recusa um filtro social, o cabeçalho `UrWork-Conexao-Social` identifica a causa na própria resposta: 409 com `NAO_CONFIGURADA`, `DESCONECTADA` ou `EXPIRADA`, ou 503 com `INDISPONIVEL`. Conflitos de chave ou de instalação ocupada retornam 409 sem esse cabeçalho. A tela usa a resposta do POST para explicar a falha e a consulta seguinte de conexões para atualizar os controles.
+
 ## Implementação disponível
 
 O backend grava cada lead antes de contá-lo no snapshot. Na consulta geral, resultados repetidos entre buscas da mesma conta aparecem pela ocorrência mais recente (URL do Maps ou, na ausência, nome e cidade). Após um reinício, buscas abertas passam a `INTERROMPIDA`, com acesso aos resultados já gravados. O SSE consulta o estado persistido a cada segundo enquanto há um assinante e pode agrupar vários leads no mesmo snapshot. Execute uma instância Spring por arquivo SQLite.

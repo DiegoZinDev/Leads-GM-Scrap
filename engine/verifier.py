@@ -425,7 +425,7 @@ class PerfilInstagram:
     email_comercial: str = ""
     conta_comercial: bool = False
     categoria: str = ""
-    seguidores: int = 0
+    seguidores: int | None = None
     seguindo: int = 0
     publicacoes: int = 0
     privado: bool = False
@@ -485,6 +485,7 @@ def parse_web_profile_info(dados: dict, username: str = "") -> PerfilInstagram:
     externa = normalizar_url(user.get("external_url") or "")
     if externa and externa not in links_bio:
         links_bio.insert(0, externa)
+    seguidores = (user.get("edge_followed_by") or {}).get("count")
     return PerfilInstagram(
         username=(user.get("username") or username).lower(),
         acessivel=True,
@@ -498,7 +499,7 @@ def parse_web_profile_info(dados: dict, username: str = "") -> PerfilInstagram:
         email_comercial=(user.get("business_email") or "").strip(),
         conta_comercial=bool(user.get("is_business_account") or user.get("is_professional_account")),
         categoria=user.get("category_name") or user.get("business_category_name") or "",
-        seguidores=_int((user.get("edge_followed_by") or {}).get("count")),
+        seguidores=seguidores if type(seguidores) is int and seguidores >= 0 else None,
         seguindo=_int((user.get("edge_follow") or {}).get("count")),
         publicacoes=_int((user.get("edge_owner_to_timeline_media") or {}).get("count")),
         privado=bool(user.get("is_private")),

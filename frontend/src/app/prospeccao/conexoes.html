@@ -1,0 +1,32 @@
+<fieldset class="sociais">
+  <legend>Conexões sociais</legend>
+  @for (rede of redes; track rede) {
+    <div class="rede-social">
+      <div><strong>{{ nomes[rede] }}</strong>
+        <span>{{ consultando() ? 'Consultando…' : estados[conexao(rede)?.estado ?? 'INDISPONIVEL'] }}</span>
+      </div>
+      @if (!consultando() && conexao(rede); as item) {
+        @if (item.estado === 'DESCONECTADA' || item.estado === 'EXPIRADA') {
+          <button class="secondary" type="button" [disabled]="alterando()" (click)="alterar(rede, false)">{{ item.estado === 'EXPIRADA' ? 'Reconectar' : 'Conectar' }} {{ nomes[rede] }}</button>
+        }
+        @if (item.estado === 'CONECTADA' || item.estado === 'EXPIRADA' || item.estado === 'INDISPONIVEL') {
+          <button class="plain" type="button" [disabled]="alterando()" (click)="alterar(rede, true)">Desvincular {{ nomes[rede] }}</button>
+        }
+      }
+    </div>
+  }
+  <button type="button" class="plain atualizar-redes" [disabled]="alterando() || consultando()" (click)="atualizar()">Atualizar conexões</button>
+  @if (erro()) { <p role="alert">{{ erro() }}</p> }
+</fieldset>
+<fieldset class="sociais" [disabled]="alterando() || consultando()">
+  <legend>Filtros sociais</legend>
+  <label class="opcao-pdf"><input type="checkbox" #ig [checked]="instagram()" [disabled]="!permite('INSTAGRAM_VERIFICADO')" (change)="instagram.set(ig.checked)">Com perfil de Instagram identificado</label>
+  <label>Mínimo de seguidores<input type="number" #minimo min="0" max="2147483647" step="1" [value]="seguidores() ?? ''"
+    [disabled]="!permite('SEGUIDORES_MINIMOS')" (input)="seguidores.set(minimo.value === '' ? null : minimo.valueAsNumber)"></label>
+  @if (!permite('SEGUIDORES_MINIMOS') || !permite('INSTAGRAM_VERIFICADO')) {
+    <small>Os filtros de Instagram dependem das permissões da conexão.</small>
+  }
+  <label class="opcao-pdf"><input type="checkbox" #wa [checked]="whatsapp()" [disabled]="!permite('WHATSAPP_LINK_PUBLICADO')" (change)="whatsapp.set(wa.checked)">Com link público de WhatsApp</label>
+  @if (!permite('WHATSAPP_LINK_PUBLICADO')) { <small>O filtro de link público depende da conexão de WhatsApp.</small> }
+</fieldset>
+@if (aviso()) { <p role="status">{{ aviso() }}</p> }

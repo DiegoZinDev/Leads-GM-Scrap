@@ -8,6 +8,7 @@ interface Lead {
   dados?: {
     nome?: string; cidade?: string; nicho?: string; url_maps?: string;
     telefone?: string; score_potencial?: number;
+    sinais_sociais?: { instagramVerificado?: boolean | null; seguidores?: number | null; whatsappLinkPublicado?: boolean | null };
   };
 }
 

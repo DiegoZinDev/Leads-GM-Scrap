@@ -1,5 +1,11 @@
 import { Sessao } from '../conta/sessao';
 
+export interface FiltrosSociais {
+  instagramVerificado?: boolean;
+  seguidoresMinimos?: number | null;
+  whatsappLinkPublicado?: boolean;
+}
+
 export interface Execucao {
   id: number;
   nicho: string;
@@ -9,6 +15,7 @@ export interface Execucao {
   estado: 'EM_ANDAMENTO' | 'CONCLUIDA' | 'INTERROMPIDA';
   criadaEm: string;
   tituloPdf?: string | null;
+  filtrosSociais?: FiltrosSociais;
   estadoPdf?: 'SEM_PDF' | 'PENDENTE' | 'DISPONIVEL' | 'FALHOU';
 }
 

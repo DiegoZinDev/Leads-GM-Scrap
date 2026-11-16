@@ -39,6 +39,8 @@ class ProspeccaoWebTest(TestCase):
                         rota.fulfill(json=dict(email="teste@example.com", username="Ana", perfilCompleto=True))
                     elif url == "auth/csrf":
                         rota.fulfill(json=dict(headerName="X-CSRF-TOKEN", token="token"))
+                    elif url == "conexoes":
+                        rota.fulfill(json=[dict(rede=r, estado="NAO_CONFIGURADA", capacidades=[]) for r in ["INSTAGRAM", "WHATSAPP"]])
                     elif req.method == "POST" and url == "prospeccoes":
                         pedidos.append(req.post_data_json)
                         assert req.headers["x-csrf-token"] == "token"

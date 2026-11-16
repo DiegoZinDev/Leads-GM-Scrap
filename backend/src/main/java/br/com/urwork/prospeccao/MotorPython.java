@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MotorPython {
-    public record Pedido(String nicho, String regiao, int meta) {
+    public record Pedido(String nicho, String regiao, int meta, Filtros filtrosSociais) {
+        public Pedido(String nicho, String regiao, int meta) { this(nicho,regiao,meta,Filtros.NENHUM); }
         public Pedido {
             if (nicho == null || nicho.isBlank() || regiao == null || regiao.isBlank() || meta < 1)
                 throw new IllegalArgumentException("Informe nicho, região e uma meta positiva.");
@@ -61,6 +62,7 @@ public class MotorPython {
         if (!ocupado.compareAndSet(false, true)) throw new IllegalStateException("Motor ocupado.");
         try {
             var builder = new ProcessBuilder(comando).directory(raiz.toFile());
+            builder.environment().keySet().removeIf(k -> k.regionMatches(true,0,"URWORK_META_",0,12));
             builder.environment().put("PYTHONIOENCODING", "utf-8");
             builder.redirectError(ProcessBuilder.Redirect.DISCARD);
             final Process processo;

@@ -24,29 +24,31 @@ import static org.springframework.http.HttpStatus.*;
 @Service
 @DependsOn("migracaoContas")
 class Prospeccoes {
-    record Entrada(UUID chave, String nicho, String regiao, JsonNode meta, String tituloPdf) {}
-    record Estado(long id, String nicho, String regiao, int meta, int total, String estado, String criadaEm, String tituloPdf, String estadoPdf) {}
+    record Entrada(UUID chave, String nicho, String regiao, JsonNode meta, String tituloPdf, JsonNode filtrosSociais) {}
+    record Estado(long id, String nicho, String regiao, int meta, int total, String estado, String criadaEm, String tituloPdf, String estadoPdf, Filtros filtrosSociais) {}
     record Inicio(Estado estado, boolean nova) {}
     record Lead(long execucao, String coletadoEm, JsonNode dados) {}
 
     private static final String CONSULTA = """
-        SELECT p.*,rpdf.titulo AS titulo_pdf,COALESCE(rpdf.estado,'SEM_PDF') AS estado_pdf, (SELECT COUNT(*) FROM resultado_prospeccao r WHERE r.execucao=p.id) AS total
-        FROM prospeccao p JOIN usuario u ON u.id_usuario=p.dono LEFT JOIN relatorio rpdf ON rpdf.execucao=p.id WHERE u.email=?
+        SELECT p.*,fs.instagram,fs.whatsapp,fs.seguidores,rpdf.titulo AS titulo_pdf,COALESCE(rpdf.estado,'SEM_PDF') AS estado_pdf, (SELECT COUNT(*) FROM resultado_prospeccao r WHERE r.execucao=p.id) AS total
+        FROM prospeccao p JOIN usuario u ON u.id_usuario=p.dono LEFT JOIN relatorio rpdf ON rpdf.execucao=p.id LEFT JOIN filtro_social fs ON fs.execucao=p.id WHERE u.email=?
         """;
     private static final RowMapper<Estado> MAPA = (rs, n) -> new Estado(rs.getLong("id"),rs.getString("nicho"),
         rs.getString("regiao"),rs.getInt("meta"),rs.getInt("total"),rs.getString("estado"),rs.getString("criada_em"),
-        rs.getString("titulo_pdf"),rs.getString("estado_pdf"));
+        rs.getString("titulo_pdf"),rs.getString("estado_pdf"),new Filtros(rs.getBoolean("instagram"),rs.getBoolean("whatsapp"),(Integer)rs.getObject("seguidores")));
 
     private final JdbcTemplate db;
     private final MotorPython motor;
     private final Relatorios relatorios;
+    private final Conexoes conexoes;
     private final org.springframework.transaction.support.TransactionTemplate tx;
     private final ObjectMapper json;
     private final ExecutorService executor = Executors.newSingleThreadExecutor(Thread.ofVirtual().factory());
 
-    Prospeccoes(JdbcTemplate db, MotorPython motor, ObjectMapper json, Relatorios relatorios,
+    Prospeccoes(JdbcTemplate db, MotorPython motor, ObjectMapper json, Relatorios relatorios, Conexoes conexoes,
                 org.springframework.transaction.support.TransactionTemplate tx) {
         this.tx = tx;
+        this.conexoes = conexoes;
         this.relatorios = relatorios;
         this.db = db;
         this.motor = motor;
@@ -90,16 +92,18 @@ class Prospeccoes {
         String tituloPdf = Relatorios.tituloValido(entrada.tituloPdf());
         var ids = db.queryForList("SELECT id_usuario FROM usuario WHERE email=? AND cpf IS NOT NULL", Long.class,email);
         if (ids.isEmpty()) throw new ResponseStatusException(FORBIDDEN);
-        var pedido = new MotorPython.Pedido(entrada.nicho().strip(), entrada.regiao(), entrada.meta().intValue());
+        var filtros = Filtros.ler(entrada.filtrosSociais());
+        var pedido = new MotorPython.Pedido(entrada.nicho().strip(), entrada.regiao(), entrada.meta().intValue(),filtros);
         var chave = entrada.chave().toString();
         var anterior = db.query(CONSULTA + " AND p.chave=?", MAPA,email,chave);
         if (!anterior.isEmpty()) {
             var estado = anterior.getFirst();
             if (!estado.nicho().equals(pedido.nicho()) || !estado.regiao().equals(pedido.regiao()) || estado.meta()!=pedido.meta()
-                    || !java.util.Objects.equals(estado.tituloPdf(), tituloPdf))
+                    || !estado.filtrosSociais().equals(filtros) || !java.util.Objects.equals(estado.tituloPdf(), tituloPdf))
                 throw new ResponseStatusException(CONFLICT);
             return new Inicio(estado, false);
         }
+        conexoes.exigir(email,filtros);
         long id = tx.execute(status -> {
             var inseridos = db.queryForList("""
                 INSERT INTO prospeccao(dono,chave,nicho,regiao,meta,estado,criada_em)
@@ -107,6 +111,7 @@ class Prospeccoes {
                 """, Long.class, ids.getFirst(),chave,pedido.nicho(),pedido.regiao(),pedido.meta(),Instant.now().toString());
             if (inseridos.isEmpty()) throw new ResponseStatusException(CONFLICT);
             long nova = inseridos.getFirst();
+            if (!filtros.equals(Filtros.NENHUM)) db.update("INSERT INTO filtro_social VALUES(?,?,?,?)",nova,filtros.instagramVerificado(),filtros.whatsappLinkPublicado(),filtros.seguidoresMinimos());
             if (tituloPdf != null) db.update("INSERT INTO relatorio(execucao,titulo) VALUES(?,?)", nova,tituloPdf);
             return nova;
         });

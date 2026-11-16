@@ -28,3 +28,15 @@ CREATE TABLE IF NOT EXISTS relatorio (
     nome_arquivo TEXT,
     pdf BLOB
 );
+CREATE TABLE IF NOT EXISTS conexao_social (
+    dono INTEGER NOT NULL REFERENCES usuario(id_usuario),
+    rede TEXT NOT NULL,
+    token TEXT NOT NULL,
+    PRIMARY KEY(dono,rede)
+);
+CREATE TABLE IF NOT EXISTS filtro_social (
+    execucao INTEGER PRIMARY KEY REFERENCES prospeccao(id),
+    instagram INTEGER NOT NULL,
+    whatsapp INTEGER NOT NULL,
+    seguidores INTEGER
+);

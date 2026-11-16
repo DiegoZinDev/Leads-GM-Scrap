@@ -169,3 +169,14 @@
 .documento h3 { overflow-wrap: anywhere; font-size: 1.3rem; }
 .documento p { margin-top: 6px; color: var(--soft); }
 .relatorios > button { margin-top: 16px; }
+.grade-prospeccao .sociais { gap: 12px; margin-block: 8px 20px; }
+.sociais legend { font-weight: 650; margin-bottom: 10px; }
+.sociais small, .rede-social span { color: var(--soft); }
+.rede-social { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.rede-social > div { flex: 1 1 150px; }
+.rede-social span { display: block; font-size: .88rem; }
+.atualizar-redes { justify-self: start; padding: 4px 0; }
+.registro-lead details { margin-top: 8px; }
+.registro-lead summary { cursor: pointer; }
+.registro-lead dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .9rem; }
+.registro-lead dd { margin: 0; }
