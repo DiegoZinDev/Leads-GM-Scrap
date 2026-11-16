@@ -69,6 +69,60 @@ class ProspeccaoHttpTest {
 
     @MockitoBean Meta meta;
 
+    @Test void vagasAceitamCurriculoOpcionalReusamExecucaoEPdfESaoPrivadas() throws Exception {
+        String hash=encoder.encode("Senha12!");
+        for (String nome : List.of("candidato","colega"))
+            db.update("INSERT INTO usuario(username,email,senha,cpf) VALUES(?,?,?,?)",nome,nome+"@gmail.com",hash,nome);
+        var a=login("candidato@gmail.com"); var b=login("colega@gmail.com");
+        var doc = new ByteArrayOutputStream();
+        try (var zip=new java.util.zip.ZipOutputStream(doc)) {
+            zip.putNextEntry(new java.util.zip.ZipEntry("word/document.xml"));
+            zip.write("<w:document xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'><w:t>Python e SQL</w:t></w:document>".getBytes());
+        }
+        var csrf=json.readTree(get(a,"auth/csrf").body());
+        var parte=HttpRequest.BodyPublishers.concat(HttpRequest.BodyPublishers.ofString(
+            "--abc\r\nContent-Disposition: form-data; name=\"arquivo\"; filename=\"cv.docx\"\r\nContent-Type: application/octet-stream\r\n\r\n"),
+            HttpRequest.BodyPublishers.ofByteArray(doc.toByteArray()),HttpRequest.BodyPublishers.ofString("\r\n--abc--\r\n"));
+        var upload=a.send(HttpRequest.newBuilder(uri("vagas/curriculo")).header("Content-Type","multipart/form-data; boundary=abc")
+            .header(csrf.path("headerName").asText(),csrf.path("token").asText()).POST(parte).build(),HttpResponse.BodyHandlers.ofString());
+        assertEquals(200,upload.statusCode());
+        assertEquals(json.readTree("[\"Python\",\"SQL\"]"),json.readTree(upload.body()).get("habilidades"));
+        var entrada=json.createObjectNode().put("tipo","VAGAS").put("chave",UUID.randomUUID().toString()).put("meta",2);
+        var criterios=entrada.putObject("vagas").put("modalidade","REMOTO").put("salarioMin",5000);
+        assertEquals(400,post(a,"prospeccoes",entrada.toString(),"application/json").statusCode());
+        criterios.put("moeda","BRL").put("periodo","MES");
+        String idFonte=UUID.randomUUID().toString();
+        doAnswer(inv -> {
+            Consumer<JsonNode> receber=inv.getArgument(1);
+            var evento=json.createObjectNode().put("tipo","vaga").put("total",1);
+            evento.putObject("vaga").put("cargo","Engenheiro").put("idFonte",idFonte).put("empresa","CI&T");
+            receber.accept(evento);
+            return 1;
+        }).when(motor).executar(any(),any());
+        for (int i=0;i<2;i++) {
+            if (i==1) {
+                criterios.set("habilidades",json.readTree(upload.body()).get("habilidades"));
+                entrada.put("chave",UUID.randomUUID().toString()).put("tituloPdf","Vagas da semana");
+            }
+            var resposta=post(a,"prospeccoes",entrada.toString(),"application/json");
+            assertEquals(202,resposta.statusCode());
+            var estado=json.readTree(resposta.body());
+            assertEquals("VAGAS",estado.path("tipo").asText());
+            var id=estado.path("id").asLong();
+            String eventos=get(a,"prospeccoes/"+id+"/eventos").body();
+            assertTrue(eventos.contains("CONCLUIDA"));
+            if (i==1) assertTrue(eventos.contains("DISPONIVEL"));
+            assertEquals(1,json.readTree(get(a,"vagas?execucao="+id).body()).size());
+            assertEquals(404,get(b,"vagas?execucao="+id).statusCode());
+            assertEquals(200,post(a,"prospeccoes",entrada.toString(),"application/json").statusCode());
+        }
+        assertEquals(1,json.readTree(get(a,"vagas").body()).size());
+        assertEquals(0,json.readTree(get(a,"leads").body()).size());
+        assertEquals(0,json.readTree(get(b,"vagas").body()).size());
+        criterios.put("pais","BR");
+        assertEquals(409,post(a,"prospeccoes",entrada.toString(),"application/json").statusCode());
+    }
+
     @Test void conexoesControlamFiltrosPorContaERevalidamAntesDaColeta() throws Exception {
         var hash=encoder.encode("Senha12!");
         for (String nome : List.of("social","vizinho"))

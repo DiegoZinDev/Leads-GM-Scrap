@@ -10,10 +10,14 @@ def documento(lote):
     def texto(valor):
         return escape(str(valor if valor is not None else ""))
 
+    vagas = bool(lote.get("vagas"))
+    campos = ("cargo", "empresa", "localidade", "modalidade", "urlOrigem") if vagas else (
+        "nome", "cidade", "telefone", "score_potencial", "url_maps")
+    colunas = ("Cargo", "Empresa", "Localidade", "Modalidade", "Origem") if vagas else (
+        "Empresa", "Cidade", "Contato", "Pontuação", "Origem")
     linhas = []
     for i, lead in enumerate(lote["leads"], 1):
-        valores = [i, lead.get("nome"), lead.get("cidade"), lead.get("telefone"),
-                   lead.get("score_potencial"), lead.get("url_maps")]
+        valores = [i, *(lead.get(campo) for campo in campos)]
         linhas.append("<tr>" + "".join(f"<td>{texto(v)}</td>" for v in valores) + "</tr>")
     titulo = texto(lote["titulo"])
     return f"""<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>{titulo}</title>
@@ -24,9 +28,8 @@ def documento(lote):
     <p>UrWork · Relatório {texto(lote["id"])} · Execução {texto(lote["execucao"])}</p>
     <p>{texto(lote["nicho"])} · {texto(lote["regiao"])}</p>
     <p>Início da coleta: {texto(lote["inicio"])} · Geração: {texto(lote["geracao"])} (Brasília)</p>
-    <p>Leads coletados: {len(linhas)} de {texto(lote["meta"])}</p>
-    <table><thead><tr><th>#</th><th>Empresa</th><th>Cidade</th><th>Contato</th><th>Pontuação</th>
-    <th>Origem</th></tr></thead><tbody>{''.join(linhas)}</tbody></table></html>"""
+    <p>{"Vagas coletadas" if vagas else "Leads coletados"}: {len(linhas)} de {texto(lote["meta"])}</p>
+    <table><thead><tr><th>#</th>{''.join('<th>' + c + '</th>' for c in colunas)}</tr></thead><tbody>{''.join(linhas)}</tbody></table></html>"""
 
 
 if __name__ == "__main__":

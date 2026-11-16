@@ -3,8 +3,9 @@ import { Sessao } from '../conta/sessao';
 import { SelecionarLocais } from '../conta/selecionar-locais';
 import { consultar, Execucao, mensagemErro } from './api';
 import { Conexoes } from './conexoes';
+import { FormVagas } from './form-vagas';
 
-@Component({ selector: 'urwork-nova', imports: [SelecionarLocais, Conexoes], templateUrl: './nova.html' })
+@Component({ selector: 'urwork-nova', imports: [SelecionarLocais, Conexoes, FormVagas], templateUrl: './nova.html' })
 export class NovaProspeccao {
   private sessao = inject(Sessao);
   private vida = inject(DestroyRef);
@@ -12,7 +13,9 @@ export class NovaProspeccao {
   private fonte?: EventSource;
   private timer?: number;
   private seletor = viewChild.required(SelecionarLocais);
-  private conexoes = viewChild.required(Conexoes);
+  conexoes = viewChild(Conexoes);
+  formVagas = viewChild(FormVagas);
+  tipo = signal<'LEADS' | 'VAGAS'>('LEADS');
   criteriosRecuperados?: Execucao;
   gerarPdf = signal(false);
   tituloPdf = signal('');
@@ -40,10 +43,11 @@ export class NovaProspeccao {
       if (this.vida.destroyed) return;
       if (atual?.estado === 'EM_ANDAMENTO') {
         this.criteriosRecuperados = atual;
+        this.tipo.set(atual.tipo ?? 'LEADS');
         this.gerarPdf.set(!!atual.tituloPdf);
         this.tituloPdf.set(atual.tituloPdf ?? '');
-        this.conexoes().restaurar(atual.filtrosSociais ?? {});
-        const separador = atual.regiao.lastIndexOf(' - ');
+        this.conexoes()?.restaurar(atual.filtrosSociais ?? {});
+        const separador = atual.regiao?.lastIndexOf(' - ') ?? -1;
         if (separador >= 0) this.seletor().locais = [{
           cidade: atual.regiao.slice(0, separador), uf: atual.regiao.slice(separador + 3)
         }];
@@ -57,18 +61,29 @@ export class NovaProspeccao {
   async gerar(evento: SubmitEvent) {
     evento.preventDefault();
     const redes = this.conexoes();
-    if (!this.pronto() || this.enviando() || redes.alterando() || redes.consultando() || this.execucao()?.estado === 'EM_ANDAMENTO') return;
+    if (!this.pronto() || this.enviando() || redes?.alterando() || redes?.consultando() || this.formVagas()?.enviando() || this.execucao()?.estado === 'EM_ANDAMENTO') return;
     const campos = new FormData(evento.currentTarget as HTMLFormElement);
     const titulo = this.tituloPdf();
     if (this.gerarPdf() && (!titulo.trim() || titulo.length > 100 || /[<>:"/\\|?*\u0000-\u001f\u007f-\u009f]/u.test(titulo))) {
       this.erro.set('Use de 1 a 100 caracteres no título, sem caracteres de controle nem < > : " / \\ | ? *.');
       return;
     }
-    const filtrosSociais = redes.selecionados();
-    const criterios = { nicho: String(campos.get('nicho')).trim(), regiao: String(campos.get('localidade')),
+    const filtrosSociais = redes?.selecionados();
+    const nicho = String(campos.get('nicho') ?? '').trim();
+    const regiao = String(campos.get('localidade') ?? '');
+    const vagas = this.formVagas()?.criterios(campos);
+    if (vagas?.pais && vagas.pais !== 'BR' && vagas.exterior === false) {
+      this.erro.set('Para buscar nesse país, altere a abrangência ou escolha BR.');
+      return;
+    }
+    if (vagas?.habilidades && (vagas.habilidades.length > 20 || vagas.habilidades.some(h => h.length > 60 || /\p{Cc}/u.test(h)))) {
+      this.erro.set('Informe até 20 habilidades, cada uma com até 60 caracteres e sem caracteres de controle.');
+      return;
+    }
+    const criterios = { ...(vagas ? { tipo: 'VAGAS', vagas } : {}), ...(nicho ? { nicho } : {}), ...(regiao ? { regiao } : {}),
       meta: Number(campos.get('meta')), ...(this.gerarPdf() ? { tituloPdf: titulo.trim() } : {}),
       ...(filtrosSociais ? { filtrosSociais } : {}) };
-    if (!criterios.nicho || !criterios.regiao || !Number.isSafeInteger(criterios.meta) || criterios.meta < 1) {
+    if ((!vagas && (!nicho || !regiao)) || !Number.isSafeInteger(criterios.meta) || criterios.meta < 1) {
       this.erro.set('Informe o nicho, a região e uma meta inteira maior que zero.');
       return;
     }
@@ -88,11 +103,14 @@ export class NovaProspeccao {
         INDISPONIVEL: 'A fonte social estava indisponível ao iniciar a busca.'
       };
       if (motivo && Object.hasOwn(falhasSociais, motivo) && [409, 503].includes(resposta.status)) {
-        await redes.atualizar();
+        await redes?.atualizar();
         this.erro.set(falhasSociais[motivo] + ' Revise as conexões e os filtros antes de tentar novamente.');
         return;
       }
-      if (!resposta.ok) throw resposta;
+      if (!resposta.ok) {
+        if (vagas && resposta.status === 400) { this.erro.set('Confira a meta e os critérios de vagas informados.'); return; }
+        throw resposta;
+      }
       const atual: Execucao = await resposta.json();
       if (JSON.parse(sessionStorage.getItem(this.armazenamento) ?? 'null')?.chave === chave)
         sessionStorage.removeItem(this.armazenamento);

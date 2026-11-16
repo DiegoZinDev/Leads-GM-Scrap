@@ -30,7 +30,12 @@ class ProspeccaoController {
 
     @GetMapping("/leads")
     List<Prospeccoes.Lead> leads(Principal usuario, @RequestParam(required=false) Long execucao) {
-        return buscas.leads(usuario.getName(),execucao);
+        return buscas.resultados(usuario.getName(),execucao,false);
+    }
+
+    @GetMapping("/vagas")
+    List<Prospeccoes.Lead> vagas(Principal usuario, @RequestParam(required=false) Long execucao) {
+        return buscas.resultados(usuario.getName(),execucao,true);
     }
 
     @GetMapping(value="/prospeccoes/{id}/eventos", produces=MediaType.TEXT_EVENT_STREAM_VALUE)

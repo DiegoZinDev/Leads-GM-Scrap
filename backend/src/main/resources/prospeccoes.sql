@@ -40,3 +40,7 @@ CREATE TABLE IF NOT EXISTS filtro_social (
     whatsapp INTEGER NOT NULL,
     seguidores INTEGER
 );
+CREATE TABLE IF NOT EXISTS busca_vaga (
+    execucao INTEGER PRIMARY KEY REFERENCES prospeccao(id),
+    criterios TEXT NOT NULL
+);

@@ -7,6 +7,8 @@ export interface FiltrosSociais {
 }
 
 export interface Execucao {
+  tipo?: 'LEADS' | 'VAGAS';
+  vagas?: CriteriosVagas;
   id: number;
   nicho: string;
   regiao: string;
@@ -17,6 +19,12 @@ export interface Execucao {
   tituloPdf?: string | null;
   filtrosSociais?: FiltrosSociais;
   estadoPdf?: 'SEM_PDF' | 'PENDENTE' | 'DISPONIVEL' | 'FALHOU';
+}
+
+export interface CriteriosVagas {
+  cargo?: string; pais?: string; exterior?: boolean; modalidade?: string; jornada?: string; vinculo?: string;
+  nivel?: string; turno?: string; experienciaAnos?: number; escolaridade?: string; salarioMin?: number;
+  salarioMax?: number; moeda?: string; periodo?: string; habilidades?: string[];
 }
 
 export async function consultar<T>(url: string): Promise<T> {

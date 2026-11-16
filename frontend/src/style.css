@@ -180,3 +180,18 @@
 .registro-lead summary { cursor: pointer; }
 .registro-lead dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .9rem; }
 .registro-lead dd { margin: 0; }
+.grade-prospeccao .tipos-busca { display: flex; flex-wrap: wrap; gap: 18px; }
+.tipos-busca label { display: inline-flex; align-items: center; gap: 8px; }
+.tipos-busca input { width: 18px; height: 18px; margin: 0; accent-color: var(--acid); }
+.grade-prospeccao .criterios-vagas { grid-template-columns: repeat(2,minmax(0,1fr)); margin-bottom: 24px; border-top: 1px solid var(--line); padding-top: 12px; }
+.criterios-vagas .inteiro { grid-column: 1/-1; }
+.criterios-vagas legend { font-weight: 650; padding-right: 12px; }
+.criterios-vagas input,.criterios-vagas select { min-width: 0; width: 100%; }
+.criterios-vagas small { color: var(--soft); }
+.abas-busca { margin-right: auto; font-weight: 650; gap: 20px; }
+.links-vaga { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.registro-vaga details p { white-space: pre-line; }
+@media(max-width:600px) {
+  .grade-prospeccao .criterios-vagas { grid-template-columns: minmax(0,1fr); }
+  .cabecalho-leads .abas-busca { width: 100%; }
+}

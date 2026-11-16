@@ -2,7 +2,7 @@
   <legend>{{ titulo() }}</legend>
   @for (local of locais; track local; let i = $index) {
     <div class="local">
-      <label>Estado<select #estado required [value]="local.uf" (change)="local.uf = estado.value; local.cidade = ''">
+      <label>Estado<select #estado [required]="!opcional()" [value]="local.uf" (change)="local.uf = estado.value; local.cidade = ''">
         <option value="">Selecione o estado</option>
         @for (item of estados; track item.uf) { <option [value]="item.uf" [selected]="local.uf === item.uf">{{ item.nome }} ({{ item.uf }})</option> }
       </select></label>
@@ -14,7 +14,7 @@
           }
         </select></label>
       }
-      <input type="hidden" name="localidade" [value]="local.cidade + ' - ' + local.uf">
+      <input type="hidden" name="localidade" [value]="local.cidade ? local.cidade + ' - ' + local.uf : ''">
       @if (i > 0) { <button class="plain" type="button" (click)="locais.splice(i, 1)">Remover local</button> }
     </div>
   }

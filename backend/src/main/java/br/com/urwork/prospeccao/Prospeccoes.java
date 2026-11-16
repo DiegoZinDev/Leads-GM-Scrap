@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,18 +23,24 @@ import static org.springframework.http.HttpStatus.*;
 @Service
 @DependsOn("migracaoContas")
 class Prospeccoes {
-    record Entrada(UUID chave, String nicho, String regiao, JsonNode meta, String tituloPdf, JsonNode filtrosSociais) {}
-    record Estado(long id, String nicho, String regiao, int meta, int total, String estado, String criadaEm, String tituloPdf, String estadoPdf, Filtros filtrosSociais) {}
+    record Entrada(UUID chave, String nicho, String regiao, JsonNode meta, String tituloPdf, JsonNode filtrosSociais, String tipo, JsonNode vagas) {}
+    record Estado(long id, String nicho, String regiao, int meta, int total, String estado, String criadaEm, String tituloPdf, String estadoPdf, Filtros filtrosSociais, String tipo, JsonNode vagas) {}
     record Inicio(Estado estado, boolean nova) {}
     record Lead(long execucao, String coletadoEm, JsonNode dados) {}
 
     private static final String CONSULTA = """
-        SELECT p.*,fs.instagram,fs.whatsapp,fs.seguidores,rpdf.titulo AS titulo_pdf,COALESCE(rpdf.estado,'SEM_PDF') AS estado_pdf, (SELECT COUNT(*) FROM resultado_prospeccao r WHERE r.execucao=p.id) AS total
-        FROM prospeccao p JOIN usuario u ON u.id_usuario=p.dono LEFT JOIN relatorio rpdf ON rpdf.execucao=p.id LEFT JOIN filtro_social fs ON fs.execucao=p.id WHERE u.email=?
+        SELECT p.*,v.criterios,fs.instagram,fs.whatsapp,fs.seguidores,rpdf.titulo AS titulo_pdf,COALESCE(rpdf.estado,'SEM_PDF') AS estado_pdf, (SELECT COUNT(*) FROM resultado_prospeccao r WHERE r.execucao=p.id) AS total
+        FROM prospeccao p JOIN usuario u ON u.id_usuario=p.dono LEFT JOIN relatorio rpdf ON rpdf.execucao=p.id LEFT JOIN busca_vaga v ON v.execucao=p.id LEFT JOIN filtro_social fs ON fs.execucao=p.id WHERE u.email=?
         """;
-    private static final RowMapper<Estado> MAPA = (rs, n) -> new Estado(rs.getLong("id"),rs.getString("nicho"),
+    private Estado mapear(java.sql.ResultSet rs, int n) throws SQLException {
+        String criterios = rs.getString("criterios");
+        return new Estado(rs.getLong("id"),rs.getString("nicho"),
         rs.getString("regiao"),rs.getInt("meta"),rs.getInt("total"),rs.getString("estado"),rs.getString("criada_em"),
-        rs.getString("titulo_pdf"),rs.getString("estado_pdf"),new Filtros(rs.getBoolean("instagram"),rs.getBoolean("whatsapp"),(Integer)rs.getObject("seguidores")));
+        rs.getString("titulo_pdf"),rs.getString("estado_pdf"),new Filtros(rs.getBoolean("instagram"),rs.getBoolean("whatsapp"),(Integer)rs.getObject("seguidores")),criterios == null ? "LEADS" : "VAGAS",criterios == null ? null : lerJson(criterios));
+    }
+    private JsonNode lerJson(String dados) throws SQLException {
+        try { return json.readTree(dados); } catch (java.io.IOException ex) { throw new SQLException(ex); }
+    }
 
     private final JdbcTemplate db;
     private final MotorPython motor;
@@ -75,17 +80,21 @@ class Prospeccoes {
     }
 
     List<Estado> historico(String email) {
-        return db.query(CONSULTA + " ORDER BY p.id DESC", MAPA, email);
+        return db.query(CONSULTA + " ORDER BY p.id DESC", this::mapear, email);
     }
 
     Estado consultar(String email, long id) {
-        return db.query(CONSULTA + " AND p.id=?", MAPA, email,id).stream().findFirst()
+        return db.query(CONSULTA + " AND p.id=?", this::mapear, email,id).stream().findFirst()
             .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     synchronized Inicio agendar(String email, Entrada entrada) {
-        if (entrada.chave() == null || entrada.nicho() == null || entrada.nicho().isBlank()
-                || entrada.nicho().length() > 120 || entrada.regiao() == null || !Municipios.contem(entrada.regiao())
+        boolean vaga = "VAGAS".equals(entrada.tipo());
+        String nicho = entrada.nicho() == null ? "" : entrada.nicho().strip();
+        String regiao = entrada.regiao() == null ? "" : entrada.regiao().strip();
+        if ((!vaga && entrada.tipo()!=null && !"LEADS".equals(entrada.tipo())) || (!vaga && entrada.vagas()!=null && !entrada.vagas().isNull())
+                || (!vaga && (nicho.isEmpty() || regiao.isEmpty())) || nicho.length()>120
+                || (!regiao.isEmpty() && !Municipios.contem(regiao)) || entrada.chave() == null
                 || entrada.meta() == null || !entrada.meta().isIntegralNumber()
                 || !entrada.meta().canConvertToInt() || entrada.meta().intValue() < 1)
             throw new ResponseStatusException(BAD_REQUEST);
@@ -93,12 +102,14 @@ class Prospeccoes {
         var ids = db.queryForList("SELECT id_usuario FROM usuario WHERE email=? AND cpf IS NOT NULL", Long.class,email);
         if (ids.isEmpty()) throw new ResponseStatusException(FORBIDDEN);
         var filtros = Filtros.ler(entrada.filtrosSociais());
-        var pedido = new MotorPython.Pedido(entrada.nicho().strip(), entrada.regiao(), entrada.meta().intValue(),filtros);
+        var criterios = vaga ? CriteriosVaga.ler(entrada.vagas(),json) : null;
+        if (vaga && !filtros.equals(Filtros.NENHUM)) throw new ResponseStatusException(BAD_REQUEST);
+        var pedido = new MotorPython.Pedido(nicho, regiao, entrada.meta().intValue(),filtros,criterios);
         var chave = entrada.chave().toString();
-        var anterior = db.query(CONSULTA + " AND p.chave=?", MAPA,email,chave);
+        var anterior = db.query(CONSULTA + " AND p.chave=?", this::mapear,email,chave);
         if (!anterior.isEmpty()) {
             var estado = anterior.getFirst();
-            if (!estado.nicho().equals(pedido.nicho()) || !estado.regiao().equals(pedido.regiao()) || estado.meta()!=pedido.meta()
+            if (!java.util.Objects.equals(estado.vagas(),criterios) || !estado.nicho().equals(pedido.nicho()) || !estado.regiao().equals(pedido.regiao()) || estado.meta()!=pedido.meta()
                     || !estado.filtrosSociais().equals(filtros) || !java.util.Objects.equals(estado.tituloPdf(), tituloPdf))
                 throw new ResponseStatusException(CONFLICT);
             return new Inicio(estado, false);
@@ -112,6 +123,7 @@ class Prospeccoes {
             if (inseridos.isEmpty()) throw new ResponseStatusException(CONFLICT);
             long nova = inseridos.getFirst();
             if (!filtros.equals(Filtros.NENHUM)) db.update("INSERT INTO filtro_social VALUES(?,?,?,?)",nova,filtros.instagramVerificado(),filtros.whatsappLinkPublicado(),filtros.seguidoresMinimos());
+            if (vaga) db.update("INSERT INTO busca_vaga(execucao,criterios) VALUES(?,?)",nova,criterios.toString());
             if (tituloPdf != null) db.update("INSERT INTO relatorio(execucao,titulo) VALUES(?,?)", nova,tituloPdf);
             return nova;
         });
@@ -128,10 +140,12 @@ class Prospeccoes {
         String fim = "INTERROMPIDA";
         try {
             motor.executar(pedido, evento -> {
-                if (!"lead".equals(evento.path("tipo").asText())) return;
-                var lead = evento.required("lead");
+                String tipo = pedido.vagas() == null ? "lead" : "vaga";
+                if (!tipo.equals(evento.path("tipo").asText())) return;
+                var lead = evento.required(tipo);
                 String identidade = lead.path("url_maps").asText("").split("[?]",2)[0].strip();
-                if (identidade.isEmpty())
+                if (pedido.vagas()!=null) identidade = "Lever:ciandt:" + UUID.fromString(lead.required("idFonte").asText());
+                else if (identidade.isEmpty())
                     identidade = (lead.path("nome").asText() + "|" + lead.path("cidade").asText(pedido.regiao())).toLowerCase(Locale.ROOT);
                 db.update("INSERT INTO resultado_prospeccao(execucao,ordem,identidade,coletado_em,dados) VALUES(?,?,?,?,?)",
                     id,evento.required("total").intValue(),identidade,Instant.now().toString(),lead.toString());
@@ -144,7 +158,7 @@ class Prospeccoes {
         } finally { relatorios.finalizar(id,fim); }
     }
 
-    List<Lead> leads(String email, Long id) {
+    List<Lead> resultados(String email, Long id, boolean vagas) {
         if (id != null) consultar(email,id);
         var filtro = id == null ? "" : " AND p.id=?";
         var args = id == null ? new Object[]{email} : new Object[]{email,id};
@@ -153,7 +167,7 @@ class Prospeccoes {
                 SELECT r.*, ROW_NUMBER() OVER(PARTITION BY identidade ORDER BY execucao DESC,ordem DESC) AS pos
                 FROM resultado_prospeccao r JOIN prospeccao p ON p.id=r.execucao
                 JOIN usuario u ON u.id_usuario=p.dono WHERE u.email=?
-            """ + filtro + ") WHERE pos=1 ORDER BY execucao DESC,ordem", (rs,n) -> {
+            """ + (vagas ? " AND EXISTS " : " AND NOT EXISTS ") + "(SELECT 1 FROM busca_vaga v WHERE v.execucao=p.id)" + filtro + ") WHERE pos=1 ORDER BY execucao DESC,ordem", (rs,n) -> {
                 try { return new Lead(rs.getLong("execucao"),rs.getString("coletado_em"),json.readTree(rs.getString("dados"))); }
                 catch (java.io.IOException ex) { throw new SQLException("Resultado inválido",ex); }
             }, args);

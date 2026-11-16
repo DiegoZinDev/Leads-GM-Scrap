@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MotorPython {
-    public record Pedido(String nicho, String regiao, int meta, Filtros filtrosSociais) {
-        public Pedido(String nicho, String regiao, int meta) { this(nicho,regiao,meta,Filtros.NENHUM); }
+    public record Pedido(String nicho, String regiao, int meta, Filtros filtrosSociais, JsonNode vagas) {
+        public Pedido(String nicho, String regiao, int meta) { this(nicho,regiao,meta,Filtros.NENHUM,null); }
         public Pedido {
-            if (nicho == null || nicho.isBlank() || regiao == null || regiao.isBlank() || meta < 1)
+            if (meta < 1 || nicho == null || regiao == null || (vagas == null && (nicho.isBlank() || regiao.isBlank())))
                 throw new IllegalArgumentException("Informe nicho, região e uma meta positiva.");
         }
     }
@@ -92,8 +92,9 @@ public class MotorPython {
                                     throw new IOException("Início inválido.");
                                 iniciou = true;
                             }
-                            case "lead" -> {
-                                if (!iniciou || total >= pedido.meta() || !evento.path("lead").isObject()
+                            case "lead","vaga" -> {
+                                String tipo = pedido.vagas() == null ? "lead" : "vaga";
+                                if (!iniciou || total >= pedido.meta() || !tipo.equals(evento.path("tipo").asText()) || !evento.path(tipo).isObject()
                                         || evento.path("total").asInt(-1) != total + 1)
                                     throw new IOException("Contagem de leads inválida.");
                                 total++;

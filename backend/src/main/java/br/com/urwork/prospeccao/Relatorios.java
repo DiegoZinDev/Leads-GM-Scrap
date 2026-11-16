@@ -61,7 +61,7 @@ class Relatorios {
     void finalizar(long execucao,String estado) {
         if ("CONCLUIDA".equals(estado)) {
             var pedidos=db.queryForList("""
-                SELECT r.id,r.titulo,p.meta,p.nicho,p.regiao,p.criada_em FROM relatorio r JOIN prospeccao p
+                SELECT EXISTS(SELECT 1 FROM busca_vaga v WHERE v.execucao=p.id) AS vagas,r.id,r.titulo,p.meta,p.nicho,p.regiao,p.criada_em FROM relatorio r JOIN prospeccao p
                 ON p.id=r.execucao WHERE r.execucao=? AND r.estado='PENDENTE'
                 """,execucao);
             if (!pedidos.isEmpty()) {

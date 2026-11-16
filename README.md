@@ -68,3 +68,24 @@ Configure o Facebook Login for Business no aplicativo Meta e registre a URL exat
 Sem configuração, a prospecção básica permanece disponível. Para homologar, use contas empresariais de teste com acesso ao aplicativo. Para atender contas externas, confira as exigências de aprovação das permissões no painel da Meta. A autorização é revalidada antes de cada nova execução que solicite um filtro social. Desconectar remove a credencial do UrWork. O usuário também pode revogar a permissão nas configurações da Meta. [Referência de inspeção de tokens](https://developers.facebook.com/docs/graph-api/reference/debug_token/).
 
 O motor usa o perfil de Instagram identificado na coleta, a contagem de seguidores quando a fonte a informa e os links de WhatsApp publicados para um número brasileiro. Um resultado inconclusivo recebe `null`. A conexão de WhatsApp não consulta mensagens nem confirma se um número arbitrário está cadastrado. A medição de engajamento continua pendente.
+
+### Busca de vagas
+
+O primeiro conector consulta o mural público da CI&T na Lever. A busca percorre as páginas publicadas, classifica as vagas elegíveis e salva os resultados até a meta escolhida. A quantidade de anúncios e os países disponíveis variam com o mural. O link de candidatura abre a página da empresa. [API pública da Lever](https://github.com/lever/postings-api) · [Mural da CI&T](https://jobs.lever.co/ciandt).
+
+Instale as dependências de `engine/requirements.txt` no mesmo ambiente Python usado pelo Spring. A consulta de vagas usa a biblioteca padrão. A leitura de currículos usa pypdf para PDF com texto e defusedxml para o documento principal de um DOCX. O envio do currículo é opcional. O limite é 1 MiB por arquivo. A leitura de PDF considera até dez páginas e dispensa OCR. Apenas sugestões de habilidades chegam à interface; a pessoa pode editar ou descartar cada uma antes de pesquisar.
+
+Em `POST /api/prospeccoes`, envie `tipo: "VAGAS"`, `chave` (UUID) e `meta` (inteiro positivo). `nicho`, `regiao` (município brasileiro do catálogo), `tituloPdf` e o objeto `vagas` são opcionais. Por exemplo:
+
+```json
+{
+  "chave": "3aca9da7-dd29-4965-926c-3da690f180ec",
+  "tipo": "VAGAS",
+  "meta": 10,
+  "vagas": {"pais": "BR", "cargo": "Java", "modalidade": "REMOTO", "habilidades": ["Spring Boot"]}
+}
+```
+
+A busca por país usa o país publicado no anúncio. Uma vaga remota pode exigir residência nesse país. Um município informado exige menção à cidade na localização do anúncio. Cargo e nicho procuram os termos digitados. Senioridade, turno, vínculo e jornada dependem dos termos publicados pela empresa. O motor preserva a ausência de informação. Uma faixa salarial completa ou parcial dá preferência às vagas compatíveis na mesma moeda e período. Escolaridade, experiência e habilidades também influenciam a ordem. Não há conversão monetária.
+
+A sessão autenticada consulta `GET /api/vagas` para as oportunidades distintas da conta e `GET /api/vagas?execucao=ID` para o lote ordenado. O mesmo anúncio em outra execução conserva os dois vínculos. O PDF opcional usa as colunas de vagas e o agrupamento semanal da conta. O endpoint `POST /api/vagas/curriculo` recebe multipart com o campo `arquivo` e devolve `{"habilidades":[...]}`. Ambos os POSTs usam o CSRF da sessão.

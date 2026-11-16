@@ -11,13 +11,20 @@ from .verifier import VerificadorPresencaDigital
 
 def executar(pedido, emitir):
     nicho, regiao, meta = pedido["nicho"], pedido["regiao"], pedido["meta"]
-    if not all(isinstance(s, str) and s.strip() for s in (nicho, regiao)):
+    vagas = pedido.get("vagas") is not None
+    if not vagas and not all(isinstance(s, str) and s.strip() for s in (nicho, regiao)):
         raise ValueError("Nicho e região obrigatórios")
     if type(meta) is not int or meta < 1:
         raise ValueError("Meta inválida")
 
     total = 0
     emitir({"tipo": "inicio", "meta": meta})
+    if vagas:
+        from .vagas import buscar
+        for total, vaga in enumerate(buscar(pedido), 1):
+            emitir({"tipo": "vaga", "total": total, "vaga": vaga})
+        emitir({"tipo": "fim", "total": total})
+        return
     with sync_playwright() as pw:
         navegador = pw.chromium.launch()
         contexto = navegador.new_context(locale="pt-BR")

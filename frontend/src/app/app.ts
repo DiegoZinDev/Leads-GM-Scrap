@@ -13,6 +13,7 @@ function rotaAtual() {
     case 'entrar': return 'entrar';
     case 'leads':
     case 'buscas': return 'buscas';
+    case 'buscas/vagas': return 'vagas';
     case 'nova-prospeccao': return 'nova-prospeccao';
     case 'relatorios': return 'relatorios';
     case 'conta': return 'conta';
@@ -34,7 +35,7 @@ export class App {
     const rota = this.rota();
     if (rota === 'inicio') return rota;
     const conta = this.sessao.conta();
-    const privada = rota === 'conta' || rota === 'nova-prospeccao' || rota === 'buscas' || rota === 'relatorios';
+    const privada = rota === 'conta' || rota === 'nova-prospeccao' || rota === 'buscas' || rota === 'vagas' || rota === 'relatorios';
     if (conta) return conta.perfilCompleto ? (privada ? rota : 'conta') : 'perfil';
     if (privada) return conta === undefined ? 'aguardar' : 'entrar';
     return rota;

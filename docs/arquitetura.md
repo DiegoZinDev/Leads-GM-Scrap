@@ -78,6 +78,23 @@ Habilitar cada controle conforme as capacidades retornadas. Se perder a capacida
 
 Quando o POST de prospecção recusa um filtro social, o cabeçalho `UrWork-Conexao-Social` identifica a causa na própria resposta: 409 com `NAO_CONFIGURADA`, `DESCONECTADA` ou `EXPIRADA`, ou 503 com `INDISPONIVEL`. Conflitos de chave ou de instalação ocupada retornam 409 sem esse cabeçalho. A tela usa a resposta do POST para explicar a falha e a consulta seguinte de conexões para atualizar os controles.
 
+### Telas da etapa 7
+
+Contrato validado em **Nova prospecção → Vagas** e **Buscas → Vagas**. O primeiro conector consulta o mural da CI&T na Lever, com anúncios no Brasil e no exterior. A validação incluiu abertura de uma busca pelo navegador, persistência de anúncio da fonte ao vivo e geração de PDF. Os cenários com anúncios controlados também verificaram currículo opcional, ordenação e esgotamento da fonte abaixo da meta.
+
+* Em Nova prospecção, enviar `POST /api/prospeccoes` com `tipo: "VAGAS"`, `chave`, `meta` e objeto `vagas`. São opcionais `nicho`, `regiao` (município brasileiro) e `tituloPdf`. Omitir critérios indiferentes. Leads continua sendo o tipo padrão.
+* O objeto de critérios aceita `cargo`, `pais` (ISO alpha-2), `exterior` (falso restringe ao Brasil, verdadeiro inclui o exterior), `modalidade`, `jornada`, `vinculo`, `nivel`, `turno`, `experienciaAnos` (0 a 80), `escolaridade`, `salarioMin`, `salarioMax`, `moeda`, `periodo` e `habilidades`. Experiência sugere nível editável: júnior abaixo de dois anos, pleno de dois a quatro e sênior a partir de cinco. Salário e habilidades influem na prioridade. Ausência de salário, experiência ou escolaridade no anúncio mantém a vaga elegível.
+* Para sugerir habilidades, enviar currículo opcional por `POST /api/vagas/curriculo`, com CSRF e campo multipart `arquivo` (PDF/DOCX até 1 MiB). A resposta contém `habilidades` editáveis. O backend descarta o arquivo.
+* Histórico e SSE compartilham o snapshot de execução com `tipo` e `vagas`. Em Buscas, abrir Leads por padrão e consultar `GET /api/vagas` na aba Vagas, com filtro opcional `?execucao={id}`. Cada resultado contém `execucao`, `coletadoEm` e `dados` do anúncio, incluindo identificação na fonte, cargo, empresa, localização, data e links de origem e candidatura.
+
+#### Validações e apresentação dos resultados de Vagas
+
+* `cargo` e `escolaridade`: 1 a 120 caracteres após remover espaços nas pontas, sem caracteres de controle. `nicho`: 0 a 120. Até 20 habilidades de 1 a 60 caracteres após o mesmo tratamento; repetições são ignoradas independentemente de maiúsculas. Campos desconhecidos em `vagas` são rejeitados.
+* `pais` usa código ISO alpha-2 maiúsculo. Com `exterior=false`, o único país explícito aceito é BR. A experiência aceita inteiros de 0 a 80, e a meta aceita inteiros de 1 a 2147483647.
+* A faixa salarial aceita apenas mínimo, apenas máximo ou ambos, entre 0 e 1 bilhão inclusive, com até duas casas decimais e mínimo ≤ máximo. Quando houver faixa, informar moeda ISO 4217 maiúscula e período ANO, MES ou HORA. Omitir ambos quando não houver faixa.
+* No resultado, `dados.salario` é nulo ou contém `min`, `max`, `moeda` e `periodo`. Qualquer ponta ausente vale nulo; zero é um valor publicado. Moeda e período também podem ser nulos. `publicadaEm` é a data registrada pela fonte, em ISO 8601 UTC com offset, ou nulo.
+* A lista filtrada por execução segue a ordem do motor. A geral conserva a ocorrência mais recente por `idFonte`, ordena por execução decrescente e mantém a ordem do motor em cada execução. O ranking compara, em ordem decrescente, compatibilidade salarial na mesma moeda e período, número de habilidades encontradas, escolaridade encontrada, correspondência ao nível sugerido pela experiência, presença de salário, data e UUID lexical. Sem faixa solicitada, nenhuma vaga recebe bônus de compatibilidade salarial.
+
 ## Implementação disponível
 
 O backend grava cada lead antes de contá-lo no snapshot. Na consulta geral, resultados repetidos entre buscas da mesma conta aparecem pela ocorrência mais recente (URL do Maps ou, na ausência, nome e cidade). Após um reinício, buscas abertas passam a `INTERROMPIDA`, com acesso aos resultados já gravados. O SSE consulta o estado persistido a cada segundo enquanto há um assinante e pode agrupar vários leads no mesmo snapshot. Execute uma instância Spring por arquivo SQLite.

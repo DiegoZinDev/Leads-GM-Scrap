@@ -1,0 +1,42 @@
+<fieldset class="criterios-vagas">
+  <legend>Vagas da CI&amp;T na Lever</legend>
+  <label>Cargo<input name="cargo" maxlength="120" [value]="inicial()?.cargo ?? ''"></label>
+  <label>País (código de duas letras)<input name="pais" pattern="[A-Za-z]{2}" maxlength="2" placeholder="Ex. BR" [value]="inicial()?.pais ?? ''"></label>
+  <label>Abrangência<select name="exterior">
+    <option value="">Indiferente</option><option value="false" [selected]="inicial()?.exterior === false">Somente Brasil</option>
+    <option value="true" [selected]="inicial()?.exterior === true">Incluir exterior</option>
+  </select></label>
+  @for (grupo of grupos; track grupo.campo) {
+    <label>{{ grupo.nome }}<select [name]="grupo.campo"><option value="">Indiferente</option>
+      @for (op of grupo.opcoes; track op) { <option [value]="op" [selected]="inicial()?.[grupo.campo] === op">{{ rotulos[op] }}</option> }
+    </select></label>
+  }
+  <label>Experiência em anos<input #anos name="experienciaAnos" type="number" min="0" max="80" step="1"
+    [value]="inicial()?.experienciaAnos ?? ''" (input)="sugerirNivel(anos.value)"></label>
+  <label>Nível<select #senioridade name="nivel" [value]="nivel()" (change)="nivel.set(senioridade.value)">
+    <option value="">Indiferente</option>
+    @for (op of ['JUNIOR','PLENO','SENIOR','ESPECIALISTA']; track op) { <option [value]="op" [selected]="nivel() === op">{{ rotulos[op] }}</option> }
+  </select></label>
+  <label>Escolaridade<input name="escolaridade" maxlength="120" [value]="inicial()?.escolaridade ?? ''"></label>
+</fieldset>
+<fieldset class="criterios-vagas">
+  <legend>Preferência salarial</legend>
+  <label>Salário mínimo<input #minimo name="salarioMin" type="number" min="0" max="1000000000" step="0.01" [value]="inicial()?.salarioMin ?? ''"
+    (input)="comSalario.set(!!(minimo.value || maximo.value))"></label>
+  <label>Salário máximo<input #maximo name="salarioMax" type="number" [min]="minimo.value || 0" max="1000000000" step="0.01" [value]="inicial()?.salarioMax ?? ''"
+    (input)="comSalario.set(!!(minimo.value || maximo.value))"></label>
+  @if (comSalario()) {
+    <label>Moeda (código ISO)<input name="moeda" required pattern="[A-Za-z]{3}" maxlength="3" placeholder="Ex. BRL" [value]="inicial()?.moeda ?? ''"></label>
+    <label>Período<select name="periodo" required><option value="">Selecione</option>
+      @for (op of ['ANO','MES','HORA']; track op) { <option [value]="op" [selected]="inicial()?.periodo === op">{{ rotulos[op] }}</option> }
+    </select></label>
+  }
+</fieldset>
+<fieldset class="criterios-vagas">
+  <legend>Habilidades</legend>
+  <label class="inteiro">Sugerir pelo currículo (opcional)<input type="file" #arquivo accept=".pdf,.docx" [disabled]="enviando()" (change)="lerArquivo(arquivo)">
+    <small>O arquivo PDF ou DOCX, de até 1 MiB, é enviado para leitura ao ser selecionado.</small></label>
+  @if (aviso()) { <p class="inteiro" role="status">{{ aviso() }}</p> }
+  <label class="inteiro">Habilidades para priorizar<input #campo [value]="habilidades()" (input)="habilidades.set(campo.value)">
+    <small>Separe as habilidades por vírgula.</small></label>
+</fieldset>

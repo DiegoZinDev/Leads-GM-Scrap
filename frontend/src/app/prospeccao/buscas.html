@@ -1,19 +1,39 @@
 <section class="work operacao">
   <h1 tabindex="-1">Buscas</h1>
   <div class="cabecalho-leads">
-    <h2>Leads</h2>
+    <nav class="abas-busca" aria-label="Tipo de resultado"><a href="#buscas" [attr.aria-current]="!vagas() ? 'page' : null">Leads</a>
+      <a href="#buscas/vagas" [attr.aria-current]="vagas() ? 'page' : null">Vagas</a></nav>
     <label>Filtrar por execução
       <select #filtro (change)="filtrar(filtro.value)">
         <option value="">Todas as execuções</option>
-        @for (e of execucoes(); track e.id) { <option [value]="e.id">#{{ e.id }} · {{ e.nicho }} · {{ e.regiao }}</option> }
+        @for (e of execucoes(); track e.id) {
+          @if ((e.tipo === 'VAGAS') === vagas()) { <option [value]="e.id">#{{ e.id }} {{ e.vagas?.cargo || e.nicho }} {{ e.regiao }}</option> }
+        }
       </select>
     </label>
     <button type="button" class="secondary" (click)="atualizar()">Atualizar</button>
   </div>
   @if (erroLista()) { <p role="alert">Filtro indisponível. {{ erroLista() }}</p> }
-  @if (carregando()) { <p role="status">Consultando leads…</p> }
+  @if (carregando()) { <p role="status">Consultando {{ vagas() ? 'vagas' : 'leads' }}…</p> }
   @else if (erro()) { <p role="alert">{{ erro() }}</p> }
-  @else {
+  @else if (vagas()) {
+    <p role="status">{{ anuncios().length }} {{ anuncios().length === 1 ? 'vaga encontrada' : 'vagas encontradas' }}</p>
+    @for (item of anuncios(); track item.dados.idFonte) {
+      <article class="registro-lead registro-vaga">
+        <div><h3>{{ item.dados.cargo }}</h3><p>{{ item.dados.empresa }}
+          @if (item.dados.localidade) { · {{ item.dados.localidade }} } @if (item.dados.pais) { · {{ item.dados.pais }} }
+          @if (item.dados.modalidade; as modo) { · {{ rotulos[modo] || modo }} }</p>
+          <small>{{ item.dados.fonte }} · Execução #{{ item.execucao }}</small>
+          <p>{{ item.dados.publicadaEm ? 'Publicada em ' + data(item.dados.publicadaEm) : 'Data de publicação não informada' }}</p>
+          @if (item.dados.descricao) { <details><summary>Descrição da vaga</summary><p>{{ item.dados.descricao }}</p></details> }
+        </div>
+        <div><p>{{ salario(item.dados.salario) }}</p><small>Coletada em {{ data(item.coletadoEm) }}</small></div>
+        <div class="links-vaga">@if (link(item.dados.urlOrigem); as origem) { <a class="back" [href]="origem" target="_blank" rel="noopener noreferrer">Ver anúncio</a> }
+          @if (link(item.dados.urlCandidatura); as candidatura) { <a class="secondary" [href]="candidatura" target="_blank" rel="noopener noreferrer">Candidatar-se</a> }</div>
+      </article>
+    } @empty { <div class="empty"><h3>{{ filtro.value ? 'Nenhuma vaga nesta execução' : 'Nenhuma vaga coletada' }}</h3>
+      <a href="#nova-prospeccao">Ir para Nova prospecção</a></div> }
+  } @else {
     <p role="status">{{ leads().length }} {{ leads().length === 1 ? 'lead encontrado' : 'leads encontrados' }}</p>
     @for (lead of leads(); track $index) {
       <article class="registro-lead">
