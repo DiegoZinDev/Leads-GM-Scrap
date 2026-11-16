@@ -8,6 +8,8 @@ export interface Execucao {
   total: number;
   estado: 'EM_ANDAMENTO' | 'CONCLUIDA' | 'INTERROMPIDA';
   criadaEm: string;
+  tituloPdf?: string | null;
+  estadoPdf?: 'SEM_PDF' | 'PENDENTE' | 'DISPONIVEL' | 'FALHOU';
 }
 
 export async function consultar<T>(url: string): Promise<T> {

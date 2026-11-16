@@ -47,6 +47,7 @@ class ProspeccaoHttpTest {
     @Autowired PasswordEncoder encoder;
     @Autowired ObjectMapper json;
     @MockitoBean MotorPython motor;
+    @org.springframework.test.context.bean.override.mockito.MockitoSpyBean Relatorios relatorios;
     private URI uri(String caminho) { return URI.create("http://127.0.0.1:"+porta+"/api/"+caminho); }
     private HttpClient cliente() {
         return HttpClient.newBuilder().cookieHandler(new CookieManager(null,CookiePolicy.ACCEPT_ALL)).build();
@@ -64,6 +65,66 @@ class ProspeccaoHttpTest {
         var c = cliente();
         assertEquals(204,post(c,"auth/login","email="+email+"&password=Senha12!","application/x-www-form-urlencoded").statusCode());
         return c;
+    }
+
+    @Test void semanaDeGeracaoComecaNaSegundaEmBrasilia() {
+        assertEquals(java.time.LocalDate.parse("2025-12-29"),Relatorios.semana(java.time.Instant.parse("2026-01-05T02:59:59Z")));
+        assertEquals(java.time.LocalDate.parse("2026-01-05"),Relatorios.semana(java.time.Instant.parse("2026-01-05T03:00:00Z")));
+    }
+
+    @Test void pdfOpcionalPersisteSomenteParaODonoEIsolaFalhaDeRenderizacao() throws Exception {
+        var hash=encoder.encode("Senha12!");
+        db.update("INSERT INTO usuario(username,email,senha,cpf) VALUES('PDF','pdf@gmail.com',?,'teste-pdf')",hash);
+        db.update("INSERT INTO usuario(username,email,senha,cpf) VALUES('Outro','outro@gmail.com',?,'teste-outro')",hash);
+        var a=login("pdf@gmail.com"); var b=login("outro@gmail.com");
+        doAnswer(inv -> {
+            Consumer<JsonNode> receber=inv.getArgument(1);
+            receber.accept(json.readTree("""
+                {"tipo":"lead","total":1,"lead":{"nome":"Loja A","cidade":"Campinas","telefone":"1234"}}
+                """));
+            return 1;
+        }).when(motor).executar(any(),any());
+        var dados=json.createObjectNode().put("chave",UUID.randomUUID().toString()).put("meta",3)
+            .put("nicho","Serviços").put("regiao","Campinas - SP").put("tituloPdf","Clientes de Campinas");
+        assertEquals(400,post(a,"prospeccoes",dados.deepCopy().put("tituloPdf","../inválido").toString(),"application/json").statusCode());
+        var inicio=post(a,"prospeccoes",dados.toString(),"application/json");
+        assertEquals(202,inicio.statusCode());
+        var exec=json.readTree(inicio.body()).get("id").asLong();
+        assertTrue(get(a,"prospeccoes/"+exec+"/eventos").body().contains("DISPONIVEL"));
+        assertEquals(200,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        dados.put("tituloPdf","Diferente");
+        assertEquals(409,post(a,"prospeccoes",dados.toString(),"application/json").statusCode());
+        var lista=json.readTree(get(a,"relatorios").body());
+        assertEquals(1,lista.size());
+        var item=lista.get(0);
+        assertEquals(exec,item.get("execucao").asLong());
+        assertEquals("Clientes de Campinas",item.get("titulo").asText());
+        var id=item.get("id").asLong();
+        assertTrue(item.get("nomeArquivo").asText().endsWith(" - "+id+".pdf"));
+        assertEquals(lista,json.readTree(get(a,"relatorios?semana="+item.get("semana").asText()).body()));
+        assertEquals(0,json.readTree(get(a,"relatorios?semana=2000-01-03").body()).size());
+        assertEquals(400,get(a,"relatorios?semana=2000-01-04").statusCode());
+        String rota="relatorios/"+id+"/pdf";
+        var anexo=a.send(HttpRequest.newBuilder(uri(rota)).GET().build(),HttpResponse.BodyHandlers.ofByteArray());
+        assertEquals(200,anexo.statusCode());
+        assertEquals("application/pdf",anexo.headers().firstValue("Content-Type").orElseThrow());
+        assertTrue(anexo.headers().firstValue("Content-Disposition").orElseThrow().startsWith("attachment;"));
+        assertArrayEquals(db.queryForObject("SELECT pdf FROM relatorio WHERE id=?",byte[].class,id),anexo.body());
+        assertTrue(new String(anexo.body(),0,5,java.nio.charset.StandardCharsets.US_ASCII).equals("%PDF-"));
+        assertEquals(404,get(b,rota).statusCode());
+        assertEquals(401,get(cliente(),rota).statusCode());
+        assertEquals(0,json.readTree(get(b,"relatorios").body()).size());
+        verify(relatorios).renderizar(argThat(doc -> doc.path("leads").size()==1
+            && doc.path("leads").get(0).path("nome").asText().equals("Loja A") && doc.path("execucao").asLong()==exec));
+
+        doThrow(new IOException("simulada")).when(relatorios).renderizar(any());
+        dados.put("chave",UUID.randomUUID().toString());
+        var falha=json.readTree(post(a,"prospeccoes",dados.toString(),"application/json").body()).get("id").asLong();
+        String eventos=get(a,"prospeccoes/"+falha+"/eventos").body();
+        assertTrue(eventos.contains("FALHOU"));
+        assertTrue(eventos.contains("CONCLUIDA"));
+        assertEquals(1,json.readTree(get(a,"leads?execucao="+falha).body()).size());
+        assertEquals(1,json.readTree(get(a,"relatorios").body()).size());
     }
 
     @Test void cicloHttpMantemParciaisDeduplicaEIsolaContas() throws Exception {
@@ -124,6 +185,8 @@ class ProspeccaoHttpTest {
             }
         } finally { liberar.countDown(); }
         var finalizada = json.readTree(get(a,caminho).body());
+        assertEquals("SEM_PDF", finalizada.path("estadoPdf").asText());
+        assertEquals(0,json.readTree(get(a,"relatorios").body()).size());
         assertEquals(1,finalizada.get("total").asInt());
         assertEquals(3,finalizada.get("meta").asInt());
         assertTrue(get(a,caminho+"/eventos").body().contains("CONCLUIDA"));

@@ -12,6 +12,8 @@ export class NovaProspeccao {
   private timer?: number;
   private seletor = viewChild.required(SelecionarLocais);
   criteriosRecuperados?: Execucao;
+  gerarPdf = signal(false);
+  tituloPdf = signal('');
   percentual = (total: number, meta: number) => Math.round(100 * total / meta);
   execucao = signal<Execucao | undefined>(undefined);
   erro = signal('');
@@ -36,6 +38,8 @@ export class NovaProspeccao {
       if (this.vida.destroyed) return;
       if (atual?.estado === 'EM_ANDAMENTO') {
         this.criteriosRecuperados = atual;
+        this.gerarPdf.set(!!atual.tituloPdf);
+        this.tituloPdf.set(atual.tituloPdf ?? '');
         const separador = atual.regiao.lastIndexOf(' - ');
         if (separador >= 0) this.seletor().locais = [{
           cidade: atual.regiao.slice(0, separador), uf: atual.regiao.slice(separador + 3)
@@ -51,7 +55,13 @@ export class NovaProspeccao {
     evento.preventDefault();
     if (!this.pronto() || this.enviando() || this.execucao()?.estado === 'EM_ANDAMENTO') return;
     const campos = new FormData(evento.currentTarget as HTMLFormElement);
-    const criterios = { nicho: String(campos.get('nicho')).trim(), regiao: String(campos.get('localidade')), meta: Number(campos.get('meta')) };
+    const titulo = this.tituloPdf();
+    if (this.gerarPdf() && (!titulo.trim() || titulo.length > 100 || /[<>:"/\\|?*\u0000-\u001f\u007f-\u009f]/u.test(titulo))) {
+      this.erro.set('Use de 1 a 100 caracteres no título, sem caracteres de controle nem < > : " / \\ | ? *.');
+      return;
+    }
+    const criterios = { nicho: String(campos.get('nicho')).trim(), regiao: String(campos.get('localidade')),
+      meta: Number(campos.get('meta')), ...(this.gerarPdf() ? { tituloPdf: titulo.trim() } : {}) };
     if (!criterios.nicho || !criterios.regiao || !Number.isSafeInteger(criterios.meta) || criterios.meta < 1) {
       this.erro.set('Informe o nicho, a região e uma meta inteira maior que zero.');
       return;
@@ -77,15 +87,19 @@ export class NovaProspeccao {
     if (this.vida.destroyed) return;
     this.execucao.set(atual);
     this.fonte?.close();
+    clearTimeout(this.timer);
     this.reconectando.set(false);
-    if (atual.estado !== 'EM_ANDAMENTO') return;
     const url = '/api/prospeccoes/' + atual.id;
+    if (atual.estado !== 'EM_ANDAMENTO') {
+      if (atual.estadoPdf === 'PENDENTE') this.timer = window.setTimeout(() => void this.retomar(url), 1500);
+      return;
+    }
     const fonte = this.fonte = new EventSource(url + '/eventos');
     fonte.addEventListener('estado', (evento: MessageEvent<string>) => {
       const estado: Execucao = JSON.parse(evento.data);
       this.execucao.set(estado);
       this.reconectando.set(false);
-      if (estado.estado !== 'EM_ANDAMENTO') fonte.close();
+      if (estado.estado !== 'EM_ANDAMENTO') this.acompanhar(estado);
     });
     fonte.onerror = () => {
       this.reconectando.set(true);
@@ -96,7 +110,8 @@ export class NovaProspeccao {
 
   private async retomar(url: string) {
     try {
-      this.acompanhar(await consultar<Execucao>(url));
+      const atual = await consultar<Execucao>(url);
+      if (this.execucao()?.id === atual.id) this.acompanhar(atual);
     } catch (erro) {
       if (this.vida.destroyed) return;
       if (erro instanceof Response && [401, 403, 404].includes(erro.status)) {

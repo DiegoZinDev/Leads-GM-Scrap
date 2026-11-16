@@ -161,3 +161,11 @@
   .cabecalho-leads h2 { width: 100%; }
   .bar:has(nav) .account { margin-left: auto; }
 }
+.opcao-pdf { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.opcao-pdf input { width: 18px; height: 18px; margin: 0; accent-color: var(--acid); }
+.semana-relatorios { margin-block: 32px; }
+.semana-relatorios h2 { margin-bottom: 16px; }
+.documento { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-block: 20px; }
+.documento h3 { overflow-wrap: anywhere; font-size: 1.3rem; }
+.documento p { margin-top: 6px; color: var(--soft); }
+.relatorios > button { margin-top: 16px; }

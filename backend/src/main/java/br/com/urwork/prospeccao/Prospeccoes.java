@@ -24,24 +24,30 @@ import static org.springframework.http.HttpStatus.*;
 @Service
 @DependsOn("migracaoContas")
 class Prospeccoes {
-    record Entrada(UUID chave, String nicho, String regiao, JsonNode meta) {}
-    record Estado(long id, String nicho, String regiao, int meta, int total, String estado, String criadaEm) {}
+    record Entrada(UUID chave, String nicho, String regiao, JsonNode meta, String tituloPdf) {}
+    record Estado(long id, String nicho, String regiao, int meta, int total, String estado, String criadaEm, String tituloPdf, String estadoPdf) {}
     record Inicio(Estado estado, boolean nova) {}
     record Lead(long execucao, String coletadoEm, JsonNode dados) {}
 
     private static final String CONSULTA = """
-        SELECT p.*, (SELECT COUNT(*) FROM resultado_prospeccao r WHERE r.execucao=p.id) AS total
-        FROM prospeccao p JOIN usuario u ON u.id_usuario=p.dono WHERE u.email=?
+        SELECT p.*,rpdf.titulo AS titulo_pdf,COALESCE(rpdf.estado,'SEM_PDF') AS estado_pdf, (SELECT COUNT(*) FROM resultado_prospeccao r WHERE r.execucao=p.id) AS total
+        FROM prospeccao p JOIN usuario u ON u.id_usuario=p.dono LEFT JOIN relatorio rpdf ON rpdf.execucao=p.id WHERE u.email=?
         """;
     private static final RowMapper<Estado> MAPA = (rs, n) -> new Estado(rs.getLong("id"),rs.getString("nicho"),
-        rs.getString("regiao"),rs.getInt("meta"),rs.getInt("total"),rs.getString("estado"),rs.getString("criada_em"));
+        rs.getString("regiao"),rs.getInt("meta"),rs.getInt("total"),rs.getString("estado"),rs.getString("criada_em"),
+        rs.getString("titulo_pdf"),rs.getString("estado_pdf"));
 
     private final JdbcTemplate db;
     private final MotorPython motor;
+    private final Relatorios relatorios;
+    private final org.springframework.transaction.support.TransactionTemplate tx;
     private final ObjectMapper json;
     private final ExecutorService executor = Executors.newSingleThreadExecutor(Thread.ofVirtual().factory());
 
-    Prospeccoes(JdbcTemplate db, MotorPython motor, ObjectMapper json) {
+    Prospeccoes(JdbcTemplate db, MotorPython motor, ObjectMapper json, Relatorios relatorios,
+                org.springframework.transaction.support.TransactionTemplate tx) {
+        this.tx = tx;
+        this.relatorios = relatorios;
         this.db = db;
         this.motor = motor;
         this.json = json;
@@ -49,7 +55,10 @@ class Prospeccoes {
 
     @PostConstruct void iniciar() {
         new ResourceDatabasePopulator(new ClassPathResource("prospeccoes.sql")).execute(db.getDataSource());
-        db.update("UPDATE prospeccao SET estado='INTERROMPIDA' WHERE estado='EM_ANDAMENTO'");
+        tx.executeWithoutResult(s -> {
+            db.update("UPDATE relatorio SET estado='FALHOU' WHERE estado='PENDENTE'");
+            db.update("UPDATE prospeccao SET estado='INTERROMPIDA' WHERE estado='EM_ANDAMENTO'");
+        });
     }
 
     @PreDestroy void parar() {
@@ -78,6 +87,7 @@ class Prospeccoes {
                 || entrada.meta() == null || !entrada.meta().isIntegralNumber()
                 || !entrada.meta().canConvertToInt() || entrada.meta().intValue() < 1)
             throw new ResponseStatusException(BAD_REQUEST);
+        String tituloPdf = Relatorios.tituloValido(entrada.tituloPdf());
         var ids = db.queryForList("SELECT id_usuario FROM usuario WHERE email=? AND cpf IS NOT NULL", Long.class,email);
         if (ids.isEmpty()) throw new ResponseStatusException(FORBIDDEN);
         var pedido = new MotorPython.Pedido(entrada.nicho().strip(), entrada.regiao(), entrada.meta().intValue());
@@ -85,20 +95,25 @@ class Prospeccoes {
         var anterior = db.query(CONSULTA + " AND p.chave=?", MAPA,email,chave);
         if (!anterior.isEmpty()) {
             var estado = anterior.getFirst();
-            if (!estado.nicho().equals(pedido.nicho()) || !estado.regiao().equals(pedido.regiao()) || estado.meta()!=pedido.meta())
+            if (!estado.nicho().equals(pedido.nicho()) || !estado.regiao().equals(pedido.regiao()) || estado.meta()!=pedido.meta()
+                    || !java.util.Objects.equals(estado.tituloPdf(), tituloPdf))
                 throw new ResponseStatusException(CONFLICT);
             return new Inicio(estado, false);
         }
-        var inseridos = db.queryForList("""
-            INSERT INTO prospeccao(dono,chave,nicho,regiao,meta,estado,criada_em)
-            VALUES(?,?,?,?,?,'EM_ANDAMENTO',?) ON CONFLICT DO NOTHING RETURNING id
-            """, Long.class, ids.getFirst(),chave,pedido.nicho(),pedido.regiao(),pedido.meta(),Instant.now().toString());
-        if (inseridos.isEmpty()) throw new ResponseStatusException(CONFLICT);
-        long id = inseridos.getFirst();
+        long id = tx.execute(status -> {
+            var inseridos = db.queryForList("""
+                INSERT INTO prospeccao(dono,chave,nicho,regiao,meta,estado,criada_em)
+                VALUES(?,?,?,?,?,'EM_ANDAMENTO',?) ON CONFLICT DO NOTHING RETURNING id
+                """, Long.class, ids.getFirst(),chave,pedido.nicho(),pedido.regiao(),pedido.meta(),Instant.now().toString());
+            if (inseridos.isEmpty()) throw new ResponseStatusException(CONFLICT);
+            long nova = inseridos.getFirst();
+            if (tituloPdf != null) db.update("INSERT INTO relatorio(execucao,titulo) VALUES(?,?)", nova,tituloPdf);
+            return nova;
+        });
         var inicial = consultar(email,id);
         try { executor.execute(() -> executar(id,pedido)); }
         catch (java.util.concurrent.RejectedExecutionException ex) {
-            finalizar(id,"INTERROMPIDA");
+            relatorios.finalizar(id,"INTERROMPIDA");
             throw new ResponseStatusException(SERVICE_UNAVAILABLE);
         }
         return new Inicio(inicial,true);
@@ -121,11 +136,7 @@ class Prospeccoes {
             Thread.currentThread().interrupt();
         } catch (java.io.IOException | RuntimeException ex) {
             org.slf4j.LoggerFactory.getLogger(Prospeccoes.class).warn("Execução {} interrompida ({})", id,ex.getClass().getSimpleName());
-        } finally { finalizar(id,fim); }
-    }
-
-    private void finalizar(long id,String estado) {
-        db.update("UPDATE prospeccao SET estado=? WHERE id=? AND estado='EM_ANDAMENTO'",estado,id);
+        } finally { relatorios.finalizar(id,fim); }
     }
 
     List<Lead> leads(String email, Long id) {

@@ -18,3 +18,13 @@ CREATE TABLE IF NOT EXISTS resultado_prospeccao (
     dados TEXT NOT NULL,
     PRIMARY KEY(execucao, ordem)
 );
+CREATE TABLE IF NOT EXISTS relatorio (
+    id INTEGER PRIMARY KEY,
+    execucao INTEGER NOT NULL UNIQUE REFERENCES prospeccao(id),
+    titulo TEXT NOT NULL,
+    estado TEXT NOT NULL DEFAULT 'PENDENTE' CHECK(estado IN ('PENDENTE','DISPONIVEL','FALHOU')),
+    gerado_em TEXT,
+    semana TEXT,
+    nome_arquivo TEXT,
+    pdf BLOB
+);

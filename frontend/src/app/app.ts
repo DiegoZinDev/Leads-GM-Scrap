@@ -4,6 +4,7 @@ import { FormularioConta } from './conta/formulario';
 import { Sessao } from './conta/sessao';
 import { NovaProspeccao } from './prospeccao/nova';
 import { Buscas } from './prospeccao/buscas';
+import { Relatorios } from './prospeccao/relatorios';
 
 function rotaAtual() {
   switch (location.hash.slice(1)) {
@@ -13,14 +14,14 @@ function rotaAtual() {
     case 'leads':
     case 'buscas': return 'buscas';
     case 'nova-prospeccao': return 'nova-prospeccao';
-    case 'relatorios':
+    case 'relatorios': return 'relatorios';
     case 'conta': return 'conta';
     default: return 'inicio';
   }
 }
 
 @Component({
-  selector: 'urwork-app', standalone: true, imports: [Inicio, FormularioConta, NovaProspeccao, Buscas],
+  selector: 'urwork-app', standalone: true, imports: [Inicio, FormularioConta, NovaProspeccao, Buscas, Relatorios],
   templateUrl: './app.html', changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {
@@ -33,7 +34,7 @@ export class App {
     const rota = this.rota();
     if (rota === 'inicio') return rota;
     const conta = this.sessao.conta();
-    const privada = rota === 'conta' || rota === 'nova-prospeccao' || rota === 'buscas';
+    const privada = rota === 'conta' || rota === 'nova-prospeccao' || rota === 'buscas' || rota === 'relatorios';
     if (conta) return conta.perfilCompleto ? (privada ? rota : 'conta') : 'perfil';
     if (privada) return conta === undefined ? 'aguardar' : 'entrar';
     return rota;

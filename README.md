@@ -1,6 +1,6 @@
 # UrWork
 
-O UrWork está em construção. O site oferece cadastro por perfil, login e consulta da conta. O operador já pode prospectar empresas pelo terminal. As buscas de leads e vagas pelo navegador são as próximas entregas.
+O UrWork oferece cadastro por perfil, login e prospecção de empresas. O operador pode usar o terminal ou a API autenticada, que mantém execuções e leads por conta. Uma execução pode gerar um relatório PDF, disponível por semana de geração e para download pelo dono. As rotas e exemplos de integração estão no [contrato da aplicação](docs/arquitetura.md).
 
 | Para trabalhar em | Comece por |
 |---|---|

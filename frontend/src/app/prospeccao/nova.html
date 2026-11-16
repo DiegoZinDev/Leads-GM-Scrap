@@ -7,6 +7,10 @@
         <label>Nicho<input name="nicho" required maxlength="120" [value]="criteriosRecuperados?.nicho ?? ''" placeholder="Ex. Oficinas mecânicas"></label>
         <urwork-locais titulo="Região" [unico]="true" />
         <label>Meta de leads<input name="meta" type="number" min="1" max="2147483647" step="1" [value]="criteriosRecuperados?.meta ?? ''" required></label>
+        <label class="opcao-pdf"><input type="checkbox" #pdf [checked]="gerarPdf()" (change)="gerarPdf.set(pdf.checked)">Gerar relatório em PDF</label>
+        @if (gerarPdf()) {
+          <label>Título do relatório<input #titulo name="tituloPdf" required maxlength="100" [value]="tituloPdf()" (input)="tituloPdf.set(titulo.value)"></label>
+        }
         <button class="primary" type="submit">{{ enviando() ? 'Enviando…' : 'Gerar prospecção' }}</button>
       </fieldset>
       @if (erro()) { <p role="alert">{{ erro() }}</p> }
@@ -24,6 +28,12 @@
           @else if (e.estado === 'CONCLUIDA') {
             <p>{{ e.total < e.meta ? 'Fontes esgotadas antes de atingir a meta.' : 'Coleta concluída. Meta atingida.' }}</p>
           } @else { <p>{{ reconectando() ? 'Reconectando ao progresso…' : 'Coleta em andamento.' }}</p> }
+          @switch (e.estadoPdf) {
+            @case ('PENDENTE') { <p>PDF pendente · {{ e.tituloPdf }}</p> }
+            @case ('DISPONIVEL') { <p>PDF disponível · <a class="back" href="#relatorios">Abrir Relatórios</a></p> }
+            @case ('FALHOU') { <p>O PDF não foi gerado. Os leads coletados continuam em Buscas.</p> }
+            @case ('SEM_PDF') { <p>Sem relatório em PDF.</p> }
+          }
         } @else if (pronto()) { <p>O progresso aparece aqui quando você inicia uma coleta.</p> }
       </div>
       @if (execucao()) { <a class="back" href="#buscas">Ver leads em Buscas</a> }

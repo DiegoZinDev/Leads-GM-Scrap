@@ -1,0 +1,28 @@
+<section class="work operacao relatorios">
+  <h1 tabindex="-1">Relatórios</h1>
+  @if (carregando()) { <p role="status">Consultando relatórios…</p> }
+  @else if (erro()) { <p role="alert">{{ erro() }}</p> }
+  @else {
+    @for (grupo of semanas(); track grupo[0]) {
+      <section class="semana-relatorios">
+        <h2>Semana de {{ grupo[0].split('-').reverse().join('/') }}</h2>
+        @for (doc of grupo[1]; track doc.id) {
+          <article class="documento">
+            <div><h3>{{ doc.titulo }}</h3>
+              <p>Execução #{{ doc.execucao }} · <time [attr.datetime]="doc.geradoEm">{{ dataLocal(doc.geradoEm) }}</time> (Brasília)</p>
+            </div>
+            <button type="button" class="secondary" [disabled]="baixando() !== null" (click)="baixar(doc)"
+              [attr.aria-label]="'Baixar relatório ' + doc.titulo">{{ baixando() === doc.id ? 'Baixando…' : 'Baixar relatório' }}</button>
+          </article>
+        }
+      </section>
+    } @empty {
+      <div class="empty"><h2>Nenhum relatório disponível</h2>
+        <p>Para guardar um lote em PDF, marque “Gerar relatório em PDF” ao iniciar a prospecção.</p>
+        <a href="#nova-prospeccao">Ir para Nova prospecção</a>
+      </div>
+    }
+  }
+  @if (erroDownload()) { <p role="alert">{{ erroDownload() }}</p> }
+  @if (!carregando()) { <button class="secondary" (click)="listar()">Atualizar lista</button> }
+</section>

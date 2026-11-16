@@ -10,6 +10,7 @@
     <nav aria-label="Área de trabalho">
       <a href="#nova-prospeccao" [attr.aria-current]="pagina() === 'nova-prospeccao' ? 'page' : null">Nova prospecção</a>
       <a href="#buscas" [attr.aria-current]="pagina() === 'buscas' ? 'page' : null">Buscas</a>
+      <a href="#relatorios" [attr.aria-current]="pagina() === 'relatorios' ? 'page' : null">Relatórios</a>
     </nav>
   }
   <div class="account">
@@ -27,6 +28,9 @@
   }
   @if (mensagem()) { <p class="aviso" role="status">{{mensagem()}}</p> }
   @switch (pagina()) {
+    @case ('relatorios') {
+      @for (conta of [sessao.conta()]; track conta?.email) { <urwork-relatorios /> }
+    }
     @case ('nova-prospeccao') {
       @for (conta of [sessao.conta()]; track conta?.email) { <urwork-nova /> }
     }

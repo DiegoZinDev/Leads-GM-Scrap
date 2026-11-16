@@ -52,6 +52,16 @@ As chamadas usam a sessão por cookie. O snapshot de uma execução contém `id`
 
 Os estados terminais são `CONCLUIDA` e `INTERROMPIDA`. Uma execução concluída com total inferior à meta indica esgotamento das fontes. O POST usa 400 para entrada inválida, 401 para ausência de login, 403 para perfil incompleto ou falha de CSRF e 409 para instalação ocupada ou reutilização da chave com dados diferentes.
 
+### Telas da etapa 5
+
+Validação integrada: em quatro execuções no navegador contra o Spring, o estado final por SSE coincidiu com a consulta HTTP (uma sem PDF, duas com PDF disponível e uma com falha induzida). A falha preservou o lead em Buscas. Os dois downloads corresponderam aos documentos por ID e a listagem agrupou corretamente registros de domingo e segunda-feira no horário de Brasília. Os testes usaram SQLite temporário e coletor controlado.
+
+Em **Nova prospecção**, a pessoa pode marcar a opção de gerar PDF e preencher o título. O POST de prospecções aceita `tituloPdf` com 1 a 100 caracteres. O título deve excluir caracteres de controle e os caracteres de nome de arquivo `< > : " / \ | ? *`. Omitir o campo ou enviar `null` desativa o PDF. Uma repetição da mesma intenção preserva a chave e o título. Reutilizar a chave com outro título retorna 409.
+
+O snapshot HTTP/SSE inclui `tituloPdf` e `estadoPdf` (`SEM_PDF`, `PENDENTE`, `DISPONIVEL` ou `FALHOU`). O término normal pode gerar documento inclusive para lote vazio ou abaixo da meta. Uma interrupção não publica PDF. Se a geração falhar, a coleta concluída conserva seu estado e os resultados individuais.
+
+Em **Relatórios**, `GET /api/relatorios` lista os PDFs disponíveis da conta, do mais recente ao mais antigo. Cada item traz `id`, `execucao`, `titulo`, `geradoEm` (UTC), `semana` (segunda-feira da geração em America/Sao_Paulo) e `nomeArquivo`. Agrupar pelo campo `semana`. O filtro opcional `?semana=2026-11-09` exige a data ISO de uma segunda-feira e retorna 400 para valor inválido. **Baixar relatório** usa `GET /api/relatorios/{id}/pdf`, com nome de arquivo no cabeçalho de download. Documento inexistente, indisponível ou de outra conta retorna 404.
+
 ## Implementação disponível
 
 O backend grava cada lead antes de contá-lo no snapshot. Na consulta geral, resultados repetidos entre buscas da mesma conta aparecem pela ocorrência mais recente (URL do Maps ou, na ausência, nome e cidade). Após um reinício, buscas abertas passam a `INTERROMPIDA`, com acesso aos resultados já gravados. O SSE consulta o estado persistido a cada segundo enquanto há um assinante e pode agrupar vários leads no mesmo snapshot. Execute uma instância Spring por arquivo SQLite.

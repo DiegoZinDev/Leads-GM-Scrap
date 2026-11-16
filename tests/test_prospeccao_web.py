@@ -12,6 +12,12 @@ from playwright.sync_api import expect, sync_playwright
 
 class ProspeccaoWebTest(TestCase):
     def test_repeticao_eventos_e_resultados_parciais(self):
+        self.verificar_prospeccao(False)
+
+    def test_pdf_opcional_e_falha_de_documento(self):
+        self.verificar_prospeccao(True)
+
+    def verificar_prospeccao(self, com_pdf):
         dist = Path(__file__).resolve().parents[1] / "frontend/dist"
         with ExitStack() as stack:
             servidor = stack.enter_context(ThreadingHTTPServer(("127.0.0.1", 0), partial(SimpleHTTPRequestHandler, directory=dist)))
@@ -23,6 +29,8 @@ class ProspeccaoWebTest(TestCase):
                 estado = dict(id=12, nicho="Oficinas", regiao="Campinas - SP", meta=3,
                               total=1, estado="EM_ANDAMENTO", criadaEm="2026-11-15T10:00:00Z")
                 pedidos, filtros, conexoes = [], [], []
+                titulo = "Oficinas de Campinas"
+                estado.update(tituloPdf=titulo if com_pdf else None, estadoPdf="PENDENTE" if com_pdf else "SEM_PDF")
 
                 def api(rota):
                     req = rota.request
@@ -57,26 +65,45 @@ class ProspeccaoWebTest(TestCase):
                 pagina.get_by_role("combobox").nth(1).select_option("Campinas")
                 pagina.get_by_label("Meta de leads").fill("3")
                 botao = pagina.get_by_role("button", name="Gerar prospecção")
+                campo = pagina.get_by_label("Título do relatório")
+                expect(campo).to_have_count(0)
+                if com_pdf:
+                    pagina.get_by_label("Gerar relatório em PDF").check()
+                    botao.click()
+                    assert not pedidos
+                    campo.fill("Oficinas/SP")
+                    botao.click()
+                    expect(pagina.get_by_role("alert")).to_contain_text("Use de 1 a 100")
+                    assert not pedidos
+                    campo.fill(titulo)
                 botao.evaluate("(el) => { el.click(); el.click(); }")
                 expect(pagina.get_by_role("alert")).to_be_visible()
                 assert len(pedidos) == 1
                 botao.click()
                 expect(botao).to_be_disabled()
                 assert pedidos[0] == pedidos[1] and pedidos[1]["regiao"] == "Campinas - SP"
+                assert pedidos[1].get("tituloPdf") == estado["tituloPdf"]
                 pagina.reload()
                 expect(pagina.get_by_text("1 de 3 qualificados")).to_be_visible()
                 expect(pagina.get_by_role("combobox").nth(1)).to_have_value("Campinas")
                 expect(botao).to_be_disabled()
+                if com_pdf:
+                    expect(campo).to_have_value(titulo)
                 pagina.get_by_role("link", name="Buscas", exact=True).click()
                 pagina.get_by_label("Filtrar por execução").select_option("12")
                 expect(pagina.get_by_text("Telefone não informado")).to_be_visible()
                 assert filtros[-1] == "leads?execucao=12"
                 pagina.get_by_role("link", name="Nova prospecção").click()
                 expect(botao).to_be_disabled()
-                estado.update(estado="CONCLUIDA")
+                estado.update(estado="CONCLUIDA", estadoPdf="FALHOU" if com_pdf else "SEM_PDF")
                 expect(pagina.get_by_text("Fontes esgotadas", exact=False)).to_be_visible()
                 expect(botao).to_be_enabled()
                 assert len(conexoes) >= 2
+                if com_pdf:
+                    expect(pagina.get_by_text("O PDF não foi gerado.", exact=False)).to_be_visible()
+                    pagina.get_by_role("link", name="Buscas", exact=True).click()
+                    expect(pagina.get_by_text("Oficina Central")).to_be_visible()
+                    pagina.get_by_role("link", name="Nova prospecção").click()
                 estado.update(estado="INTERROMPIDA")
                 pagina.reload()
                 expect(pagina.get_by_text("Coleta interrompida.", exact=False)).to_be_visible()

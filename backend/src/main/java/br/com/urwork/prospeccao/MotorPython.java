@@ -40,10 +40,8 @@ public class MotorPython {
     MotorPython(ObjectMapper json, Path raiz, List<String> argumentos) {
         this.json = json;
         this.raiz = raiz;
-        var windows = raiz.resolve(".venv/Scripts/python.exe");
-        var python = Files.isRegularFile(windows) ? windows : raiz.resolve(".venv/bin/python");
         var cmd = new java.util.ArrayList<String>();
-        cmd.add(System.getenv().getOrDefault("URWORK_PYTHON", python.toString()));
+        cmd.add(interpretador(raiz));
         cmd.addAll(argumentos);
         this.comando = List.copyOf(cmd);
     }
@@ -51,6 +49,12 @@ public class MotorPython {
     static Path raizProjeto() {
         var cwd = Path.of("").toAbsolutePath().normalize();
         return cwd.endsWith("backend") ? cwd.getParent() : cwd;
+    }
+
+    static String interpretador(Path raiz) {
+        var windows = raiz.resolve(".venv/Scripts/python.exe");
+        var python = Files.isRegularFile(windows) ? windows : raiz.resolve(".venv/bin/python");
+        return System.getenv().getOrDefault("URWORK_PYTHON", python.toString());
     }
 
     public int executar(Pedido pedido, Consumer<JsonNode> receber) throws IOException, InterruptedException {
