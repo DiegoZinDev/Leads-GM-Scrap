@@ -134,3 +134,30 @@
 .local { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(210px,100%),1fr)); gap: 12px; margin-bottom: 12px; }
 .locais .plain { padding: 8px 0; text-align: left; }
 .locais .plain:disabled { opacity: .6; }
+.operacao { max-width: 1240px; }
+.grade-prospeccao { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: clamp(24px,6vw,92px); margin-top: 32px; align-items: start; }
+.grade-prospeccao form, .grade-prospeccao fieldset { margin: 0; }
+.grade-prospeccao fieldset { display: grid; gap: 18px; min-width: 0; border: 0; padding: 0; }
+.grade-prospeccao form > fieldset > legend, .operacao h2 { font: 650 1.6rem/1.2 'Space Grotesk Variable',sans-serif; }
+.grade-prospeccao form > fieldset > legend { margin-bottom: 20px; padding: 0; }
+.grade-prospeccao .primary { justify-self: start; }
+.grade-prospeccao form > fieldset:disabled { opacity: .72; }
+.grade-prospeccao aside { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: clamp(20px,3vw,32px); overflow-wrap: anywhere; }
+.grade-prospeccao aside p { margin: 12px 0; color: var(--soft); }
+.grade-prospeccao aside strong { display: block; margin-top: 20px; font-variant-numeric: tabular-nums; }
+.grade-prospeccao progress { width: 100%; accent-color: var(--acid); }
+.cabecalho-leads { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin: 32px 0 16px; }
+.cabecalho-leads h2 { margin-right: auto; }
+.cabecalho-leads label { min-width: 0; max-width: 100%; }
+.operacao select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--control-border); border-radius: 6px; padding: 10px; max-width: 100%; }
+.operacao select:focus-visible { outline: 3px solid #a586fa; outline-offset: 4px; }
+.registro-lead { display: grid; grid-template-columns: 2fr 1fr auto; gap: 20px; padding: 22px 0; border-top: 1px solid var(--line); align-items: center; overflow-wrap: anywhere; }
+.registro-lead h3 { font-size: 1.35rem; margin-bottom: 6px; }
+.registro-lead small { color: var(--soft); }
+.operacao .back { text-decoration: underline; text-underline-offset: 3px; }
+@media(max-width:760px) {
+  .grade-prospeccao, .registro-lead { grid-template-columns: minmax(0,1fr); }
+  .registro-lead { gap: 10px; }
+  .cabecalho-leads h2 { width: 100%; }
+  .bar:has(nav) .account { margin-left: auto; }
+}

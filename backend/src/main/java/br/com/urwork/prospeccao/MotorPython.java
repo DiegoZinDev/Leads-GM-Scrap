@@ -24,6 +24,13 @@ public class MotorPython {
     private final Path raiz;
     private final List<String> comando;
     private final AtomicBoolean ocupado = new AtomicBoolean();
+    private Process processoAtual;
+    private boolean encerrando;
+
+    synchronized void parar() {
+        encerrando = true;
+        if (processoAtual != null) encerrar(processoAtual);
+    }
 
     @Autowired
     public MotorPython(ObjectMapper json) {
@@ -52,7 +59,12 @@ public class MotorPython {
             var builder = new ProcessBuilder(comando).directory(raiz.toFile());
             builder.environment().put("PYTHONIOENCODING", "utf-8");
             builder.redirectError(ProcessBuilder.Redirect.DISCARD);
-            var processo = builder.start();
+            final Process processo;
+            synchronized (this) {
+                if (encerrando) throw new IOException("Instalação em encerramento.");
+                processo = builder.start();
+                processoAtual = processo;
+            }
             // Fecha também o Chromium se o consumidor falhar ou o motor ficar bloqueado.
             var limite = Thread.startVirtualThread(() -> {
                 try {
@@ -97,7 +109,10 @@ public class MotorPython {
                 limite.interrupt();
                 encerrar(processo);
             }
-        } finally { ocupado.set(false); }
+        } finally {
+            synchronized (this) { processoAtual = null; }
+            ocupado.set(false);
+        }
     }
 
     private static void encerrar(Process processo) {

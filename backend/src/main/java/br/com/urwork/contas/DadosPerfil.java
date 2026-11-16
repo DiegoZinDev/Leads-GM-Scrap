@@ -1,10 +1,7 @@
 package br.com.urwork.contas;
 
-import java.io.IOException;
+import br.com.urwork.dados.Municipios;
 import java.util.HashSet;
-import java.util.Set;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.io.ClassPathResource;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
@@ -35,26 +32,10 @@ record DadosPerfil(@NotBlank String cpf, @NotBlank String finalidade,
         };
     }
 
-    private static final Set<String> MUNICIPIOS = carregarMunicipios();
-
-    private static Set<String> carregarMunicipios() {
-        var locais = new HashSet<String>();
-        try (var arquivo = new ClassPathResource("localidades.json").getInputStream()) {
-            for (var estado : new ObjectMapper().readTree(arquivo)) {
-                for (var cidade : estado.required("cidades")) {
-                    locais.add(cidade.asText() + " - " + estado.required("uf").asText());
-                }
-            }
-            return Set.copyOf(locais);
-        } catch (IOException ex) {
-            throw new IllegalStateException("Catálogo de municípios indisponível", ex);
-        }
-    }
-
     private static String validarLocais(String valor) {
         String locais = exigir(valor);
         var selecionados = new HashSet<String>();
-        if (!locais.lines().allMatch(l -> MUNICIPIOS.contains(l) && selecionados.add(l))) throw invalido();
+        if (!locais.lines().allMatch(l -> Municipios.contem(l) && selecionados.add(l))) throw invalido();
         return locais;
     }
 

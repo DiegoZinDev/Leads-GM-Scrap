@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, HostListener, inject, sig
 import { Inicio } from './inicio/inicio';
 import { FormularioConta } from './conta/formulario';
 import { Sessao } from './conta/sessao';
+import { NovaProspeccao } from './prospeccao/nova';
+import { Buscas } from './prospeccao/buscas';
 
 function rotaAtual() {
   switch (location.hash.slice(1)) {
@@ -9,7 +11,8 @@ function rotaAtual() {
     case 'senha':
     case 'entrar': return 'entrar';
     case 'leads':
-    case 'buscas':
+    case 'buscas': return 'buscas';
+    case 'nova-prospeccao': return 'nova-prospeccao';
     case 'relatorios':
     case 'conta': return 'conta';
     default: return 'inicio';
@@ -17,7 +20,7 @@ function rotaAtual() {
 }
 
 @Component({
-  selector: 'urwork-app', standalone: true, imports: [Inicio, FormularioConta],
+  selector: 'urwork-app', standalone: true, imports: [Inicio, FormularioConta, NovaProspeccao, Buscas],
   templateUrl: './app.html', changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {
@@ -30,9 +33,10 @@ export class App {
     const rota = this.rota();
     if (rota === 'inicio') return rota;
     const conta = this.sessao.conta();
-    if (conta) return conta.perfilCompleto ? 'conta' : 'perfil';
-    if (conta === undefined && rota === 'conta') return 'aguardar';
-    return rota === 'conta' ? 'entrar' : rota;
+    const privada = rota === 'conta' || rota === 'nova-prospeccao' || rota === 'buscas';
+    if (conta) return conta.perfilCompleto ? (privada ? rota : 'conta') : 'perfil';
+    if (privada) return conta === undefined ? 'aguardar' : 'entrar';
+    return rota;
   });
 
   ngOnInit() { void this.sessao.consultar(); }

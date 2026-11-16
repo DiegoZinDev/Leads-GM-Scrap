@@ -6,6 +6,12 @@
       <path d="M2 32h24" stroke-width="3"/>
     </svg>UrWork
   </a>
+  @if (sessao.conta()?.perfilCompleto) {
+    <nav aria-label="Área de trabalho">
+      <a href="#nova-prospeccao" [attr.aria-current]="pagina() === 'nova-prospeccao' ? 'page' : null">Nova prospecção</a>
+      <a href="#buscas" [attr.aria-current]="pagina() === 'buscas' ? 'page' : null">Buscas</a>
+    </nav>
+  }
   <div class="account">
     @if (sessao.conta()) {
       @if (pagina() !== 'conta' && pagina() !== 'perfil') { <a class="outline" href="#conta">Minha conta</a> }
@@ -21,6 +27,12 @@
   }
   @if (mensagem()) { <p class="aviso" role="status">{{mensagem()}}</p> }
   @switch (pagina()) {
+    @case ('nova-prospeccao') {
+      @for (conta of [sessao.conta()]; track conta?.email) { <urwork-nova /> }
+    }
+    @case ('buscas') {
+      @for (conta of [sessao.conta()]; track conta?.email) { <urwork-buscas /> }
+    }
     @case ('inicio') { <urwork-inicio [conectado]="!!sessao.conta()" [animar]="animar" /> }
     @case ('conta') {
       <section class="work"><h1 tabindex="-1">Minha conta</h1>

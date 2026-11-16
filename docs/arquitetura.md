@@ -32,13 +32,29 @@ O processo Python local permite distribuir esta primeira versão sem operar um s
 
 ### Telas da etapa 4
 
+Validação integrada em 15/11/2026: o formulário iniciou uma execução no Spring e recuperou o progresso após recarregar a aba. Com SQLite temporário e fonte controlada, Buscas exibiu o lead parcial da execução e a tela de progresso indicou esgotamento com 1 de 3 leads. O teste de reinício do backend preservou o resultado parcial e marcou a execução aberta como interrompida.
+
 Em **Nova prospecção**, a pessoa autenticada escolhe nicho, região e meta. Um duplo clique em **Gerar prospecção** deve iniciar uma única execução. A tela mostra o total de leads obtidos e a meta solicitada. Se a fonte se esgotar antes da meta, a tela informa o motivo do término e o total parcial.
 
 Ao reabrir a aba, a pessoa recupera o estado da execução. Em **Buscas → Leads**, ela consulta os resultados persistidos da própria conta, inclusive após reiniciar o backend.
 
-O Implements fornece ao Orchestrator o contrato HTTP/SSE do Spring para iniciar, consultar e acompanhar a execução e listar os resultados. Com esse contrato, o Orchestrator encaminha o briefing de implementação ao Frontend. O JSON e os eventos da etapa 3 servem à comunicação interna entre Spring e Python.
+#### Contrato do Angular com o Spring
+
+As chamadas usam a sessão por cookie. O snapshot de uma execução contém `id`, `nicho`, `regiao`, `meta`, `total`, `estado` e `criadaEm`.
+
+| Chamada | Comportamento |
+|---|---|
+| `POST /api/prospeccoes` | Enviar o token CSRF vigente e o JSON com `chave` (UUID por intenção, reutilizado ao repetir a mesma tentativa), `nicho`, `regiao` (ex. `Campinas - SP`) e `meta` (inteiro positivo). Retorna o snapshot com 202 ao criar ou 200 ao repetir o mesmo pedido. |
+| `GET /api/prospeccoes` | Lista as execuções da conta, da mais recente à mais antiga. Ao reabrir, localizar a execução em andamento e retomar o acompanhamento. |
+| `GET /api/prospeccoes/{id}` | Retorna o snapshot. Execução inexistente ou de outra conta retorna 404. |
+| `GET /api/prospeccoes/{id}/eventos` | O EventSource recebe o evento nomeado `estado` com snapshot integral na conexão, na reconexão e a cada atualização. Substituir o estado local pelo recebido. Fechar o EventSource ao sair de `EM_ANDAMENTO`. |
+| `GET /api/leads` | Lista os resultados da conta. O filtro opcional `?execucao={id}` restringe a busca. Cada item contém `execucao`, `coletadoEm` e `dados`, com campos do motor como `nome`, `cidade`, `nicho`, `url_maps`, `telefone` e `score_potencial`; a disponibilidade varia por fonte. |
+
+Os estados terminais são `CONCLUIDA` e `INTERROMPIDA`. Uma execução concluída com total inferior à meta indica esgotamento das fontes. O POST usa 400 para entrada inválida, 401 para ausência de login, 403 para perfil incompleto ou falha de CSRF e 409 para instalação ocupada ou reutilização da chave com dados diferentes.
 
 ## Implementação disponível
+
+O backend grava cada lead antes de contá-lo no snapshot. Na consulta geral, resultados repetidos entre buscas da mesma conta aparecem pela ocorrência mais recente (URL do Maps ou, na ausência, nome e cidade). Após um reinício, buscas abertas passam a `INTERROMPIDA`, com acesso aos resultados já gravados. O SSE consulta o estado persistido a cada segundo enquanto há um assinante e pode agrupar vários leads no mesmo snapshot. Execute uma instância Spring por arquivo SQLite.
 
 | Diretório | Responsabilidade |
 |---|---|
@@ -56,4 +72,4 @@ Ao iniciar da raiz ou da pasta backend do projeto, o Spring abre `dtb/UrWork.db`
 
 O terminal continua disponível por `python main.py`. O serviço interno `MotorPython.executar` inicia `python -m engine.worker` com um pedido JSON UTF-8 no stdin, por exemplo `{"nicho":"Oficina","regiao":"Campinas - SP","meta":36}`. O stdout traz um objeto JSON por linha: `inicio` informa a meta, cada `lead` traz o registro e o total cumulativo, e `fim` informa o total efetivo. O Spring confirma a conclusão após saída com sucesso. A fonte pode se esgotar antes da meta.
 
-O serviço admite uma coleta por instância e encerra o processo depois de duas horas. Cada execução usa um contexto Chromium temporário e histórico em memória. O perfil e os relatórios do terminal continuam separados. A próxima entrega acrescenta a API autenticada, persistência por conta e SSE para a interface.
+O serviço admite uma coleta por instância e encerra o processo depois de duas horas. Cada execução usa um contexto Chromium temporário e histórico em memória. A API autenticada persiste os resultados no SQLite e transmite o estado por SSE. O perfil e os relatórios do terminal continuam separados.

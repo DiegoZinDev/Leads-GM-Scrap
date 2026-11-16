@@ -1,0 +1,32 @@
+<section class="work operacao">
+  <h1 tabindex="-1">Nova prospecção</h1>
+  <div class="grade-prospeccao">
+    <form (submit)="gerar($event)">
+      <fieldset [disabled]="!pronto() || enviando() || execucao()?.estado === 'EM_ANDAMENTO'">
+        <legend>Critérios da busca</legend>
+        <label>Nicho<input name="nicho" required maxlength="120" [value]="criteriosRecuperados?.nicho ?? ''" placeholder="Ex. Oficinas mecânicas"></label>
+        <urwork-locais titulo="Região" [unico]="true" />
+        <label>Meta de leads<input name="meta" type="number" min="1" max="2147483647" step="1" [value]="criteriosRecuperados?.meta ?? ''" required></label>
+        <button class="primary" type="submit">{{ enviando() ? 'Enviando…' : 'Gerar prospecção' }}</button>
+      </fieldset>
+      @if (erro()) { <p role="alert">{{ erro() }}</p> }
+      @if (!pronto() && !carregando()) { <button class="secondary" type="button" (click)="recuperar()">Atualizar execuções</button> }
+    </form>
+    <aside aria-labelledby="titulo-progresso">
+      <h2 id="titulo-progresso">Progresso da coleta</h2>
+      <div role="status">
+        @if (carregando()) { <p>Consultando execuções…</p> }
+        @else if (execucao(); as e) {
+          <p>{{ e.nicho }} · {{ e.regiao }} · Execução #{{ e.id }}</p>
+          <strong>{{ e.total }} de {{ e.meta }} qualificados · {{ percentual(e.total, e.meta) }}% da meta</strong>
+          <progress [value]="e.total" [max]="e.meta" aria-label="Meta de leads qualificados"></progress>
+          @if (e.estado === 'INTERROMPIDA') { <p>Coleta interrompida. Os leads já coletados estão em Buscas.</p> }
+          @else if (e.estado === 'CONCLUIDA') {
+            <p>{{ e.total < e.meta ? 'Fontes esgotadas antes de atingir a meta.' : 'Coleta concluída. Meta atingida.' }}</p>
+          } @else { <p>{{ reconectando() ? 'Reconectando ao progresso…' : 'Coleta em andamento.' }}</p> }
+        } @else if (pronto()) { <p>O progresso aparece aqui quando você inicia uma coleta.</p> }
+      </div>
+      @if (execucao()) { <a class="back" href="#buscas">Ver leads em Buscas</a> }
+    </aside>
+  </div>
+</section>

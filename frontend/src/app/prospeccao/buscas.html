@@ -1,0 +1,35 @@
+<section class="work operacao">
+  <h1 tabindex="-1">Buscas</h1>
+  <div class="cabecalho-leads">
+    <h2>Leads</h2>
+    <label>Filtrar por execução
+      <select #filtro (change)="filtrar(filtro.value)">
+        <option value="">Todas as execuções</option>
+        @for (e of execucoes(); track e.id) { <option [value]="e.id">#{{ e.id }} · {{ e.nicho }} · {{ e.regiao }}</option> }
+      </select>
+    </label>
+    <button type="button" class="secondary" (click)="atualizar()">Atualizar</button>
+  </div>
+  @if (erroLista()) { <p role="alert">Filtro indisponível. {{ erroLista() }}</p> }
+  @if (carregando()) { <p role="status">Consultando leads…</p> }
+  @else if (erro()) { <p role="alert">{{ erro() }}</p> }
+  @else {
+    <p role="status">{{ leads().length }} {{ leads().length === 1 ? 'lead encontrado' : 'leads encontrados' }}</p>
+    @for (lead of leads(); track $index) {
+      <article class="registro-lead">
+        <div><h3>{{ lead.dados?.nome || 'Nome não informado' }}</h3>
+          <p>{{ lead.dados?.cidade || 'Cidade não informada' }} · {{ lead.dados?.nicho || 'Nicho não informado' }}</p>
+          <small>Execução #{{ lead.execucao }} @if (data(lead.coletadoEm); as quando) { · {{ quando }} }</small>
+        </div>
+        <div><p>{{ lead.dados?.telefone || 'Telefone não informado' }}</p>
+          @if (lead.dados?.score_potencial != null) { <small>Pontuação: {{ lead.dados?.score_potencial }}</small> }
+        </div>
+        @if (link(lead.dados?.url_maps); as url) { <a class="back" [href]="url" target="_blank" rel="noopener noreferrer">Ver no mapa</a> }
+      </article>
+    } @empty {
+      <div class="empty"><h3>{{ filtro.value ? 'Nenhum lead nesta execução' : 'Nenhum lead coletado' }}</h3>
+        <p>Os resultados aparecem aqui à medida que a coleta os confirma.</p><a href="#nova-prospeccao">Ir para Nova prospecção</a>
+      </div>
+    }
+  }
+</section>

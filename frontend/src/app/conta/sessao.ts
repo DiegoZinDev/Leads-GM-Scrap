@@ -30,12 +30,16 @@ export class Sessao {
   }
 
   async enviar(acao: string, corpo?: BodyInit, json = false) {
+    return this.post('/api/auth/' + acao, corpo, json);
+  }
+
+  async post(url: string, corpo?: BodyInit, json = false) {
     const csrf = await fetch('/api/auth/csrf', { cache: 'no-store' });
-    if (!csrf.ok) throw new Error();
+    if (!csrf.ok) return csrf;
     const { headerName, token } = await csrf.json();
     const headers = new Headers({ [headerName]: token });
     if (json) headers.set('Content-Type', 'application/json');
-    return fetch('/api/auth/' + acao, { method: 'POST', headers, body: corpo });
+    return fetch(url, { method: 'POST', headers, body: corpo });
   }
 
   async sair() {

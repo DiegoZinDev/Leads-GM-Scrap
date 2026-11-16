@@ -7,6 +7,7 @@ import estados from './localidades.json';
 })
 export class SelecionarLocais {
   titulo = input.required<string>();
+  unico = input(false);
   estados = estados;
   locais = [{ uf: '', cidade: '' }];
 
